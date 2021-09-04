@@ -1,0 +1,308 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{lstbayes}
+\usepackage{xcolor}
+\usepackage{xr}
+\usepackage{glossaries}
+\usepackage{cleveref}
+
+
+\bibliographystyle{IEEEtran}
+
+\lstset{language=Stan,
+           basicstyle=\ttfamily\scriptsize,
+           keywordstyle=\color{blue}\ttfamily\scriptsize,
+           stringstyle=\color{red}\ttfamily\scriptsize,
+           commentstyle=\color{gray}\ttfamily\scriptsize,
+          breaklines=true
+          }
+
+\externaldocument[supp-]{SupplementaryInformation-ClimbingGrades}
+
+\newcommand{\C}{106}
+\newcommand{\N}{63889}
+\newcommand{\meanm}{0.78}
+\newcommand{\lowm}{0.77}
+\newcommand{\highm}{0.79}
+\newcommand{\meand}{2.18}
+\newcommand{\lowd}{2.15}
+\newcommand{\highd}{2.21}
+\newcommand{\minattempts}{400}
+\newcommand{\minfails}{1}
+\newcommand{\stantime}{2 hour 56 minutes}
+\newcommand{\meanregm}{0.64}
+
+\newcommand{\Cnz}{5}
+\newcommand{\Nnz}{2506}
+\newcommand{\meanmnz}{0.79}
+\newcommand{\lowmnz}{0.72}
+\newcommand{\highmnz}{0.87}
+\newcommand{\meandnz}{2.21}
+\newcommand{\lowdnz}{2.06}
+\newcommand{\highdnz}{2.38}
+\newcommand{\stantimenz}{1 minute 52 seconds}
+\newcommand{\meanregmnz}{0.68}
+
+
+\newglossaryentry{onsight}{name=onsight, description={is a successful ascent of a route on the very first attempt, and without having any information about how the route should be climbed. If information is known about the route from other climbers, or by observing other climbers on the route, then it becomes a flash}}
+
+\newglossaryentry{flash}{name=flash, description={is a successful ascent of a route or boulder problem on the very first attempt. It differs from onsight in that any amount of information about the route, including beta and observation of other climbers on the route is available to the climber when attempting a flash}}
+
+\newglossaryentry{redpoint}{name=redpoint, description={is a successful ascent of a route or boulder problem on any attempt subsequent to the first attempt. If a successful ascent is logged as a redpoint it implies that climber has made previous attempts and/or ascents}}
+
+\newglossaryentry{send}{name=send, description={is a successful ascent of a route or boulder problem}}
+
+
+\makeglossaries
+
+
+\begin{document}
+
+\title{Bayesian inference of the climbing grade scale}
+\author{Alexei Drummond}
+\date{\today{}}
+\maketitle
+
+
+\abstract{Climbing grades are used to classify a climbing route based on its perceived difficulty, and have come to play a central role in the sport of rock climbing. Recently the first statistically rigorous method for estimating climbing grades from whole-history ascent data was described \cite{scarff2020estimation}, based on the dynamic Bradley-Terry model for games between players of time-varying ability. In this paper we implement inference under this model using Markov chain Monte Carlo and apply the method to a curated data set made up of climbers who climb frequently. We use this data to get an estimate of the model's fundamental scale parameter $m$, that defines the proportional increase in difficulty associated with an increment of grade. We show that the data conforms to assumptions that the climbing grade scale is a logarithmic scale of difficulty, like decibels or stellar magnitude.
+
+We estimate that an increment in Ewbank grade corresponds to $\sim\meand$ (\lowd-\highd) times increase in difficulty ($m=\meanm$; [\lowm-\highm]), assuming a logistic model of probability of success as a function of grade. In addition we highlight potential connections between the logarithmic properties of climbing grade scales and the psychophysical laws of Weber and Fechner.  Finally, we note a natural corollary of this model that describes how the grade of a ``cruxy'' route can be decomposed into the grades of its constituent sections, or moves, and illustrate how this approach can be used, along with the slope parameter $m$, to quantify the role of fatigue in contributing to overall difficulty.}
+
+\section*{Author summary}
+
+In this paper we ask the question: ``What does an increment of the climbing grade really mean?'' Although climbing grades originated as a subjective classification of climbing difficulty, they exhibit a strongly quantitative behaviour. In this paper we analyse that behaviour by forming a model that explains the grade as a function of the number of sessions that a climber of a certain ability will take to successfully climb the route. We propose giving climbers a grade as well, and then expressing the expected number of failures before success as a logarithmic function of the difference between the climber's grade and the grade of the route. We find that by doing this we can estimate both the grade of the climber and the slope of the climbing grade scale itself from a logbook of attempts, including all successes and failures. Doing so with data from a popular public climbing logbook we find that an increment of the climbing grade corresponds to slightly more than a doubling of the expected number of failures before successfully climbing the route.
+
+\section*{Introduction}
+
+Climbing grades play a central role in the sport of rock climbing \cite{delignieres1993psychophysical,draper2015comparative}. There are a number of commonly employed grading systems using by sport climbers globally to classify climbing routes into grades that increase with difficulty. In North America the three-part Yosemite decimal system (YDS) is employed. In many parts of Europe the French sport grading system is used. Whereas in Australia and NZ the simple numerical Ewbank grading scale is used. The Ewbank scale is open-ended and begins at 1. Most amateur climbers will be able to climb routes up to about grade 18, while the most difficult routes currently graded under the Ewbank system are grade 35. 
+
+For lead climbing at the advanced to elite end of the spectrum (i.e. from about Ewbank 23 onwards) there is an almost one-to-one correspondence between these three major grading systems (\cite{draper2015comparative}, see Table \ref{table1}). For bouldering the two common grading systems are the Vermin scale and the Fontainbleau scale. These two scales also have a correspondence in the higher grades, so that V11 $\equiv$ 8A, V12 $\equiv$ 8A+, $\dots$, V17 $\equiv$ 9A.
+
+
+\begin{table}
+\centering
+\begin{tabular}{| c | c | c |}
+  \hline			
+  {\bf Ewbank} & {\bf French sport} & {\bf YDS} \\
+  \hline			
+  23 & 7a & 5.11d \\
+  24 & 7a+ & 5.12a \\
+  25 & 7b & 5.12b \\
+  26 & 7b+ & 5.12c \\
+  27 & 7c & 5.12d \\
+  28 & 7c+ & 5.13a \\
+  29 & 8a & 5.13b \\
+  30 & 8a+ & 5.13c \\
+  31 & 8b & 5.13d \\
+  32 & 8b+ & 5.14a \\
+  33 & 8c & 5.14b \\
+  34 & 8c+ & 5.14c \\
+  35 & 9a & 5.14d \\
+  36 & 9a+ & 5.15a \\
+  37 & 9b & 5.15b \\
+  38 & 9b+ & 5.15c \\
+  39 & 9c & 5.15d \\
+  \hline  
+\end{tabular}
+\caption{The correspondence between three of the major sport climbing grade systems in the range of grades relevant to advanced and elite climbers. For a more complete table see \cite{draper2015comparative}. }
+\label{table1}
+\end{table}
+
+Climbing grades were developed subjectively by different climbing communities around the world to classify climbing routes by difficulty. Yet, for difficult routes, these grading systems appear to have converged. They are also quite predictive of the chance of a climber of known ability to successfully climb a new route. This has led to the idea that there may be a quantitative law that underlies climbing grades \cite{delignieres1993psychophysical}, perhaps similar to the psychophysical Weber-Fechner law \cite{1834pulsu,fechner1860}. The Weber-Fechner law states that the perceived intensity is proportional to the logarithm of the stimulus. In climbing the grade represents the perceived difficulty (usually as determined by the first ascensionist). In controlled conditions it has been shown that climbing grades are proportional to the logarithm of some objective measures of difficulty \cite{delignieres1993psychophysical}. 
+
+Many physical and physiological determinants of climbing performance have been investigated \cite{balavs2012hand, balavs2014relationship, mackenzie2020physical}. If it exists, objective climbing difficulty must be a very complex quantity, but in certain situations it can perhaps be approximated by some relatively simple measurable proxy such as electromyographic stimulus of the {\it flexor digitorum profundus} (FDP) \cite{delignieres1993psychophysical}. A climbing route that is primarily difficult because of the ``crimpy'' nature of its holds could be well characterised by such a proxy, since the FDP is the primary muscle involved in closing the fingers into the ``crimp'' grip position used by climbers to hold small ledges. In contrast, a recent study found that shoulder strength was the most significant factor when considering performance on indoor lead-climbing routes \cite{mackenzie2020physical}, which are often set to be more ``athletic'' and less ``fingery''.
+
+Recently a new statistical approach to objectively estimate climbing route difficulty using whole-history ascent data of the climbing community has been described \cite{scarff2020estimation}. This approach adapts an earlier method for Bayesian inference of player ratings in two-player games \cite{coulom2008whole}, by recasting the sport of climbing as a game between the climber and the route. Such models have a long history dating back to at least Zermelo \cite{zermelo1929berechnung} whose model was rediscovered decades later by Bradley and Terry \cite{bradley1952rank}. These models have been developed, extended and generalised to estimate the time-varying skill of players of board games like Chess \cite{Elo1978, glickman1999rating} and Go \cite{coulom2008whole}, computer games like Starcraft \cite{maystre2019pairwise}, and sports such as tennis \cite{maystre2019pairwise} and basketball \cite{maystre2019pairwise}.
+
+By applying this two-player game framework to sport climbing, climbers can be graded in the same way that routes are graded. An attempt to climb a route is a game between the climber and the route. If the climber and the route have the same grade, then the game will be fair, and there will be even odds that the outcome of the game is success on the part of the climber. This model introduces a scale parameter $m$ to describe how the probability of success changes as a function of the difference between the grade of the climber and that of the route.
+
+Here we investigate the suitability of climber ascent data to be described by the Bradley-Terry model and then apply Bayesian MCMC inference to estimate the time-varying skill of a set of sport climbers, along with the fundamental parameter $m$, describing the increase in difficulty associated with an increment in the climbing grade. We compare our estimates with earlier work. We also examine the assumptions of the whole-history method, leading us to suggest some improvements that take into consideration common self-reporting behaviours that exist in popular public log books of climbing ascents.
+
+\section*{Model}
+
+\subsection*{Ascent Data}
+
+Let $\mathcal{D} = \{(c_i, r_i, t_i, y_i) : i \in [N]\}$ be a dataset of $N$ outcomes of sport climbing ascents.  Each ascent $i$, occurs on date $t_i$ and involves climber $c_i \in \{1,\dots, N_c\}$ attempting an ascent of route $r_i \in \{1,\dots, N_r\}$ with outcome $y_i \in \{0,1\}$. An outcome of $y=1$ represents a successful `clean' ascent of the climb, while $y=0$ represents a failure to make a clean ascent (including ``hang dog'', failed attempt, or retreat). 
+
+\subsection*{The Bradley-Terry model}
+
+Following previous work  \cite{scarff2020estimation} we apply the dynamic Bradley-Terry model \cite{zermelo1929berechnung,bradley1952rank} to ascent data. We define the grade, $C(t)$, of a climber at time $t$ to be the grade for which they would have an even chance of climbing a route cleanly of that grade on their first (\gls{flash}) attempt. A 7a climber, thus defined, would have a 50\% chance of successfully ``flashing'' a 7a route. 
+%The idea of this definition comes from recasting an attempt to climb a route as a game between climber and route. 
+%If an attempt to flash a route is a game between the climber and the route, then well-matched opponents (i.e. opponents of equal grade) will each have an even chance of winning the game. 
+%The climber wins by successfully climbing the route, and the route wins by repelling the climber's attempt to climb the route cleanly. 
+
+Following previous work \cite{scarff2020estimation} we will posit the following equation for the probability of a successful attempt:
+
+\begin{equation}
+\Pr(y = 1) = p_{send} = \frac{e^{mC(t)}}{e^{mC(t)} + e^{mR}}
+\end{equation}
+
+where $C(t)$ is the grade of the climber and $R$ is the grade of the route, and $m$ is a slope parameter that defines the proportional increase in difficulty associated with an increment of the grade of the route. This equation can be re-arranged to reveal that it represents a logistic function of $p$ versus the grade difference $C(t)-R$:
+
+\begin{equation}
+p_{send} = \frac{1}{e^{m(R-C(t))} + 1} = \textrm{logit}^{-1}(mC(t)-mR),
+\label{logisticp}
+\end{equation}
+
+where $\textrm{logit}^{-1}$ is the cumulative distribution of the logistic distribution, also known as the inverse logistic function:
+
+\begin{equation}
+\textrm{logit}^{-1}(x) = \frac{1}{1 + e^{-x}}
+\end{equation}
+
+Therefore estimating a climber's grade based on the outcomes of their ascent attempts is equivalent to a logistic regression with one independent variable. The success or failure of the attempt is the outcome, and the difference in the grade of the climber and the route is the independent variable. Assuming a logistic function is the same as stating that the log-odds of success is a linear function of the difference in the grades.
+
+            
+%It should be obvious from this that a 7a climber would have less than 50\% chance of flashing a 7a+ or higher and a greater than 50\% chance of flashing a 6c+ route or lower. 
+%It should also be clear that a 7a climber could still flash a 7a+ route with a bit of luck (or because the style of the particular route suits the climbers abilities more than average), it just won't happen as often as failing to do so. 
+%There are both random elements and additional sources of variance intrinsic to sport of climbing, as with most other games. 
+
+%Examining equation \ref{logisticp} it is easy to see that it takes on the value of $p_{send}=0.5$ when $R=C(t)$, that $p_{send}<0.5$ when $R>C(t)$ and that $p_{send}>0.5$ when $C(t)>R$. So this model has the essential properties we require.
+
+Assuming the route grade is known, a climber's grade, $C(t)$, can be seen as a scaled version of the intercept of the logistic regression. So defined, it does not have to be a whole number. The Ewbank grading scale is attractive for considering fractional climbing grades as it is purely numerical. So we could consider a climber to have grade 29.4 on the Ewbank scale, meaning that they have a better than even chance of flashing a grade 29 route and a worse than even chance of flashing a grade 30 route (that is, they are an exceptionally talented climber!).
+
+The grade of a climber is not static. The ability of a climber tends to increase rapidly in the first few months and years in the sport. Besides that, form waxes and wanes with injury, seasons, training intensity et cetera. So any mechanism for estimating a climber's grade over a period of time must take account of the fact that the climber's ``effective'' grade will, in general, increase or decrease over time.
+
+Following previous authors  \cite{coulom2008whole,scarff2020estimation} we consider a climber's grade to change through time according to a Wiener process, so that the prior distribution on $C(t+1)$ is:
+
+\begin{equation}
+C(t+1) \sim \mathcal{N}(C(t), w^2)  
+\end{equation}
+
+If we know the grade of a climber, we can predict their expected performance on a route of some other grade, including grades and routes they haven't tried. 
+
+%Empirically, we show that the number of attempts that a climber needs before successfully climbing a route increases exponentially as the grade of the route increases. 
+%The precise relationship is determined by the slope (exponent) of the exponential, which varies a bit with different grading systems. 
+
+If a climber has a probability $p_{send}$ of success on any particular attempt of a route, then it follows that the expected number of failed attempts before the redpoint (first ``clean'' success) will equal to the odds-ratio of failure:
+
+\begin{equation}
+ E\left[a\right]=\frac{1-p_{send}}{p_{send}}
+ \end{equation} 
+ 
+ So if the climber is climbing a route for which $p_{send}=0.5$ (i.e. a fair game) then they would expect to climb that route in an average of 2 attempts. They would flash it with a 50\% probability, take two goes with a 25\% probability (i.e. 1 fail, 1 success), 3 goes with a 12.5\% probability, et cetera.
+
+Realising this relationship between $p_{send}$ and $ E\left[a\right]$ means that we can convert between one and the other. So if a climber fails $9$ times for every send when climbing routes of a given grade, then we can compute the probability  $p_{send} = \frac{1}{E(a)+1} = 0.1$.
+
+\subsection*{Session grades}
+
+In the above model we have considered a game to be defined by a single attempt by a climber to climb a route. This could also be known as a ``tie-in'' or a ``go''. A tie-in is the act of a climber tying the rope to their harness, then attempting an ascent, and eventually (perhaps after ``working some moves'' or placing the remaining gear if the attempt fails) returning to the ground and untying in order to rest before another go.
+
+It is also possible to define the climbing game in terms of a ``session''. A session is a period of time (usually a couple of hours up to a whole day) during which a climber is trying to succeed in climbing a route. If the game is defined on a session-basis, then the outcome of the game is the best result that the climber achieved during the session. The climber wins if they eventually achieved a clean ascent during the session, no matter how many attempts they made to achieve the clean ascent. Although this form of ascent data is more granular (at most one ascent outcome per route per day, assuming a day is equivalent to a session), it may be preferred because a larger fraction of the climbing community logs data that conforms to this definition.
+
+We would anticipate that a climber's session grade, thus defined, is greater than their flash grade. 
+%Typically a climber will be able to climb about 2 grades higher in a session compared to their flash grade, depending on their endurance and tactics and the nature of the route. 
+
+\subsection*{Composing a grade from the grades of its parts}
+
+A long-standing rule of thumb among expert boulderers is that a boulder problem consisting of two subproblems of grade $x$ should have a grade of $x+1$ (pers. comms. Ivan Vostinar, July 2021). So V4 + V4 = V5, V8 + V8 = V9, etc.
+
+Writing this as:
+
+\begin{equation}
+2V(x) = V(x+1),
+\end{equation}
+
+we can see that the function $V(x) = 2^x$ satisfies this relationship for all $x$. So this rule of thumb concisely expresses three notions: (i) that grades express difficulty on a logarithmic scale, (ii) that an increment in grade is roughly a doubling of difficulty (i.e. $m = \log(2) \approx 0.693$), and (iii) that fatigue doesn't factor in to the difficulty for bouldering problems.
+
+In the previous sections we described an existing theory that the grade of a route or boulder problem is related to the probability of a climber of a given grade failing to climb the route. The act of attempting to climb a route was considered a game between the climber and the route. We can extend this analogy by breaking a route up into sections and say that the act of attempting to climb a route is the act of attempting to climb all the sections of a route one after the other without failure.
+
+See Supplementary information for more details.
+
+\section*{Methods}
+
+Our first analysis uses self-reported data on whole-history of ascents for \C{} Australian climbers of differing abilities to estimate the fundamental slope parameter for the Ewbank climbing grade scale. We repeated this analysis using the same criteria for selection (see Supplementary material) for climbers in New Zealand, resulting in a data set of \Cnz{} climbers. 
+
+In the second set of analyses we use whole-community successful ascent data from New Zealand and Australia. Finally we analyse a small data set of curated link-up boulder problems to illustrate the limitations of grading climbs in parts without considering fatigue.
+
+\subsection*{Estimating the slope of difficulty for the Ewbank climbing grade scale}
+
+For our first analysis we used self-reported whole-history of ascents for $n=\C{}$ climbers of differing abilities. All of these log books were self-reported on \url{http://thecrag.com}, a popular online climbing logbook. The total number of ascents analysed was $N=\N$. Most climbers do not self-report every attempt. To reduce the bias caused by climbers that don't log every failure we converted all logbooks to a session logging form, in which only the single most successful ascent was chosen for each climber on each route on each day that climbing occurred. In addition we only considered climbers that had at least \minattempts{} attempts, with at least \minfails{} failed. The analysis took \stantime{} on an iMac 3.6 GHz 8-Core Intel Core i9.
+
+We implemented full Bayesian MCMC inference of the dynamic Bradley-Terry model in Stan \cite{carpenter2017stan}. This code is available to the public domain at \url{https://github.com/alexeid/climbing}.
+The Stan model employed is shown in \cref{supp-listing1} (Supplementary Information).
+
+We used this model to co-estimate the fundamental slope parameter $m$ and the grade of each climber in monthly windows during 60 months between 1st August 2016 and 1st August 2021. For the purpose of this analysis we assumed that the assigned grades for the routes attempted were correct.
+
+\subsection*{Estimating the slope of total successful ascents versus grade in community-wide ascent data}
+
+We followed O'Neill \cite{oneill2002} in analysing total successful ascent data, as a complementary approach to understanding grade difficulty. We downloaded the total number of successful ascents by grade for New Zealand and Australia from \url{http://thecrag.com}, for both bouldering and sport climbing on 20th July 2021. For sport climbing we chose to include ascents with tick types: \gls{redpoint}, \gls{flash} and \gls{onsight}. For bouldering we chose to include tick types \gls{send}, \gls{flash} and \gls{onsight}. The purpose was to chose tick types that strongly implied a clean send on the part of the ascensionist (i.e. represented accomplishing success of the full difficulty of the boulder problem or route).
+\subsection*{Estimating the fatigue factor for link-up boulder problems}
+
+It it common to construct a more difficult boulder problem by linking two existing boulder problems together. Armed with an estimate of the $m$ parameter we can consider whether boulder problems can be described by the sum of the difficulties of the subproblems. We would anticipate that deviations would be caused in the case where fatigue accumulates from the first part of the boulder problem and a complete reset between the subproblems is not possible. So by estimating the expected grade based on the grades of the subproblems, and comparing that to the assigned grade we can get insight into the extent to which unmodeled fatigue contributes to the perceived grade across different boulder problems.
+
+In supplementary information we curated a small table of link-up boulder problems. For each problem there is a grade for the full problem, as well as individual grades for the parts of the problem. Assuming a slope parameter of $m=0.6$ we compute the expected grade of the full problem from the grades of its parts and define the difference between this expected grade and the actual grade as the fatigue factor $F$.
+
+\section*{Results}
+
+\subsection*{Estimating the slope of difficulty for the Ewbank climbing grade scale}
+
+
+Figure \ref{aus_ascents} shows the estimated grade through time plot between August 2016 and July 2021 inclusive for \C{} climbers that fulfilled our selection criteria and who climbed predominantly in Australia. The second panel reports the posterior distribution of the $m$ parameter which was jointly estimated.
+The estimate of the $m$ parameter was \meanm{} [\lowm, \highm], which is equivalent to \meand{} [\lowd, \highd] times more failed attempts per success per grade increment. 
+
+The mean estimate of the $m$ parameter from a simple log-linear regression of each climber individually assuming no change in ability of the analysed period was \meanregm{} (see Figure \ref{supp-fig1}; Supplementary Information). 
+
+There is one climber (Account ID: 2859555216) whose estimated session grade is much higher than all of the other climbers in the data set. Investigating this climber's ascent record reveals an extreme case of the problems with self-reported data and specifically with under-reporting of unsuccessful attempts. This climber's record contains 584 logged ascents: 429 onsight, 100 pinkpoint, 41 redpoint, 6 secondclean, 4 flash, 1 topropeonsight, 1 topropeflash, 2 allfreewithrest. Only the last two allfreewithrest ascents are counted as unsuccessful in our analysis. They were on a grade 25 and and a grade 27 respectively. It is clear from this record that this climber only records ascents that they view as having been a success. The 141 redpoint/pinkpoint ascents imply a minimum of 141 unreported unsuccessful attempts prior to redpoint for those routes. Even if this record is assumed to follow session logging conventions then that would imply that every redpoint/pinkpoint was achieved in a single session. If we removed allfreewithrest from our definition of unsuccessful attempt then this climber wouldn't have met our selection criteria as they would not have had a single unsuccessful attempt recorded in five years of climbing.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents400-minFails1-session-posterior.png}
+\caption{\small The posterior estimate of each Australian climber's grade ($n=\C$) through time and the posterior distribution of the proportional increase in difficulty per grade increment $d = e^m$.}
+\label{aus_ascents}
+\end{figure}
+
+Figure \ref{nz_ascents} shows the estimated grade through time plot between August 2016 and July 2021 inclusive for \Cnz{} climbers that fulfilled our selection criteria and who climbed predominantly in New Zealand. The second panel reports the posterior distribution of the $m$ parameter which was jointly estimated.
+The estimate of the $m$ parameter was \meanmnz{} [\lowmnz, \highmnz], which is equivalent to \meandnz{} [\lowdnz, \highdnz] times more failed attempts per success per grade increment. 
+
+The mean estimate of the $m$ parameter from a simple log-linear regression of each climber individually assuming no change in ability of the analysed period was \meanregmnz{} (see Figure \ref{supp-fig2}; Supplementary Information). 
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{../results/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents400-minFails1-session-posterior.png}
+\caption{\small The posterior estimate of each New Zealand climber's grade through time and the posterior distribution of the proportional increase in difficulty per grade increment $d = e^m$. Because there were only \Cnz{} climbers in this analysis we were able to depict the 95\% credible interval around the grade estimate through time as well.}
+\label{nz_ascents}
+\end{figure}
+
+
+\subsection*{Estimating the slope of total successful ascents versus grade in community-wide ascent data}
+
+Figure \ref{fig.oneill} shows the whole-community counts of successful ascents by grade for Australian and New Zealand for both sport climbs and bouldering. The slope of these curves range between 0.7 and 0.79, conforming remarkably well with the more detailed Bayesian analysis above. This data is not affected by bias in under-reporting of failed attempts, but will be affected by systematic variation in the number of attempts made by the community at each grade.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{figure1.png}
+\caption{\small The relationship between grade and the log of the number of successful sends for two styles of climbing (bouldering and sport climbing) in two countries, based on whole climbing community statistics on \url{http://thecrag.com}}
+\label{fig.oneill}
+\end{figure}
+
+\section*{Discussion and Conclusion}
+
+We have endeavoured to bring together various pieces of community knowledge about the mathematics of climbing grades and reframe them in the light of recent work on grade estimation using whole-history ascent data.
+
+Our main contribution is to focus on quantifying the magnitude of the increase in difficulty representing by an increment in climbing grade. We provide evidence that for the V-grade and Ewbank grading systems this increment is slightly more than a doubling in difficulty for each grade, as measured by average number of failed sessions required before achieving success. Given the well-known equivalence of climbing grade systems at the upper end of grade scales, this implies that both the French sport and Yosemite decimal systems also represent a doubling of difficulty for grade 7a $\equiv$ 5.11d $\equiv$ 23 and above. This also confirms a standard rule of thumb for the V-grade system that has existed in the community for many years.
+
+This is quite a surprising quantitative law to arise from what many have assumed to be a subjective process of grading climbs. Whereas climbers do argue whether a climb is too hard or too ``soft'' for the grade, implying its true grade is off by one, it is much more rare for disagreements about the grade of a route to span more than two consecutive grades (e.g. a 25 may be debated to be 24 or 25, but not 23 or 26). This makes sense if the grade scale is in fact a logarithmic scale of difficulty.  
+
+An open question is how all these subjective grading systems settled in to such a rigid quantitative law. One hypothesis worth further investigation is that a logarithmic scale is optimal for magnitude estimation and therefore arises naturally in many settings \cite{portugal2011weber}. In many different domains it appears that the perception of a stimulus varied logarithmically with its absolute magnitude. If so, why did grading systems settle on a slope so close to 2? Is there an information theoretic reason for this?
+
+One of the key data preparation approaches used here that differs from previous whole-history efforts is to use per-session data. This is a form of aggregation in which only the most successful attempt for each climber on each route on each day is retained and all other attempted ascents are removed from the data set. This caters for a common form of self-reporting that reports the best effort during each day of climbing. We refer to the grade estimated for a climber in this way as the {\it session grade}. Since it is possible to try a route 2 or more times in a single session, a climber's {\it session grade} should be higher than the {\it flash grade}. 
+
+The most questionable detail of the model presented is the idea that the probability of a successful ascent remains the same after each previous attempt of the route, i.e. practising a particle route does not improve the climber's chance of success. This is clearly a bad assumption, so at best the probability of success implied by the Bradley-Terry model should be considered as some sort of ``effective'' probability, averaged over different levels of practice. The real underlying probability is probably increasing with practice. The problems with developing a model that admits learning are at least two-fold: (i) we expect some routes are more amenable to practice than others, and (ii) it is unclear what functional form the expected improvement in probability per attempt should take.
+
+Suffice to say, there is still much work to do. Besides considerations above, foremost in our mind is the need to adapt recently developed whole-history inference methods to account for ascertainment biases in public repository data in a much more rigorous way than pursued here. This will require a better understanding of the differing ways that climbers approach self-reporting of climbing ascents. It seems likely that climber that logs their own ascent and attempts are likely to be susceptible to various biases and to follow differing conventions, depending on their purpose for making a public log book of their ascents. Data-driven approaches to learning about these differing conventions and biases in order to classifying climbers by their logging approach is an obvious next step.
+
+\section*{Acknowledgement}
+
+The authors would like to thank Simon Dale and Ulf Fuchslueger from \url{thecrag.com}, for providing access to the theCrag API (\url{https://www.thecrag.com/en/article/api}) so that the public ascent data could be downloaded programmatically for the analyses produced in this work. In addition we thank Dr Joseph Heled, Dr Tim Vaughan, Dr Michael Matschiner, and Daniel Krippner for helpful comments on and corrections to earlier versions of this manuscript.
+
+\printglossaries
+
+
+\bibliography{climbing}
+
+\end{document}
