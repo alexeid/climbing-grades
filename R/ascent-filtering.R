@@ -132,13 +132,17 @@ filter.climbers.by.ascent.counts <- function(res, min.ascents=200, min.failures=
   lb <- res$df
   
   tab <- t(table(lb$success,lb$account.id))
+  
+  tab2 <- t(table(lb$ascent.type %in% explicit.failed.ascent.types(),lb$account.id))
+  
+  explicit.fails <- tab2[,2]
   fail.counts <- tab[,1]
   success.counts <- tab[,2]
-  log.style <- data.frame(climber=rownames(tab), fail=fail.counts, success=success.counts)
+  log.style <- data.frame(climber=rownames(tab), fail=fail.counts, explicit.fails=explicit.fails, success=success.counts)
   log.style$total = log.style$fail + log.style$success
   log.style$failprob = log.style$fail / log.style$total
   log.style <- log.style[order(log.style$failprob, decreasing=T),]
-  log.style <- log.style[log.style$total>=min.ascents & log.style$fail>=min.failures,]
+  log.style <- log.style[log.style$total>=min.ascents & log.style$explicit.fails>=min.failures,]
   
   top.accounts <- as.character(log.style$climber)
   

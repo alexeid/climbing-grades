@@ -1,4 +1,3 @@
-setwd("~/Git/climbing/R")
 library(stringr)
 library(xtable)
 library(knitr)
@@ -89,7 +88,7 @@ produce.analysis.data <- function(params, res, routes) {
 
   png(pngname, width=900, height=900, pointsize=24)
   print("plot.all.attempts about to start")
-  m <- plot.all.attempts(df.final)
+  res.plot <- plot.all.attempts(df.final)
   print("plot.all.attempts completed")
   dev.off();
 
@@ -99,7 +98,7 @@ produce.analysis.data <- function(params, res, routes) {
 
   d <- construct.data.for.stan.climbing.model(startDate, climbers, df.final)
   
-  data = list(d=d, df=df.final, filter=final.filter.results, m=m, file.stem=file.stem, suffix=suffix, regressionpng=pngname, climbers=climbers)
+  data = list(d=d, df=df.final, filter=final.filter.results, m=res.plot$m, grade.range=res.plot$grade.range, file.stem=file.stem, suffix=suffix, regressionpng=pngname, climbers=climbers)
   
   return (data)
 }

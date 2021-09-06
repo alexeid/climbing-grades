@@ -44,6 +44,7 @@ plot.all.attempts <- function(lb) {
   }
   m <- c()
   t <- c()
+  grade.range <- c()
   
   make.plot = T
   
@@ -51,13 +52,16 @@ plot.all.attempts <- function(lb) {
   for (c in 1:length(climbers)) {
     summary[[c]] <- ascent.summary(lb[lb$account.id == climbers[c],])
     
+    gr <- summary[[c]]$grade[nrow( summary[[c]])] - summary[[c]]$grade[1]
+    grade.range <- c(grade.range, gr)
+    
     if (c == 1) {
       totalsummary = summary[[1]]
     } else {
       totalsummary = rbind(totalsummary, summary[[c]])
     }
   }  
-
+  
   for (c in 1:length(climbers)) {
     
     if (is.data.frame(summary[[c]])) {
@@ -65,11 +69,11 @@ plot.all.attempts <- function(lb) {
         if (make.plot) {
           x <- totalsummary$grade
           y <- log(totalsummary$attempts)
-        
+          
           plot(x, y, type="n", xlab="Grade", ylab="log failures per success", pch=19)
           make.plot = F
         }
-      
+        
         res = plot.attempts(summary[[c]], col=cols[c], gradeName=paste0("C", c), plot.text=plot.text)
         m <- c(m, res$m)
         t <- c(t, res$t)
@@ -79,7 +83,7 @@ plot.all.attempts <- function(lb) {
   
   if (plot.text) legend("topleft", t, col=cols, pch=19)
   
-  return (m)
+  return (list(m=m, grade.range=grade.range))
 }
 
 ##########################################################################################

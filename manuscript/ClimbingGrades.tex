@@ -22,8 +22,8 @@
 
 \externaldocument[supp-]{SupplementaryInformation-ClimbingGrades}
 
-\newcommand{\C}{106}
-\newcommand{\N}{63889}
+\newcommand{\C}{105}
+\newcommand{\N}{63305}
 \newcommand{\meanm}{0.78}
 \newcommand{\lowm}{0.77}
 \newcommand{\highm}{0.79}
@@ -32,7 +32,7 @@
 \newcommand{\highd}{2.21}
 \newcommand{\minattempts}{400}
 \newcommand{\minfails}{1}
-\newcommand{\stantime}{2 hour 56 minutes}
+\newcommand{\stantime}{2 hour 59 minutes}
 \newcommand{\meanregm}{0.64}
 
 \newcommand{\Cnz}{5}
@@ -47,11 +47,13 @@
 \newcommand{\meanregmnz}{0.68}
 
 
-\newglossaryentry{onsight}{name=onsight, description={is a successful ascent of a route on the very first attempt, and without having any information about how the route should be climbed. If information is known about the route from other climbers, or by observing other climbers on the route, then it becomes a flash}}
+\newglossaryentry{onsight}{name=onsight, description={is a successful ascent of a route on the very first attempt without weighting the rope, and without having any information about how the route should be climbed. If information is known about the route from other climbers, or by observing other climbers on the route, then it becomes a flash}}
 
-\newglossaryentry{flash}{name=flash, description={is a successful ascent of a route or boulder problem on the very first attempt. It differs from onsight in that any amount of information about the route, including beta and observation of other climbers on the route is available to the climber when attempting a flash}}
+\newglossaryentry{flash}{name=flash, description={is a successful ascent of a route or boulder problem on the very first attempt. If on a lead route then success means the climber did not weight the rope. It differs from onsight in that any amount of information about the route, including beta and observation of other climbers on the route is available to the climber when attempting a flash}}
 
-\newglossaryentry{redpoint}{name=redpoint, description={is a successful ascent of a route or boulder problem on any attempt subsequent to the first attempt. If a successful ascent is logged as a redpoint it implies that climber has made previous attempts and/or ascents}}
+\newglossaryentry{redpoint}{name=redpoint, description={is a successful ascent of a route or boulder problem on any attempt subsequent to the first attempt. Successful means that the rope was not weighted and no other aid than the natural rock features was used. If a successful ascent is logged as a redpoint it implies that climber has made previous attempts and/or ascents}}
+
+\newglossaryentry{hangdog}{name=hangdog, description={is an ascent of a route in which the climber attained the top of the climb, but did not do so in a style that was deemed successful, because they weighted the rope. When working to redpoint a hard route, a climber will often climb it hangdog as an intermediate stage towards success}}
 
 \newglossaryentry{send}{name=send, description={is a successful ascent of a route or boulder problem}}
 
@@ -220,9 +222,9 @@ In the second set of analyses we use whole-community successful ascent data from
 
 \subsection*{Estimating the slope of difficulty for the Ewbank climbing grade scale}
 
-For our first analysis we used self-reported whole-history of ascents for $n=\C{}$ climbers of differing abilities. All of these log books were self-reported on \url{http://thecrag.com}, a popular online climbing logbook. The total number of ascents analysed was $N=\N$. Most climbers do not self-report every attempt. To reduce the bias caused by climbers that don't log every failure we converted all logbooks to a session logging form, in which only the single most successful ascent was chosen for each climber on each route on each day that climbing occurred. In addition we only considered climbers that had at least \minattempts{} attempts, with at least \minfails{} failed. The analysis took \stantime{} on an iMac 3.6 GHz 8-Core Intel Core i9.
+For our first analysis we used self-reported whole-history of ascents for $n=\C{}$ climbers of differing abilities. All of these log books were self-reported on \url{http://thecrag.com}, a popular online climbing logbook. The total number of ascents analysed was $N=\N$. Most climbers do not self-report every attempt. To reduce the bias caused by climbers that don't log every failure we converted all logbooks to a session logging form, in which only the single most successful ascent was chosen for each climber on each route on each day that climbing occurred. In addition we only considered climbers that had at least \minattempts{} attempts, with at least \minfails{} explicit failure (i.e. at least one \gls{hangdog}, attempt, retreat or working). The analysis took \stantime{} on an iMac 3.6 GHz 8-Core Intel Core i9.
 
-We implemented full Bayesian MCMC inference of the dynamic Bradley-Terry model in Stan \cite{carpenter2017stan}. This code is available to the public domain at \url{https://github.com/alexeid/climbing}.
+We implemented full Bayesian MCMC inference of the dynamic Bradley-Terry model in Stan \cite{carpenter2017stan}. This code is available to the public domain at \url{https://github.com/alexeid/climbing-grades}.
 The Stan model employed is shown in \cref{supp-listing1} (Supplementary Information).
 
 We used this model to co-estimate the fundamental slope parameter $m$ and the grade of each climber in monthly windows during 60 months between 1st August 2016 and 1st August 2021. For the purpose of this analysis we assumed that the assigned grades for the routes attempted were correct.
@@ -246,8 +248,7 @@ The estimate of the $m$ parameter was \meanm{} [\lowm, \highm], which is equival
 
 The mean estimate of the $m$ parameter from a simple log-linear regression of each climber individually assuming no change in ability of the analysed period was \meanregm{} (see Figure \ref{supp-fig1}; Supplementary Information). 
 
-There is one climber (Account ID: 2859555216) whose estimated session grade is much higher than all of the other climbers in the data set. Investigating this climber's ascent record reveals an extreme case of the problems with self-reported data and specifically with under-reporting of unsuccessful attempts. This climber's record contains 584 logged ascents: 429 onsight, 100 pinkpoint, 41 redpoint, 6 secondclean, 4 flash, 1 topropeonsight, 1 topropeflash, 2 allfreewithrest. Only the last two allfreewithrest ascents are counted as unsuccessful in our analysis. They were on a grade 25 and and a grade 27 respectively. It is clear from this record that this climber only records ascents that they view as having been a success. The 141 redpoint/pinkpoint ascents imply a minimum of 141 unreported unsuccessful attempts prior to redpoint for those routes. Even if this record is assumed to follow session logging conventions then that would imply that every redpoint/pinkpoint was achieved in a single session. If we removed allfreewithrest from our definition of unsuccessful attempt then this climber wouldn't have met our selection criteria as they would not have had a single unsuccessful attempt recorded in five years of climbing.
-
+The median number of explicit fails per climber (i.e. \gls{hangdog}, attempt, working, retreat), was 131 (range: 20-651) or as a fraction 22.9\% (interquartile range 5.2\%- 54.0\%) of ascents.
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents400-minFails1-session-posterior.png}
@@ -298,7 +299,7 @@ Suffice to say, there is still much work to do. Besides considerations above, fo
 
 \section*{Acknowledgement}
 
-The authors would like to thank Simon Dale and Ulf Fuchslueger from \url{thecrag.com}, for providing access to the theCrag API (\url{https://www.thecrag.com/en/article/api}) so that the public ascent data could be downloaded programmatically for the analyses produced in this work. In addition we thank Dr Joseph Heled, Dr Tim Vaughan, Dr Michael Matschiner, and Daniel Krippner for helpful comments on and corrections to earlier versions of this manuscript.
+The authors would like to thank Simon Dale and Ulf Fuchslueger from \url{thecrag.com}, for providing access to the theCrag API (\url{https://www.thecrag.com/en/article/api}) so that the public ascent data could be downloaded programmatically for the analyses produced in this work. In addition we thank Dr Joseph Heled, Daniel Krippner, Dr Michael Matschiner, and Dr Tim Vaughan for helpful discussions on earlier versions of this manuscript.
 
 \printglossaries
 

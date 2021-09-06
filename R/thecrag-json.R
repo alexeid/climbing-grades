@@ -33,6 +33,8 @@ solo.ascent.types <- function() { c("onsightsolo", "solo", "deepwatersolo", "rop
 
 failed.ascent.types <- function() { c("allfreewithrest", "dog", "toproperest", "secondrest", "aid", "attempt", "retreat", "ghost", "working") }
 
+explicit.failed.ascent.types <- function() { c("dog", "attempt", "retreat", "working") }
+
 ##########################################################################################
 # Function to read a json file of ascents that have been retrieved through thecrag API
 # e.g. by

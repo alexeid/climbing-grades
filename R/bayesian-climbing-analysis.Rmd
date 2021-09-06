@@ -12,8 +12,8 @@ params:
   per.session: TRUE
   min.ascents: 400
   min.failures: 1
-  in.path: "~/Git/climbing/data/processed/"
-  out.path: "~/Git/climbing/results/aus/"
+  in.path: "~/Git/climbing-grades/data/processed/"
+  out.path: "~/Git/climbing-grades/results/aus/"
   ascents.file: "ascents-aus.rds"
   routes.file: "routes-aus.rds" 
   data.set.name: "Australia"
@@ -27,7 +27,7 @@ The data was obtained from [thecrag.com](thecrag.com) using the provided API [ht
 A summary of the data processing is shown in Table \@ref{tab:data-processing}.
 
 ```{r initial-setup, echo=FALSE}
-setwd("~/Git/climbing/R")
+setwd("~/Git/climbing-grades/R")
 
 source("produce-analysis-data.R")
 ```
@@ -70,7 +70,14 @@ plot(nmds_results, type="t")
 include_graphics(data$regressionpng)
 ```
 
-The average slope from a simple regression of the log-odds of failure is `r mean(data$m)`
+The average slope from a simple regression of the log-odds of failure is
+```{r}
+mean(data$m)
+```
+The average grade range from a simple regression of the log-odds of failure is
+```{r}
+summary(data$grade.range)
+```
 
 ```{r data-processing-table, results = 'asis', echo=FALSE}
 ##########################################################################################
@@ -93,11 +100,25 @@ print(xt,
 print(xt, sanitize.colnames.function = function(x) {paste0("{\\bf ",x,"}")})
 ```
 
-The final processed data set includes a total of `r data$d$N` ascents by `r data$d$C` climbers over `r data$d$P` months. 
+The final processed data set includes a total of 
 
-Not all climbers made ascents during all months. The total number of climber months is `r sum(data$d$maxPage - data$d$minPage + 1)`.
+```{r }
+data.summary <- data.frame(label=c("Climbers", "Ascents","Total Months"), value=c(data$d$C, data$d$N, data$d$P))
 
-The average number of ascents per climber per active month is `r data$d$N / sum(data$d$maxPage - data$d$minPage + 1)`.
+print(xtable(data.summary))
+```
+
+Not all climbers made ascents during all months. 
+
+The total number of climber months is
+```{r}
+sum(data$d$maxPage - data$d$minPage + 1)
+```
+
+The average number of ascents per climber per active month is
+```{r}
+data$d$N / sum(data$d$maxPage - data$d$minPage + 1)
+```
 
 ```{r stan-analysis, echo=FALSE}
 ##########################################################################################
@@ -133,7 +154,7 @@ data.file.name <- paste0(data$file.stem, "-data.rds")
 saveRDS(data, file=data.file.name)
 ```
 
-```{r load-results echo=FALSE}
+```{r load-results, echo=FALSE}
 fit.file.name <- paste0(data$file.stem, ".rds")
 
 fit <- readRDS(file=fit.file.name)
@@ -172,5 +193,17 @@ for (i in 1:climber.count) {
 mean.grade <- unlist(mean.grade)
 
 hist(mean.grade)
+
+```
+
+```{r}
+summary  <- table(data$df$account.id, data$df$ascent_factor)
+quantile(summary[,"dog"]+summary[,"attempt"]+summary[,"working"], c(0, 0.025, 0.05, 0.1, 0.5, 0.9, 0.95, 0.975, 1))
+
+quantile((summary[,"dog"]+summary[,"attempt"]+summary[,"working"])/rowSums(summary), c(0, 0.025, 0.05, 0.5, 0.95, 0.975,1))
+
+summary(summary[,"dog"]+summary[,"attempt"]+summary[,"working"]+summary[,"retreat"])
+
+summary((summary[,"dog"]+summary[,"attempt"]+summary[,"working"]+summary[,"retreat"])/rowSums(summary))
 
 ```
