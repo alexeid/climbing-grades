@@ -55,7 +55,7 @@ produce.analysis.data <- function(params, res, routes) {
   df.top <- res3$df
   df.top$ascent.type <- as.character(df.top$ascent.type)
 
-  climbers <- unique(df.top$account.id);
+  climbers <- sort(unique(df.top$account.id));
   df.final = df.top
   final.filter.results = res3$filter.results
   

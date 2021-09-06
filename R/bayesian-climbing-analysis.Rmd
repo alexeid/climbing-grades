@@ -9,7 +9,7 @@ params:
   startDate: "2016-08-01"
   endDate: "2021-08-01"
   filter.by.tickprop.lrp: FALSE
-  per.session: TRUE
+  per.session: FALSE
   min.ascents: 400
   min.failures: 1
   in.path: "~/Git/climbing-grades/data/processed/"
@@ -194,16 +194,26 @@ mean.grade <- unlist(mean.grade)
 
 hist(mean.grade)
 
+hist(data$m)
+
+
 ```
 
-```{r}
-summary  <- table(data$df$account.id, data$df$ascent_factor)
-quantile(summary[,"dog"]+summary[,"attempt"]+summary[,"working"], c(0, 0.025, 0.05, 0.1, 0.5, 0.9, 0.95, 0.975, 1))
 
-quantile((summary[,"dog"]+summary[,"attempt"]+summary[,"working"])/rowSums(summary), c(0, 0.025, 0.05, 0.5, 0.95, 0.975,1))
+```{r}
+summary  <- table(data$df$account.id, data$df$ascent.type)
 
 summary(summary[,"dog"]+summary[,"attempt"]+summary[,"working"]+summary[,"retreat"])
 
-summary((summary[,"dog"]+summary[,"attempt"]+summary[,"working"]+summary[,"retreat"])/rowSums(summary))
+fail.fraction <- (summary[,"dog"]+summary[,"attempt"]+summary[,"working"]+summary[,"retreat"])/rowSums(summary)
 
+summary(fail.fraction)
+
+```
+
+```{r}
+
+
+
+plot(data$m, fail.fraction)
 ```

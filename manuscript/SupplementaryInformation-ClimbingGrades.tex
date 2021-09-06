@@ -115,6 +115,28 @@ Fitting a linear regression to the grade versus the logarithm of the number of f
 \label{fig2}
 \end{figure}
 
+\section{Estimates of flash grade and grade scale slope assuming whole-history data available}
+
+Figure \ref{aus_ascents_by_attempt} shows the estimated ``flash grade'' through time plot between August 2016 and July 2021 inclusive for 105 climbers that fulfilled our selection criteria and who climbed predominantly in Australia. The second panel reports the posterior distribution of the $e^m$, which was jointly estimated. The posterior estimate was 2.14 (95\% HPD:  $[2.11, 2.17]$).
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents400-minFails1-posterior.png}
+\caption{\small The posterior estimate of each Australian climber's grade ($n=105$) through time and the posterior distribution of the proportional increase in difficulty per grade increment $d = e^m$.}
+\label{aus_ascents_by_attempt}
+\end{figure}
+
+Figure \ref{nz_ascents_by_attempt} shows the estimated ``flash grade'' through time plot between August 2016 and July 2021 inclusive for 5 climbers that fulfilled our selection criteria and who climbed predominantly in New Zealand. The second panel reports the posterior distribution of the $m$ parameter which was jointly estimated.
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{../results/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents400-minFails1-posterior.png}
+\caption{\small The posterior estimate of each New Zealand climber's grade through time and the posterior distribution of the proportional increase in difficulty per grade increment $d = e^m$. Because there were only 5 climbers in this analysis we were able to depict the 95\% credible interval around the grade estimate through time as well.}
+\label{nz_ascents_by_attempt}
+\end{figure}
+
+
 
 \section{Interpreting whole-community ascent success data}
 

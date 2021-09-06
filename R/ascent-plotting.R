@@ -31,7 +31,7 @@ ascent.summary <- function(lb.routes, gradeColName="grade", successColName="succ
 ##########################################################################################
 plot.all.attempts <- function(lb) {
   
-  climbers <- unique(lb$account.id)
+  climbers <- sort(unique(lb$account.id))
   
   legend = c();
   
