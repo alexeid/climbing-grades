@@ -9,7 +9,7 @@ params:
   startDate: "2016-08-01"
   endDate: "2021-08-01"
   filter.by.tickprop.lrp: FALSE
-  per.session: FALSE
+  per.session: TRUE
   min.ascents: 400
   min.failures: 1
   in.path: "~/Git/climbing-grades/data/processed/"
@@ -172,25 +172,7 @@ print(exp(q))
 ```
 ```{r mean-posterior-grades, echo=FALSE}
 
-climber.count <- data$d$C  
 
-quants <- c(0.025, 0.5, 0.975)
-cpg <- as.data.frame(t(apply( df[,1:(ncol(df)-2)], 2 , quantile , probs = quants , na.rm = TRUE )))
-mean <- apply( df[,1:(ncol(df)-2)], 2 , mean , na.rm = TRUE )
-
-mean.grade <- list()
-
-for (i in 1:climber.count) {
-
-    climberName = paste0("climberGrade\\[", i,",")
-    
-    cpgc <- cpg[grepl(climberName, rownames(cpg)),]
-  
-    cpgc <- cpgc[data$d$minPage[i]:data$d$maxPage[i],]
-
-    mean.grade[[i]] <- mean(cpgc[,2])
-}
-mean.grade <- unlist(mean.grade)
 
 hist(mean.grade)
 

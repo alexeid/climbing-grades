@@ -1,0 +1,62 @@
+---
+title: "Plot session versus flash grades"
+author: Alexei Drummond
+date: 7/09/2021
+output:
+  pdf_document: default
+  html_notebook: default
+params:
+  data.set.name: "aus"
+  climber.count: 105
+---
+
+```{r}
+source("climbing-stan.R")
+```
+
+```{r}
+climber.count = params$climber.count;
+
+flash.file <- paste0("~/Git/climbing-grades/results/", params$data.set.name, "/ascents-from-2016-08-01-to-2021-08-01-minAscents400-minFails1.rds")
+session.file <- paste0("~/Git/climbing-grades/results/", params$data.set.name, "/ascents-from-2016-08-01-to-2021-08-01-minAscents400-minFails1-session.rds")
+
+flash.data.file <- paste0("~/Git/climbing-grades/results/", params$data.set.name, "/ascents-from-2016-08-01-to-2021-08-01-minAscents400-minFails1-data.rds")
+session.data.file <- paste0("~/Git/climbing-grades/results/", params$data.set.name, "/ascents-from-2016-08-01-to-2021-08-01-minAscents400-minFails1-session-data.rds")
+
+flash.data <- readRDS(file=flash.data.file)
+session.data <- readRDS(file=session.data.file)
+
+fit.flash <- readRDS(file=flash.file)
+df.flash <- as.data.frame(fit.flash)
+mean.grade.flash <- compute.mean.grades(df.flash, climber.count, flash.data)
+
+fit.session <- readRDS(file=session.file)
+df.session <- as.data.frame(fit.session)
+mean.grade.session <- compute.mean.grades(df.session, climber.count, session.data)
+
+```
+
+```{r}
+pngname <- paste0("../manuscript/figure-session-vs-flash-", params$data.set.name,".png")
+png(pngname, height=900, width=900, pointsize=16)
+
+col <- ifelse(mean.grade.session>=mean.grade.flash, "blue", "red")
+pch <- ifelse(mean.grade.session>=mean.grade.flash, 19, 3)
+
+plot(mean.grade.flash, mean.grade.session, pch=pch, col=col, xlab="Mean flash grade (per climber)", ylab="Mean session grade (per climber)", xlim=c(18,28), ylim=c(18,28))
+lines(c(15,32), c(15,32), col="gray")
+dev.off();
+include_graphics(pngname)
+```
+
+```{r}
+grade.diff <- mean.grade.session-mean.grade.flash
+
+grade.diff <- sort(grade.diff, decreasing=T)
+
+head(grade.diff, 10)
+```
+
+```{r}
+plot(grade.diff, flash.data$m, pch=19, col="blue")
+```

@@ -185,3 +185,26 @@ plot.stan.climbing.results <- function(startDate, endDate, fit1, d, filename, yl
   }
 }
 
+
+compute.mean.grades <- function(df, climber.count, data) {
+  
+  quants <- c(0.025, 0.5, 0.975)
+  cpg <- as.data.frame(t(apply( df[,1:(ncol(df)-2)], 2 , quantile , probs = quants , na.rm = TRUE )))
+  mean <- apply( df[,1:(ncol(df)-2)], 2 , mean , na.rm = TRUE )
+  
+  mean.grade <- list()
+  
+  for (i in 1:climber.count) {
+    
+    climberName = paste0("climberGrade\\[", i,",")
+    
+    cpgc <- cpg[grepl(climberName, rownames(cpg)),]
+    
+    cpgc <- cpgc[data$d$minPage[i]:data$d$maxPage[i],]
+    
+    mean.grade[[i]] <- mean(cpgc[,2])
+  }
+  mean.grade <- unlist(mean.grade)
+  
+  return (mean.grade)
+}
