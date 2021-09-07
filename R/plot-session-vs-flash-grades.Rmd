@@ -11,6 +11,8 @@ params:
 ---
 
 ```{r}
+library(knitr)
+
 source("climbing-stan.R")
 ```
 
@@ -52,11 +54,33 @@ include_graphics(pngname)
 ```{r}
 grade.diff <- mean.grade.session-mean.grade.flash
 
-grade.diff <- sort(grade.diff, decreasing=T)
+#grade.diff <- sort(grade.diff, decreasing=T)
 
 head(grade.diff, 10)
 ```
 
 ```{r}
-plot(grade.diff, flash.data$m, pch=19, col="blue")
+lrp <- tabulate.lonely.redpoints(flash.data$climbers, flash.data$df)
+
+tickprop <- tabulate.ambiguous.ascents(flash.data$climbers, flash.data$df)
+```
+
+```{r}
+
+pngname2 <- paste0("../manuscript/figure-grade-diff-vs-lonely-redpoint-", params$data.set.name,".png")
+png(pngname2, height=900, width=900, pointsize=16)
+
+
+plot(grade.diff, log(lrp$lrf), pch=19, col="blue", xlab="grade difference (session - flash)", ylab="log fraction of ascents that are lonely redpoints")
+
+lm <- lm(log(lrp$lrf)~grade.diff)
+
+abline(lm, col="red")
+
+dev.off();
+include_graphics(pngname2)
+
+summary(lm)
+
+
 ```
