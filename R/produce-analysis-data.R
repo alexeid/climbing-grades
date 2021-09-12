@@ -31,7 +31,7 @@ produce.analysis.data <- function(params, res, routes) {
   # initial processing
   #########################################
 
-  res2 <- process.file(res, startDate, endDate, min.grade=16, route.df=routes.aus)
+  res2 <- process.file(res, startDate, endDate, grade.type=params$grade.type, min.grade=params$min.grade, route.df=routes.aus)
   print("initial processing completed")
   
   res2$df$success <- as.integer(res2$df$success)

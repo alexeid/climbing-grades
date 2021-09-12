@@ -83,14 +83,14 @@ construct.data.for.stan.climbing.model <- function(startDate, climbers, df) {
 
     if (climber == 1) {
       d <- list(N = nrow(lb.routes), P=max(lb.routes$page), page=lb.routes$page, y = lb.routes$success, 
-           x = lb.routes$grade, c = lb.routes$climber, minPage = min(lb.routes$page), maxPage=max(lb.routes$page))
+           x = as.integer(lb.routes$grade), c = lb.routes$climber, minPage = min(lb.routes$page), maxPage=max(lb.routes$page))
     } else {
         d$c = c(d$c, lb.routes$climber)
         d$page = c(d$page, lb.routes$page)
         d$P = max(d$P, max(lb.routes$page))
         d$N = d$N + nrow(lb.routes)
         d$y = c(d$y, lb.routes$success)
-        d$x = c(d$x, lb.routes$grade)
+        d$x = c(d$x, as.integer(lb.routes$grade))
         d$minPage = c(d$minPage, min(lb.routes$page))
         d$maxPage = c(d$maxPage, max(lb.routes$page))
     }
@@ -104,7 +104,7 @@ construct.data.for.stan.climbing.model <- function(startDate, climbers, df) {
 # Plots a figure from the results of a Bayesian analysis of climbing grades
 ##########################################################################################
 
-plot.stan.climbing.results <- function(startDate, endDate, fit1, d, filename, ylab="Grade", to.png=T) { 
+plot.stan.climbing.results <- function(startDate, endDate, fit1, d, filename, ylab="Grade", lb, to.png=T) { 
 
   startDate = as.Date(startDate)
   endDate = as.Date(endDate)
@@ -159,7 +159,13 @@ plot.stan.climbing.results <- function(startDate, endDate, fit1, d, filename, yl
     
     if (length(stepx) == length(stepy)) {
       if (!made.plot) {
-        plot(stepx,stepy, type="n", col="red", xlab="Date", ylab=ylab, xlim=c(startDate, endDate), ylim=c(miny,maxy), xaxt="n")
+        
+        if (is.factor(lb$grade)) {
+          plot(stepx,stepy, type="n", col="red", xlab="Date", ylab=ylab, xlim=c(startDate, endDate), ylim=c(miny,maxy), xaxt="n", yaxt="n")
+          axis(2, at=1:length(levels(lb$grade)), labels=levels(lb$grade))
+        } else {
+          plot(stepx,stepy, type="n", col="red", xlab="Date", ylab=ylab, xlim=c(startDate, endDate), ylim=c(miny,maxy), xaxt="n")
+        }
         axis(1, xlab, format(xlab, "%d %b %y"), cex.axis = .9)
         made.plot <- T
       }

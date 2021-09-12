@@ -3,7 +3,9 @@
 ##########################################################################################
 ascent.summary <- function(lb.routes, gradeColName="grade", successColName="success") {
   
-  tab <- table(unlist(lb.routes[,gradeColName]), unlist(lb.routes[,successColName]))
+  grades <- as.integer(unlist(lb.routes[,gradeColName]))
+  
+  tab <- table(grades, unlist(lb.routes[,successColName]))
   
   if (ncol(tab) == 1) {
     print(tab)
@@ -70,7 +72,13 @@ plot.all.attempts <- function(lb) {
           x <- totalsummary$grade
           y <- log(totalsummary$attempts)
           
-          plot(x, y, type="n", xlab="Grade", ylab="log failures per success", pch=19)
+          if (is.factor(lb$grade)) {
+            plot(x, y, type="n", xlab="Grade", ylab="log failures per success", pch=19,  xaxt = 'n')
+            axis(1, at=1:length(levels(lb$grade)), labels=levels(lb$grade))
+          } else {
+            plot(x, y, type="n", xlab="Grade", ylab="log failures per success", pch=19)
+          }
+          
           make.plot = F
         }
         

@@ -1,4 +1,5 @@
 source("ascents.R")
+source("grades.R")
 
 ##########################################################################################
 # A function to process an ascent data frame.
@@ -9,10 +10,10 @@ source("ascents.R")
 #   * remove greenpoints
 #   * remove boulder ascent types
 #   * remove non-ascents (e.g. target, hit)
-#   * remove ascents that are not graded by Ewbank grade ("AU")
+#   * remove ascents that are not graded with the given grade.type (default="AU")
 #   * remove ascents lower than min.grade (default <16)   
 ##########################################################################################
-process.file <- function(res, startDate, endDate, min.grade=16, route.df) {
+process.file <- function(res, startDate, endDate, grade.type="AU", min.grade=16, route.df) {
   
   source("thecrag-json.R")
   
@@ -49,11 +50,11 @@ process.file <- function(res, startDate, endDate, min.grade=16, route.df) {
   out.rows <- c(out.rows, nrow(lb))
   filter <- c(filter, paste("Exclude non-ascent types:", paste(non.ascent.types(), collapse=", "), sep=" "))
   
-  # Keep only Ewbank graded ascents
+  # Keep only ascents with grade type grade.type
   in.rows <- c(in.rows, nrow(lb))
-  lb <- lb[lb$grade.type == "AU",]
+  lb <- lb[lb$grade.type == grade.type,]
   out.rows <- c(out.rows, nrow(lb))
-  filter <- c(filter, "Keep only Ewbank grades")
+  filter <- c(filter, paste0("Keep only ascents graded with grade type: ", grade.type))
   
   # Remove '--' grades
   in.rows <- c(in.rows, nrow(lb))
@@ -80,7 +81,9 @@ process.file <- function(res, startDate, endDate, min.grade=16, route.df) {
   filter <- c(filter, "Remove ascents with no month information.")
   
   lb$account.id <- as.character(lb$account.id)
-  lb$grade <- as.numeric(as.character(lb$grade))
+  
+  #convert grades to ordered factor
+  lb$grade <- convert.to.ordered.factor(lb$grade, grade.type)
   
   # remove ascents below minimum grade
   in.rows <- c(in.rows, nrow(lb))

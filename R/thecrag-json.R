@@ -36,6 +36,8 @@ failed.ascent.types <- function() { c("allfreewithrest", "dog", "toproperest", "
 explicit.failed.ascent.types <- function() { c("dog", "attempt", "retreat", "working") }
 
 ##########################################################################################
+# Germany: 11747131
+
 # Function to read a json file of ascents that have been retrieved through thecrag API
 # e.g. by
 #   curl -v -k  "https://www.thecrag.com/api/facet/ascents/at/7478254/?key=02cr0b89l9rkllgz&pretty=1&thin=1&withdata=AscentID,CreateDate,Date,LastUpdated,AccountID,NodeID,Tick,Label,Artificial,Grade&markupType=text&perPage=50000&page=1" > aus-ascents-01.json
