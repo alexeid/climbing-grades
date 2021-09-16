@@ -7,14 +7,14 @@ ascent.summary <- function(lb.routes, gradeColName="grade", successColName="succ
   
   tab <- table(grades, unlist(lb.routes[,successColName]))
   
-  if (ncol(tab) == 1) {
+  if (ncol(tab) < 2) {
     print(tab)
     print(nrow(lb.routes))
     print(paste0("success.count=",sum(lb.routes[,successColName])))
     print(table(lb.routes[,successColName]))
     print(table(lb.routes[,gradeColName]))
     
-    return -1;
+    return (NULL);
   }
   
   summary <- data.frame(
@@ -49,25 +49,35 @@ plot.all.attempts <- function(lb) {
   grade.range <- c()
   
   make.plot = T
+  make.total = T
   
   summary <- list()
   for (c in 1:length(climbers)) {
-    summary[[c]] <- ascent.summary(lb[lb$account.id == climbers[c],])
     
-    gr <- summary[[c]]$grade[nrow( summary[[c]])] - summary[[c]]$grade[1]
-    grade.range <- c(grade.range, gr)
+    df <- lb[lb$account.id == climbers[c],]
     
-    if (c == 1) {
-      totalsummary = summary[[1]]
+    summary[[c]] <- ascent.summary(df)
+    
+    if (!is.null(summary[[c]])) {
+    
+      gr <- summary[[c]]$grade[nrow( summary[[c]])] - summary[[c]]$grade[1]
+      grade.range <- c(grade.range, gr)
+    
+      if (make.total) {
+        totalsummary = summary[[c]]
+        make.total = F
+      } else {
+        totalsummary = rbind(totalsummary, summary[[c]])
+      }
     } else {
-      totalsummary = rbind(totalsummary, summary[[c]])
+      grade.range <- c(grade.range, NA)
     }
   }  
   
   for (c in 1:length(climbers)) {
     
     if (is.data.frame(summary[[c]])) {
-      if (nrow(summary[[c]])>1) {
+      if (!is.null(summary[[c]]) && nrow(summary[[c]])>1) {
         if (make.plot) {
           x <- totalsummary$grade
           y <- log(totalsummary$attempts)
@@ -85,6 +95,9 @@ plot.all.attempts <- function(lb) {
         res = plot.attempts(summary[[c]], col=cols[c], gradeName=paste0("C", c), plot.text=plot.text)
         m <- c(m, res$m)
         t <- c(t, res$t)
+      } else {
+        m <- c(m, NA)
+        t <- c(t, "N/A")
       }
     }
   }

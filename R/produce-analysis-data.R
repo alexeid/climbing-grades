@@ -16,7 +16,7 @@ produce.analysis.data <- function(params, res, routes) {
 
   startDate = as.Date(params$startDate)
   endDate = as.Date(params$endDate)
-  file.stem = paste0(params$out.path,"ascents-from-", startDate,"-to-", endDate, "-minAscents", params$min.ascents, "-minFails", params$min.failures)
+  file.stem = paste0(params$out.path,params$data.set.name.short,"/ascents-from-", startDate,"-to-", endDate, "-minAscents", params$min.ascents, "-minFails", params$min.failures,"-", paste0(str_replace(params$gear, " ", "_"), collapse="+"),"-",params$grade.type)
 
   suffix <- ""
 
@@ -31,7 +31,7 @@ produce.analysis.data <- function(params, res, routes) {
   # initial processing
   #########################################
 
-  res2 <- process.file(res, startDate, endDate, grade.type=params$grade.type, min.grade=params$min.grade, route.df=routes.aus)
+  res2 <- process.file(res, startDate, endDate, matching.gear=params$gear, grade.type=params$grade.type, min.grade=params$min.grade, route.df=routes)
   print("initial processing completed")
   
   res2$df$success <- as.integer(res2$df$success)
@@ -54,12 +54,25 @@ produce.analysis.data <- function(params, res, routes) {
 
   df.top <- res3$df
   df.top$ascent.type <- as.character(df.top$ascent.type)
+  
 
   climbers <- sort(unique(df.top$account.id));
+  fr <- res3$filter.results
+  
+  if (params$max.climbers < length(climbers)) {
+    
+    start.rows <- nrow(df.top)
+    
+    climbers <- sort(table(df.top$account.id), decreasing=T)
+    df.top <- df.top[df.top$account.id %in% names(climbers[1:params$max.climbers]),]
+    print("filter by max climbers completed")
+    climbers <- sort(unique(df.top$account.id));
+    
+    fr <- add.filter.summary(start.rows, nrow(df.top), "Kept top 100 climbers by number of ascents", fr)
+  }
+  
   df.final = df.top
-  final.filter.results = res3$filter.results
-  
-  
+  final.filter.results = fr
   
   ##########################################################################################
   # If per session analysis then keep best ascent in each session
@@ -87,7 +100,7 @@ produce.analysis.data <- function(params, res, routes) {
   pngname <- paste0(file.stem, "-regression.png")
 
   png(pngname, width=900, height=900, pointsize=24)
-  print("plot.all.attempts about to start")
+  print(paste0("plot.all.attempts about to start using ", nrow(df.final), " ascents."))
   res.plot <- plot.all.attempts(df.final)
   print("plot.all.attempts completed")
   dev.off();
@@ -96,7 +109,13 @@ produce.analysis.data <- function(params, res, routes) {
   # construct data for Stan analysis
   ##########################################################################################
 
-  d <- construct.data.for.stan.climbing.model(startDate, climbers, df.final)
+  if (params$grade.type == "AU") {
+    mean.grade.prior = as.numeric(params$mean.grade.prior)
+  } else {
+    mean.grade.prior = match(params$mean.grade.prior, levels(df.final$grade))
+  }
+  
+  d <- construct.data.for.stan.climbing.model(startDate, climbers, df.final, mean.grade.prior)
   
   data = list(d=d, df=df.final, filter=final.filter.results, m=res.plot$m, grade.range=res.plot$grade.range, file.stem=file.stem, suffix=suffix, regressionpng=pngname, climbers=climbers)
   

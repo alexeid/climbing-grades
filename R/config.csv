@@ -1,0 +1,21 @@
+data.set.name,data.set.name.short,min.grade,mean.grade.prior,min.ascents,min.failures,gear,grade.type,per.session
+Germany,germany,5a,6a,30,1,Sport,FR,FALSE
+Germany,germany,5a,6a,30,1,Sport,FR,TRUE
+Germany,germany,5+,6,30,1,Sport,UIAA,FALSE
+Germany,germany,5+,6,30,1,Sport,UIAA,TRUE
+New Zealand,nz,V0,V1,30,1,Boulder,BLDV,FALSE
+New Zealand,nz,V0,V1,30,1,Boulder,BLDV,TRUE
+New Zealand,nz,16,18,30,1,Trad,AU,FALSE
+New Zealand,nz,16,18,30,1,Trad,AU,TRUE
+New Zealand,nz,16,18,30,1,Sport,AU,FALSE
+New Zealand,nz,16,18,30,1,Sport,AU,TRUE
+New Zealand,nz,16,18,30,1,Sport+Trad,AU,FALSE
+New Zealand,nz,16,18,30,1,Sport+Trad,AU,TRUE
+Australia,aus,V0,V1,30,1,Boulder,BLDV,FALSE
+Australia,aus,V0,V1,30,1,Boulder,BLDV,TRUE
+Australia,aus,16,18,30,1,Trad,AU,FALSE
+Australia,aus,16,18,30,1,Trad,AU,TRUE
+Australia,aus,16,18,30,1,Sport,AU,FALSE
+Australia,aus,16,18,30,1,Sport,AU,TRUE
+Australia,aus,16,18,30,1,Sport+Trad,AU,FALSE
+Australia,aus,16,18,30,1,Sport+Trad,AU,TRUE

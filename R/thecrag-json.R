@@ -33,7 +33,7 @@ solo.ascent.types <- function() { c("onsightsolo", "solo", "deepwatersolo", "rop
 
 failed.ascent.types <- function() { c("allfreewithrest", "dog", "toproperest", "secondrest", "aid", "attempt", "retreat", "ghost", "working") }
 
-explicit.failed.ascent.types <- function() { c("dog", "attempt", "retreat", "working") }
+explicit.failed.ascent.types <- function() { c("dog", "attempt", "retreat", "working", "dab", "ghost") }
 
 ##########################################################################################
 # Germany: 11747131

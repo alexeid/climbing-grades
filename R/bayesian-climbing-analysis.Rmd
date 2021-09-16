@@ -1,49 +1,61 @@
 ---
 title: "Bayesian estimation of slope of grade scale"
-author: Alexei Drummond
-date: 13/08/2021
+author: "Alexei Drummond"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  pdf_document: default
   html_notebook: default
+  pdf_document: default
 params:
-  startDate: "2016-08-01"
-  endDate: "2021-08-01"
-  filter.by.tickprop.lrp: FALSE
-  per.session: FALSE
-  min.ascents: 400
-  min.failures: 1
-  in.path: "~/Git/climbing-grades/data/processed/"
-  out.path: "~/Git/climbing-grades/results/germany/"
-  ascents.file: "ascents-germany.rds"
-  routes.file: "routes-germany.rds" 
   data.set.name: "Germany"
   data.set.name.short: "germany"
-  grade.type: "UIAA"
-  min.grade: "6-"
+  endDate: '2021-08-01'
+  startDate: '2016-08-01'
+  filter.by.tickprop.lrp: FALSE
+  gear: "Sport"
+  grade.type: "FR"
+  in.path: "/Users/alexeidrummond/Git/climbing-grades/data/processed/"
+  min.ascents: 30
+  min.failures: 1
+  min.grade: "5a"
+  mean.grade.prior: "6a"
+  max.climbers: 100
+  out.path: "/Users/alexeidrummond/Git/climbing-grades/results/"
+  per.session: FALSE
 ---
 
-# Analysis 1
+# Analysis `r params$gear` `r params$data.set.name`
 
-The data was obtained from [thecrag.com](thecrag.com) using the provided API [https://www.thecrag.com/en/article/api](https://www.thecrag.com/en/article/api). 
+The ascent data was obtained from [thecrag.com](thecrag.com) using the provided API [https://www.thecrag.com/en/article/api](https://www.thecrag.com/en/article/api). 
+
+For this analysis the data was filtered to include ascents from `r params$data.set.name` between `r params$startDate` and `r params$endDate`, of grade type `r params$grade.type` and in the `r params$gear` style. The minimum grade considered was `r params$min.grade` and only climbers with at least `r params$min.ascents` ascents during the time period, and at least `r params$min.failures` explicit failures were included. `r if(params$per.session){"The data was filtered to session logging, so that only the best ascent of each route on each day for each climber was kept."}`
 
 A summary of the data processing is shown in Table \@ref{tab:data-processing}.
 
+```{r setup, include=FALSE}
+  knitr::opts_chunk$set(error = TRUE, warning = TRUE)
+```
+
 ```{r initial-setup, echo=FALSE}
-setwd("~/Git/climbing-grades/R")
+setwd("/Users/alexeidrummond/Git/climbing-grades/R")
 
 source("produce-analysis-data.R")
 ```
 
 
-```{r produce analysis data, echo=TRUE}
+```{r read-in-data, echo=FALSE}
 #########################################
 # Analysis settings
 #########################################
 
-res <- readRDS(paste0(params$in.path,params$ascents.file))
-routes <- readRDS(paste0(params$in.path,params$routes.file))
+res <- readRDS(paste0(params$in.path,"ascents-",params$data.set.name.short,".rds"))
+routes <- readRDS(paste0(params$in.path,"routes-",params$data.set.name.short,".rds"))
+```
 
+```{r produce-analysis-data, echo=FALSE}
 data <- produce.analysis.data(params, res, routes)
+
+#store params for later processing steps
+data$params <- params
 ```
 
 ```{r heatmap, echo=FALSE}
@@ -55,26 +67,13 @@ t <- table(data$df$ascent.type, data$df$account.id)
 heatmap(t)
 ```
 
-```{r mds-plot, echo=FALSE}
-library(vegan)
-
-t.routes <- as.data.frame.matrix(table(data$df$account.id, data$df$ascent.type))
-
-nmds_results <- metaMDS(comm = t.routes,  # Define the community data 
-                        distance = "bray",       # Specify a bray-curtis distance
-                        try = 100)  
-
-plot(nmds_results, type="t")
-
-```
-
 ```{r regression-plot, echo=FALSE}
 include_graphics(data$regressionpng)
 ```
 
 The average slope from a simple regression of the log-odds of failure is
 ```{r}
-mean(data$m)
+mean(data$m, na.rm=TRUE)
 ```
 The average grade range from a simple regression of the log-odds of failure is
 ```{r}
@@ -99,15 +98,15 @@ print(xt,
       sanitize.colnames.function = function(x) {paste0("{\\bf ",x,"}")}, 
       file=tablefile)
 
-print(xt, sanitize.colnames.function = function(x) {paste0("{\\bf ",x,"}")})
+kable(data$filter, caption=caption, label=label)
 ```
 
 The final processed data set includes a total of 
 
-```{r }
+```{r data-summary, echo=FALSE, result='as is' }
 data.summary <- data.frame(label=c("Climbers", "Ascents","Total Months"), value=c(data$d$C, data$d$N, data$d$P))
 
-print(xtable(data.summary))
+kable(data.summary)
 ```
 
 Not all climbers made ascents during all months. 
@@ -127,7 +126,10 @@ data$d$N / sum(data$d$maxPage - data$d$minPage + 1)
 # RUN BAYESIAN INFERERENCE
 ##########################################################################################
 
-fit1 <- run.stan.climbing.model(data$d)
+stan.result <- run.stan.climbing.model(data$d)
+
+fit1 <- stan.result$fit
+data$time <- stan.result$time
 ```
 
 
@@ -148,8 +150,7 @@ fit1 <- run.stan.climbing.model(data$d)
 ```{r save-results, echo=FALSE}
 fit.file.name <- paste0(data$file.stem, ".rds")
 
-fit1@stanmodel@dso <- new("cxxdso")
-saveRDS(fit1, file=fit.file.name)
+saveRDS(as.data.frame(fit1), file=fit.file.name)
 rm(fit1)
 
 data.file.name <- paste0(data$file.stem, "-data.rds")
@@ -159,8 +160,7 @@ saveRDS(data, file=data.file.name)
 ```{r load-results, echo=FALSE}
 fit.file.name <- paste0(data$file.stem, ".rds")
 
-fit1 <- readRDS(file=fit.file.name)
-df <- as.data.frame(fit1)
+df <- readRDS(file=fit.file.name)
 
 ```
 
@@ -174,22 +174,33 @@ print(exp(q))
 ```
 ```{r mean-posterior-grades, echo=FALSE}
 
-
+mean.grade <- compute.mean.grades(df, data$d$C, data)
 
 hist(mean.grade)
 
 hist(data$m)
 
+```
 
+```{r}
+par(mar=c(3,7,1,1))
+
+tab <- sort(table(data$df$ascent.type))
+
+col <- ifelse(rownames(tab) %in% clean.ascent.types(), "green", "gray")
+
+barplot(tab, horiz=T, col=col, las=1)
 ```
 
 
 ```{r}
 summary  <- table(data$df$account.id, data$df$ascent.type)
 
-summary(summary[,"dog"]+summary[,"attempt"]+summary[,"working"]+summary[,"retreat"])
+explicit.fail.cols <- colnames(summary)[colnames(summary) %in% explicit.failed.ascent.types()]
 
-fail.fraction <- (summary[,"dog"]+summary[,"attempt"]+summary[,"working"]+summary[,"retreat"])/rowSums(summary)
+summary(rowSums(summary[,explicit.fail.cols]))
+
+fail.fraction <- rowSums(summary[,explicit.fail.cols])/rowSums(summary)
 
 summary(fail.fraction)
 
@@ -197,7 +208,10 @@ summary(fail.fraction)
 
 ```{r}
 
+if (length(data$m) == length(fail.fraction) && sum(is.na(data$m))==0) {
 
-
-plot(data$m, fail.fraction)
+  plot(data$m, fail.fraction, pch=19, col="blue")
+  lm <- lm(fail.fraction~data$m)
+  abline(lm, col="red")
+}
 ```

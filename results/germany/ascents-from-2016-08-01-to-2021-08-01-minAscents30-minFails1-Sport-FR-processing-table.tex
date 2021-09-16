@@ -1,0 +1,29 @@
+% latex table generated in R 3.6.2 by xtable 1.8-4 package
+% Thu Sep 16 15:13:42 2021
+\begin{table}[ht]
+\centering
+\begingroup\fontsize{9pt}{10pt}\selectfont
+\begin{tabular}{rrl}
+  \hline
+{\bf rows.in} & {\bf rows.out} & {\bf filter} \\ 
+  \hline
+91766 & 90518 & Exclude ascents with no date or no grade information. \\ 
+  90518 & 81655 & Exclude artificial ascents \\ 
+  81655 & 62636 & Exclude gear styles: Boulder, Trad, NA, Alpine, Via ferrata, DWS, Unknown, Aid, Top rope, Ice \\ 
+  62636 & 62551 & Exclude trad ascent types: greenpoint, greenpointonsight \\ 
+  62551 & 62548 & Exclude boulder ascent types: send, dab, repeat \\ 
+  62548 & 62499 & Exclude non-ascent types: hit, target, mark \\ 
+  62499 & 3084 & Keep only ascents graded with grade type: FR \\ 
+  3084 & 3084 & Remove grades with value '--' \\ 
+  3084 & 2299 & Remove ascents before 2016-08-01 \\ 
+  2299 & 2267 & Remove ascents on or after 2021-08-01 \\ 
+  2267 & 2265 & Remove ascents with no month information. \\ 
+  2265 & 2167 & Remove ascents with grade less than 5a \\ 
+  2167 & 2028 & Exclude ambiguous ascent types: tick, lead, leadsolo, second, toprope, aidsolo, ropedsolo \\ 
+  2028 & 521 & Keep climbers with at least 30 ascents, and at least 1 failed ascents. \\ 
+   \hline
+\end{tabular}
+\endgroup
+\caption{Summary of data processing for analysis of Germany ascent data.} 
+\label{table-data-processing-germany}
+\end{table}

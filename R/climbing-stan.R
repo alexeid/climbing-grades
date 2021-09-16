@@ -20,6 +20,7 @@ run.stan.climbing.model <- function(d, chains=4, iter=4000) {
     int<lower=1> page[N];      // the time block (page) of each ascent
     int<lower=1> c[N];         // the climber of each ascent
     vector[N] x;               // route grade of each ascent
+    int meanGradePrior;        // the mean of the grade prior
   }
   parameters {
     // mid-point intercept
@@ -29,11 +30,11 @@ run.stan.climbing.model <- function(d, chains=4, iter=4000) {
     real<lower=0.0> m;       
   }
   model {
-    m ~ normal(0.69,0.3); // prior on slope
+    m ~ lognormal(-0.5,0.6); // prior on slope
     for(j in 1:C) {
       // prior on grades up to and including first month with data
       for(i in 1:minPage[j]) {
-        climberGrade[j, i]  ~ normal(18,5);    
+        climberGrade[j, i]  ~ normal(meanGradePrior,5);    
       }
       // prior on grade in months after first that have data
       for(i in (minPage[j]+1):maxPage[j]) {
@@ -41,7 +42,7 @@ run.stan.climbing.model <- function(d, chains=4, iter=4000) {
       }
       // prior on grades on months after data
       for(i in (maxPage[j]+1):P) {
-        climberGrade[j, i]  ~ normal(18,5);    
+        climberGrade[j, i]  ~ normal(meanGradePrior,5);    
       }
     }
     // likelihood
@@ -56,7 +57,7 @@ run.stan.climbing.model <- function(d, chains=4, iter=4000) {
   time = system.time(fit1 <- stan(model_code = mod_string, data=d, chains=chains, iter=iter))
   print(paste0("Stan analysis took: ", time["elapsed"]))
   
-  return (fit1)
+  return (list(fit=fit1, time=time))
 }
 
 ##########################################################################################
@@ -66,7 +67,7 @@ run.stan.climbing.model <- function(d, chains=4, iter=4000) {
 
 source("ascents.R")
 
-construct.data.for.stan.climbing.model <- function(startDate, climbers, df) {
+construct.data.for.stan.climbing.model <- function(startDate, climbers, df, mean.grade.prior=18) {
 
   for (climber in 1:length(climbers)) {
 
@@ -96,6 +97,7 @@ construct.data.for.stan.climbing.model <- function(startDate, climbers, df) {
     }
   }
   d$C = length(climbers)
+  d$meanGradePrior = mean.grade.prior
   
   return (d)
 }
@@ -104,7 +106,7 @@ construct.data.for.stan.climbing.model <- function(startDate, climbers, df) {
 # Plots a figure from the results of a Bayesian analysis of climbing grades
 ##########################################################################################
 
-plot.stan.climbing.results <- function(startDate, endDate, fit1, d, filename, ylab="Grade", lb, to.png=T) { 
+plot.stan.climbing.results <- function(startDate, endDate, fit1, d, filename, ylab="Grade", lb, to.png=T, cex=0.9) { 
 
   startDate = as.Date(startDate)
   endDate = as.Date(endDate)
@@ -162,11 +164,11 @@ plot.stan.climbing.results <- function(startDate, endDate, fit1, d, filename, yl
         
         if (is.factor(lb$grade)) {
           plot(stepx,stepy, type="n", col="red", xlab="Date", ylab=ylab, xlim=c(startDate, endDate), ylim=c(miny,maxy), xaxt="n", yaxt="n")
-          axis(2, at=1:length(levels(lb$grade)), labels=levels(lb$grade))
+          axis(2, at=1:length(levels(lb$grade)), labels=levels(lb$grade), las=2, cex.axis=cex)
         } else {
           plot(stepx,stepy, type="n", col="red", xlab="Date", ylab=ylab, xlim=c(startDate, endDate), ylim=c(miny,maxy), xaxt="n")
         }
-        axis(1, xlab, format(xlab, "%d %b %y"), cex.axis = .9)
+        axis(1, xlab, format(xlab, "%d %b %y"), cex.axis = cex)
         made.plot <- T
       }
       lines(stepx,stepy, col=outline.col[i], lwd=2)

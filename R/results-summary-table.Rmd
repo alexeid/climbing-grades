@@ -1,0 +1,130 @@
+---
+title: "Results summary table"
+author: Alexei Drummond
+date: 13/09/2021
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+```{r}
+library(knitr)
+library(stringr)
+
+source("climbing-stan.R")
+
+summary.row <- function(df, data, country) {
+  
+  q <- round(exp(quantile(df$m, c(0.025, 0.5, 0.975))),2)
+  
+  time.in.seconds = as.integer(round(data$time["elapsed"]))
+  slope = q[2]
+  
+  hpd.lower = q[1]
+  hpd.upper = q[3]
+  
+  
+  game <- ifelse(data$params$per.session, "session", "attempt")
+  
+  data.frame(country=country, gear=paste0(data$params$gear, collapse="+"), climbers=data$d$C, ascents=data$d$N, slope=slope,hpd.lower=hpd.lower, hpd.upper=hpd.upper, min.ascents=data$params$min.ascents, min.failures=data$params$min.failures, game=game, time=time.in.seconds)
+}
+
+all.rows <- function(df, data, country) {
+  
+  slope = df$m
+  
+  game <- rep(ifelse(data$params$per.session, "session", "attempt"), length(slope))
+  
+  gear=rep(paste0(data$params$gear, collapse="+"), length(slope))
+  
+  country <- rep(country, length(slope))
+  
+  climbers = rep(data$d$C, length(slope))
+  
+  ascents = rep(data$d$N, length(slope))
+  
+  min.ascents=rep(data$params$min.ascents, length(slope))
+  min.failures=rep(data$params$min.failures, length(slope))
+  time.in.seconds = rep(as.integer(round(data$time["elapsed"])), length(slope))
+  
+  dat_q <- quantile(slope, probs=c(0.025,0.975))
+  central <- slope>dat_q[1] & slope < dat_q[2]
+  
+  data.frame(country=country, gear=gear, game=game, slope=slope, central=central)
+}
+
+
+
+```
+
+```{r}
+
+dir.aus <- "~/Git/climbing-grades/results/aus/"
+results.aus <- paste0(dir.aus,list.files(dir.aus, pattern="data.rds"))
+
+dir.nz <- "~/Git/climbing-grades/results/nz/"
+results.nz <- paste0(dir.nz,list.files(dir.nz, pattern="data.rds"))
+
+dir.germany <- "~/Git/climbing-grades/results/germany/"
+results.germany <- paste0(dir.germany,list.files(dir.germany, pattern="data.rds"))
+
+```
+
+```{r}
+
+data.files <- c(results.aus, results.nz, results.germany)
+
+results.files <- str_remove(data.files, "-data")
+
+country <- c(rep("Australia", length(results.aus)), rep("New Zealand", length(results.nz)), rep("Germany", length(results.germany)))
+
+df <- readRDS(file=results.files[1])
+data <- readRDS(file=data.files[1])
+
+summary.table <- summary.row(df, data, country[1])
+
+full.table <- all.rows(df, data, country[1])
+
+for (i in 2:length(data.files)) {
+  df <- readRDS(file=results.files[i])
+  data <- readRDS(file=data.files[i])
+  
+  summary.table <- rbind(summary.table, summary.row(df, data, country[i]))
+  full.table <- rbind(full.table, all.rows(df, data, country[i]))
+}
+rownames(summary.table) <- NULL
+rownames(full.table) <- NULL
+
+kable(summary.table[order(summary.table$slope, decreasing=T),])
+
+```
+```{r}
+
+label <- paste(summary.table$country, summary.table$gear, summary.table$game)
+summary.table$label <- label
+
+label <- paste(full.table$country, full.table$gear, full.table$game)
+full.table$label <- label
+
+
+library(ggplot2)
+library(viridis)
+
+levels <- summary.table$label[order(as.character(summary.table$gear), as.character(summary.table$country), summary.table$game)]
+
+full.table$label <- factor(full.table$label,levels = levels,ordered = TRUE)
+
+p <- full.table[full.table$central & full.table$game == "attempt",] %>%
+  ggplot( aes(x=label, y=exp(slope), fill=gear, color="black")) +
+     ylim(1,5) + 
+     geom_violin(width=1.5) +
+     scale_fill_viridis(discrete=TRUE) +
+     scale_color_viridis(discrete=TRUE) +
+     theme(
+       legend.position="none"
+     ) +
+     coord_flip() + # This switch X and Y axis and allows to get the horizontal version
+     xlab("Analysis") +
+     ylab("Slope")
+p
+```

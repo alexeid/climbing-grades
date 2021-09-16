@@ -1,19 +1,18 @@
 source("ascents.R")
 source("grades.R")
+source("climbing-stan.R")
 
 ##########################################################################################
 # A function to process an ascent data frame.
 # This function will
-#   * keep only sport routes
+#   * keep only routes of the given gear type,
 #   * remove artificial ascents
 #   * remove ambiguous ascents
-#   * remove greenpoints
-#   * remove boulder ascent types
 #   * remove non-ascents (e.g. target, hit)
 #   * remove ascents that are not graded with the given grade.type (default="AU")
 #   * remove ascents lower than min.grade (default <16)   
 ##########################################################################################
-process.file <- function(res, startDate, endDate, grade.type="AU", min.grade=16, route.df) {
+process.file <- function(res, startDate, endDate, grade.type, matching.gear=c("Sport", "Top rope", NA, "Unknown"), min.grade=16, route.df) {
   
   source("thecrag-json.R")
   
@@ -25,24 +24,28 @@ process.file <- function(res, startDate, endDate, grade.type="AU", min.grade=16,
   out.rows <- nrow(lb)
   filter <- "Exclude artificial ascents"
   
-  # keep only sport and top rope gear styles
+  # keep only the matching gear styles
   in.rows <- c(in.rows, nrow(lb))
-  res.gear <- keep.matching.gear(lb, route.df, matching.gear=c("Sport", "Top rope", "Trad", NA, "Unknown"))
+  res.gear <- keep.matching.gear(lb, route.df, matching.gear=matching.gear)
   lb <- res.gear$df
   out.rows <- c(out.rows, nrow(lb))
   filter <- c(filter, paste("Exclude gear styles:", paste(res.gear$excluded.gear, collapse=", "), sep=" "))
   
-  # remove trad ascents
-  in.rows <- c(in.rows, nrow(lb))
-  lb <- lb[!(lb$ascent.type %in% trad.ascent.types()),]
-  out.rows <- c(out.rows, nrow(lb))
-  filter <- c(filter, paste("Exclude trad ascent types:", paste(trad.ascent.types(), collapse=", "), sep=" "))
+  # remove trad ascents if "Trad" is not in gear list
+  if (!("Trad" %in% matching.gear)) {
+    in.rows <- c(in.rows, nrow(lb))
+    lb <- lb[!(lb$ascent.type %in% trad.ascent.types()),]
+    out.rows <- c(out.rows, nrow(lb))
+    filter <- c(filter, paste("Exclude trad ascent types:", paste(trad.ascent.types(), collapse=", "), sep=" "))
+  }
   
-  # remove boulder ascents
-  in.rows <- c(in.rows, nrow(lb))
-  lb <- lb[!(lb$ascent.type %in% bouldering.ascent.types()),]
-  out.rows <- c(out.rows, nrow(lb))
-  filter <- c(filter, paste("Exclude boulder ascent types:", paste(bouldering.ascent.types(), collapse=", "), sep=" "))
+  # remove boulder ascents of "Boulder" is not in the gear list
+  if (!("Boulder" %in% matching.gear)) {
+    in.rows <- c(in.rows, nrow(lb))
+    lb <- lb[!(lb$ascent.type %in% bouldering.ascent.types()),]
+    out.rows <- c(out.rows, nrow(lb))
+    filter <- c(filter, paste("Exclude boulder ascent types:", paste(bouldering.ascent.types(), collapse=", "), sep=" "))
+  }
   
   # remove non ascents
   in.rows <- c(in.rows, nrow(lb))
@@ -83,7 +86,14 @@ process.file <- function(res, startDate, endDate, grade.type="AU", min.grade=16,
   lb$account.id <- as.character(lb$account.id)
   
   #convert grades to ordered factor
+  
+  print(paste0("UNIQUE GRADES: ",paste0(unique(lb$grade), collapse=", ")))
+  
   lb$grade <- convert.to.ordered.factor(lb$grade, grade.type)
+  
+  if (is.numeric(lb$grade) && !(is.numeric(min.grade))) {
+    print("WARNING: grades are numeric but min.grade is not!")
+  }
   
   # remove ascents below minimum grade
   in.rows <- c(in.rows, nrow(lb))
@@ -114,6 +124,9 @@ add.filter.summary <- function(in.rows, out.rows, description, current.filter.su
   return (filter.results)
 }
 
+##########################################################################################
+# A function to remove all gear except that which matches the given matching.gear
+##########################################################################################
 
 keep.matching.gear <- function(df.ascents, df.routes, matching.gear=c("Sport")) {
   
@@ -137,6 +150,11 @@ filter.climbers.by.ascent.counts <- function(res, min.ascents=200, min.failures=
   tab <- t(table(lb$success,lb$account.id))
   
   tab2 <- t(table(lb$ascent.type %in% explicit.failed.ascent.types(),lb$account.id))
+  
+  if (ncol(tab2) < 2) {
+    print("FATAL ERROR: No explicit fails in whole data set!");
+    print(sort(table(lb$ascent.type), decreasing=T));
+  }
   
   explicit.fails <- tab2[,2]
   fail.counts <- tab[,1]
