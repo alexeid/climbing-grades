@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.3.23)  7 OCT 2021 14:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.3.23)  7 OCT 2021 15:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -600,10 +600,12 @@ s1-session-posterior.png Graphic file (type png)
 Package pdftex.def Info: ../results/nz/ascents-from-2016-08-01-to-2021-08-01-mi
 nAscents400-minFails1-session-posterior.png used on input line 281.
 (pdftex.def)             Requested size: 345.0pt x 172.49767pt.
- <figure1.png, id=140, 1505.625pt x 752.8125pt>
+ [8] [9 <../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents400-min
+Fails1-session-posterior.png> <../results/nz/ascents-from-2016-08-01-to-2021-08
+-01-minAscents400-minFails1-session-posterior.png>]
+<figure1.png, id=157, 1505.625pt x 752.8125pt>
 File: figure1.png Graphic file (type png)
-
-<use figure1.png>
+ <use figure1.png>
 Package pdftex.def Info: figure1.png used on input line 293.
 (pdftex.def)             Requested size: 345.0pt x 172.49995pt.
 
@@ -612,10 +614,7 @@ Overfull \hbox (0.95703pt too wide) in paragraph at lines 300--301
 -mu-nity knowl-
  []
 
-[8] [9 <../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents400-minF
-ails1-session-posterior.png> <../results/nz/ascents-from-2016-08-01-to-2021-08-
-01-minAscents400-minFails1-session-posterior.png>] [10 <./figure1.png>]
-[11] [12]
+[10 <./figure1.png>] [11] [12]
 No file ClimbingGrades.gls.
 (./ClimbingGrades.bbl
 Underfull \hbox (badness 3769) in paragraph at lines 77--80
@@ -641,11 +640,11 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 331.
 Here is how much of TeX's memory you used:
  12905 strings out of 492995
  202107 string characters out of 6132704
- 443474 words of memory out of 5000000
+ 444474 words of memory out of 5000000
  16205 multiletter control sequences out of 15000+600000
  10980 words of font info for 40 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 45i,8n,72p,1948b,460s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 45i,8n,72p,1948b,462s stack positions out of 5000i,500n,10000p,200000b,80000s
 pdfTeX warning (dest): name{glo:send} has been referenced but does not exist,
  replaced by a fixed one
 
@@ -675,7 +674,7 @@ ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/
 17/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2017
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2017/t
 exmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on ClimbingGrades.pdf (14 pages, 547412 bytes).
+Output written on ClimbingGrades.pdf (14 pages, 547662 bytes).
 PDF statistics:
  254 PDF objects out of 1000 (max. 8388607)
  213 compressed objects within 3 object streams
