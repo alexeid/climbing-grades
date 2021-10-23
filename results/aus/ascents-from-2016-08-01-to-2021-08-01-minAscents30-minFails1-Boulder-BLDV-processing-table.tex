@@ -1,0 +1,29 @@
+% latex table generated in R 3.6.2 by xtable 1.8-4 package
+% Fri Sep 17 14:15:47 2021
+\begin{table}[ht]
+\centering
+\begingroup\fontsize{9pt}{10pt}\selectfont
+\begin{tabular}{rrl}
+  \hline
+{\bf rows.in} & {\bf rows.out} & {\bf filter} \\ 
+  \hline
+1627548 & 1465494 & Exclude ascents with no date or no grade information. \\ 
+  1465494 & 1429967 & Exclude artificial ascents \\ 
+  1429967 & 117510 & Exclude gear styles: Sport, NA, Trad, Top rope, Alpine, DWS, Unknown, Traverse, Aid, Ice, Via ferrata \\ 
+  117510 & 117510 & Exclude trad ascent types: greenpoint, greenpointonsight \\ 
+  117510 & 117339 & Exclude non-ascent types: hit, target, mark \\ 
+  117339 & 116547 & Keep only ascents graded with grade type: BLDV \\ 
+  116547 & 116540 & Remove grades with value '--' \\ 
+  116540 & 89199 & Remove ascents before 2016-08-01 \\ 
+  89199 & 85654 & Remove ascents on or after 2021-08-01 \\ 
+  85654 & 84089 & Remove ascents with no month information. \\ 
+  84089 & 80006 & Remove ascents with grade less than V0 \\ 
+  80006 & 74470 & Exclude ambiguous ascent types: tick, lead, leadsolo, second, toprope, aidsolo, ropedsolo \\ 
+  74470 & 43494 & Keep climbers with at least 30 ascents, and at least 1 failed ascents. \\ 
+  43494 & 25805 & Kept top 100 climbers by number of ascents \\ 
+   \hline
+\end{tabular}
+\endgroup
+\caption{Summary of data processing for analysis of Australia ascent data.} 
+\label{table-data-processing-aus}
+\end{table}

@@ -102,7 +102,10 @@ rownames(full.table) <- NULL
 
 caption <- "Summary of Bayesian analyses performed"
 
-xt <- xtable(summary.table, caption = caption)
+sumtable <- summary.table
+sumtable$label <- NULL;
+
+xt <- xtable(sumtable, caption = caption)
 
 tablefile <- "final-table.tex"
 

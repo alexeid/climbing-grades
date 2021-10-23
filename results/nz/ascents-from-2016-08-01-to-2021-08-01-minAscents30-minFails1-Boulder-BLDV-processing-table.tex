@@ -1,0 +1,28 @@
+% latex table generated in R 3.6.2 by xtable 1.8-4 package
+% Thu Sep 16 17:49:26 2021
+\begin{table}[ht]
+\centering
+\begingroup\fontsize{9pt}{10pt}\selectfont
+\begin{tabular}{rrl}
+  \hline
+{\bf rows.in} & {\bf rows.out} & {\bf filter} \\ 
+  \hline
+41546 & 38147 & Exclude ascents with no date or no grade information. \\ 
+  38147 & 37928 & Exclude artificial ascents \\ 
+  37928 & 4474 & Exclude gear styles: Sport, Ice, Trad, Top rope, Alpine, NA, Unknown, DWS \\ 
+  4474 & 4474 & Exclude trad ascent types: greenpoint, greenpointonsight \\ 
+  4474 & 4474 & Exclude non-ascent types: hit, target, mark \\ 
+  4474 & 4464 & Keep only ascents graded with grade type: BLDV \\ 
+  4464 & 4464 & Remove grades with value '--' \\ 
+  4464 & 2703 & Remove ascents before 2016-08-01 \\ 
+  2703 & 2697 & Remove ascents on or after 2021-08-01 \\ 
+  2697 & 2667 & Remove ascents with no month information. \\ 
+  2667 & 2373 & Remove ascents with grade less than V0 \\ 
+  2373 & 2299 & Exclude ambiguous ascent types: tick, lead, leadsolo, second, toprope, aidsolo, ropedsolo \\ 
+  2299 & 1049 & Keep climbers with at least 30 ascents, and at least 1 failed ascents. \\ 
+   \hline
+\end{tabular}
+\endgroup
+\caption{Summary of data processing for analysis of New Zealand ascent data.} 
+\label{table-data-processing-nz}
+\end{table}
