@@ -14,7 +14,7 @@ ascent.summary <- function(lb.routes, gradeColName="grade", successColName="succ
     print(table(lb.routes[,successColName]))
     print(table(lb.routes[,gradeColName]))
     
-    return (NULL);
+    return (matrix(0,1,1))
   }
   
   summary <- data.frame(
@@ -51,28 +51,34 @@ plot.all.attempts <- function(lb) {
   make.plot = T
   make.total = T
   
+  print(paste0("number of climbers = ", length(climbers)));
+  
   summary <- list()
   for (c in 1:length(climbers)) {
     
     df <- lb[lb$account.id == climbers[c],]
     
+    print(c);
+    
     summary[[c]] <- ascent.summary(df)
     
-    if (!is.null(summary[[c]])) {
+      if (ncol(summary[[c]]) > 1) {
     
-      gr <- summary[[c]]$grade[nrow( summary[[c]])] - summary[[c]]$grade[1]
-      grade.range <- c(grade.range, gr)
+        gr <- summary[[c]]$grade[nrow( summary[[c]])] - summary[[c]]$grade[1]
+        grade.range <- c(grade.range, gr)
     
-      if (make.total) {
-        totalsummary = summary[[c]]
-        make.total = F
-      } else {
-        totalsummary = rbind(totalsummary, summary[[c]])
-      }
-    } else {
-      grade.range <- c(grade.range, NA)
-    }
+        if (make.total) {
+          totalsummary = summary[[c]]
+          make.total = F
+        } else {
+          totalsummary = rbind(totalsummary, summary[[c]])
+        }
+      } else { grade.range <- c(grade.range, NA) }
+    
   }  
+
+  print("Start plotting")
+  print(paste0("  length of summary list = ", length(summary)))
   
   for (c in 1:length(climbers)) {
     

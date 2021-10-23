@@ -3,7 +3,7 @@ library(stringr)
 
 config <- read.table("config.csv", sep=",", header=T)
 
-for (i in 7:nrow(config)) {
+for (i in c(4)) {
   
   min.grade <- as.character(config$min.grade[i]);
   mean.grade.prior <- as.character(config$mean.grade.prior[i]);

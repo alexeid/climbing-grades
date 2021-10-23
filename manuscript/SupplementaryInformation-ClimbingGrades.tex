@@ -189,10 +189,10 @@ This provides a mathematical basis for composing the grade of a climb from the s
 R = \frac{1}{m} \ln \left(\sum_{i=1}^{K}e^{mr_i}\right)
 \end{equation} 
 
-As an example, take $m=0.6$. Then if a route involved climbing two back-to-back routes that were individually graded at Ewbank 25 then the grade of the combined route is expected to be:
+As an example, take $m=1$. Then if a route involved climbing two back-to-back routes that were individually graded at Ewbank 25 then the grade of the combined route is expected to be:
 
 \begin{equation}
-R = \frac{1}{m} \ln \left(e^{mr_1} + e^{mr_2}\right) = \frac{1}{0.6} \ln \left(2 * e^{0.6 * 25}\right) \approx 26.16
+R = \frac{1}{m} \ln \left(e^{mr_1} + e^{mr_2}\right) = \ln \left(2 * e^{25}\right) \approx 25.7
 \end{equation} 
 
 This should be considered a minimum estimate of the grade of the combined route, as it assumes that the climber doesn't get fatigued in the course of climbing the first section, or that (equivalently) a full rest (both mental and physical) is possible in between the two sections, without weighting the rope.
@@ -205,7 +205,7 @@ The difference between this computed grade and the actual grade gives an estimat
 For example, Adam Ondra proposed a grade of V16/8C+ for the boulder problem known as Brutal Rider, which is a link up of two individual boulder problems climbed back to back: Brutus (8A+/8B or V12/V13) and Ghost Rider (8C/V15). The theoretical grade should be:
 
 \begin{equation}
-R = \frac{1}{0.6} \ln \left(e^{0.6 * 12.5} + e^{0.6*15}\right) = 15.34
+R = \ln \left(e^{12.5} + e^{15}\right) = 15.34
 \end{equation} 
 
 Yet the grade assigned is 16. The difference between the estimate 15.34 and the range that would be assigned 16 (15.5-16.49)  is 0.16-1.15 of a grade. We assumed that this difference comes from fatigue (the rest Ondra could take between the two boulder problems is no-hands but strenuous and only about 20 seconds long). The discrepancy could be partially caused by inaccuracies in the grading of the subproblems (maybe Ghost Rider is already 15.25 for example).

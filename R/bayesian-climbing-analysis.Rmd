@@ -12,12 +12,12 @@ params:
   startDate: '2016-08-01'
   filter.by.tickprop.lrp: FALSE
   gear: "Sport"
-  grade.type: "FR"
+  grade.type: "UIAA"
   in.path: "/Users/alexeidrummond/Git/climbing-grades/data/processed/"
   min.ascents: 30
   min.failures: 1
-  min.grade: "5a"
-  mean.grade.prior: "6a"
+  min.grade: "5+"
+  mean.grade.prior: "6"
   max.climbers: 100
   out.path: "/Users/alexeidrummond/Git/climbing-grades/results/"
   per.session: FALSE

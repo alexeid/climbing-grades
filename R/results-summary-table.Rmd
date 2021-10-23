@@ -25,8 +25,8 @@ summary.row <- function(df, data, country) {
   
   
   game <- ifelse(data$params$per.session, "session", "attempt")
-  
-  data.frame(country=country, gear=paste0(data$params$gear, collapse="+"), climbers=data$d$C, ascents=data$d$N, slope=slope,hpd.lower=hpd.lower, hpd.upper=hpd.upper, min.ascents=data$params$min.ascents, min.failures=data$params$min.failures, game=game, time=time.in.seconds)
+
+  data.frame(country=country, gear=paste0(data$params$gear, collapse="+"), climbers=data$d$C, ascents=data$d$N, slope=slope,hpd.lower=hpd.lower, hpd.upper=hpd.upper, min.ascents=data$params$min.ascents, min.failures=data$params$min.failures, grade.type=data$params$grade.type, game=game, time=time.in.seconds)
 }
 
 all.rows <- function(df, data, country) {
@@ -36,6 +36,8 @@ all.rows <- function(df, data, country) {
   game <- rep(ifelse(data$params$per.session, "session", "attempt"), length(slope))
   
   gear=rep(paste0(data$params$gear, collapse="+"), length(slope))
+  
+  grade.type=rep(data$params$grade.type, length(slope))
   
   country <- rep(country, length(slope))
   
@@ -50,7 +52,7 @@ all.rows <- function(df, data, country) {
   dat_q <- quantile(slope, probs=c(0.025,0.975))
   central <- slope>dat_q[1] & slope < dat_q[2]
   
-  data.frame(country=country, gear=gear, game=game, slope=slope, central=central)
+  data.frame(country=country, gear=gear, game=game, grade.type=grade.type, slope=slope, central=central)
 }
 
 
@@ -94,27 +96,29 @@ for (i in 2:length(data.files)) {
 }
 rownames(summary.table) <- NULL
 rownames(full.table) <- NULL
-
-kable(summary.table[order(summary.table$slope, decreasing=T),])
-
 ```
+
+```{r}
+kable(summary.table)
+```
+
 ```{r}
 
-label <- paste(summary.table$country, summary.table$gear, summary.table$game)
+label <- paste(summary.table$country, summary.table$gear, summary.table$grade.type, summary.table$game)
 summary.table$label <- label
 
-label <- paste(full.table$country, full.table$gear, full.table$game)
+label <- paste(full.table$country, full.table$gear, full.table$grade.type, full.table$game)
 full.table$label <- label
 
 
 library(ggplot2)
 library(viridis)
 
-levels <- summary.table$label[order(as.character(summary.table$gear), as.character(summary.table$country), summary.table$game)]
+levels <- summary.table$label[order(as.character(summary.table$gear), as.character(summary.table$country), as.character(summary.table$grade.type), as.character(summary.table$game))]
 
 full.table$label <- factor(full.table$label,levels = levels,ordered = TRUE)
 
-p <- full.table[full.table$central & full.table$game == "attempt",] %>%
+p <- full.table[full.table$central,] %>%
   ggplot( aes(x=label, y=exp(slope), fill=gear, color="black")) +
      ylim(1,5) + 
      geom_violin(width=1.5) +
@@ -126,5 +130,9 @@ p <- full.table[full.table$central & full.table$game == "attempt",] %>%
      coord_flip() + # This switch X and Y axis and allows to get the horizontal version
      xlab("Analysis") +
      ylab("Slope")
-p
+
+png(filename="final-plot.png", height=1600, width=1600,res=200)
+plot(p)
+dev.off();
+plot(p)
 ```

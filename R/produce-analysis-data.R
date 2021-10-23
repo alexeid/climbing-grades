@@ -42,6 +42,7 @@ produce.analysis.data <- function(params, res, routes) {
   # Checking logging patterns
   #########################################
 
+  # make sure there is min failures
   res3 <- filter.climbers.by.ascent.counts(res2, min.ascents=params$min.ascents, min.failures=params$min.failures)
   print("filter.climbers.by.ascent.counts completed")
   
@@ -91,6 +92,7 @@ produce.analysis.data <- function(params, res, routes) {
     
       lb.next <- df.final[df.final$account.id == climbers[climber],]
       lb.next <- keep.best.ascent.in.session(lb.next)
+      
       lb.routes <- rbind(lb.routes, lb.next)
     }
     df.final <- lb.routes
