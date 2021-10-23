@@ -99,6 +99,19 @@ rownames(full.table) <- NULL
 ```
 
 ```{r}
+
+caption <- "Summary of Bayesian analyses performed"
+
+xt <- xtable(summary.table, caption = caption)
+
+tablefile <- "final-table.tex"
+
+print(xt, 
+      size="\\fontsize{9pt}{10pt}\\selectfont", 
+      include.rownames=FALSE,
+      sanitize.colnames.function = function(x) {paste0("{\\bf ",x,"}")}, 
+      file=tablefile)
+
 kable(summary.table)
 ```
 
