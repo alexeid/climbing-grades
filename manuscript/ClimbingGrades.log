@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.3.23)  25 OCT 2021 15:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.3.23)  25 OCT 2021 15:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -580,7 +580,7 @@ File: ../R/final-plot.png Graphic file (type png)
 Package pdftex.def Info: ../R/final-plot.png used on input line 225.
 (pdftex.def)             Requested size: 345.0pt x 344.98921pt.
  [6] [7 <../R/final-plot.png>] (../R/final-table.tex
-Overfull \hbox (95.5858pt too wide) in paragraph at lines 6--32
+Overfull \hbox (99.85226pt too wide) in paragraph at lines 6--32
  [][] 
  []
 
@@ -706,7 +706,7 @@ ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/
 17/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2017
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2017/t
 exmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on ClimbingGrades.pdf (16 pages, 752469 bytes).
+Output written on ClimbingGrades.pdf (16 pages, 752782 bytes).
 PDF statistics:
  268 PDF objects out of 1000 (max. 8388607)
  223 compressed objects within 3 object streams
