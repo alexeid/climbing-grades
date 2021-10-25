@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.3.23)  25 OCT 2021 14:57
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.3.23)  25 OCT 2021 15:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -573,14 +573,14 @@ Overfull \hbox (3.4022pt too wide) in paragraph at lines 108--109
 ng, climbers
  []
 
-[3] [4] [5] <../R/final-plot.png, id=101, 1606.0pt x 1606.0pt>
+[3] [4] [5] <../R/final-plot.png, id=100, 1606.0pt x 1606.0pt>
 File: ../R/final-plot.png Graphic file (type png)
 
 <use ../R/final-plot.png>
-Package pdftex.def Info: ../R/final-plot.png used on input line 226.
+Package pdftex.def Info: ../R/final-plot.png used on input line 225.
 (pdftex.def)             Requested size: 345.0pt x 344.98921pt.
  [6] [7 <../R/final-plot.png>] (../R/final-table.tex
-Overfull \hbox (95.5858pt too wide) in paragraph at lines 6--33
+Overfull \hbox (95.5858pt too wide) in paragraph at lines 6--32
  [][] 
  []
 
@@ -589,11 +589,11 @@ Overfull \hbox (95.5858pt too wide) in paragraph at lines 6--33
 
 ]
 
-LaTeX Warning: Reference `supp-listing1' on page 1 undefined on input line 238.
+LaTeX Warning: Reference `supp-listing1' on page 1 undefined on input line 239.
 
 
 
-Overfull \hbox (5.74411pt too wide) in paragraph at lines 237--239
+Overfull \hbox (5.74411pt too wide) in paragraph at lines 238--240
 []\OT1/cmr/m/n/9 We im-ple-mented full Bayesian MCMC in-fer-ence of the dy-nami
 c Bradley-
  []
@@ -603,45 +603,45 @@ c Bradley-
 
 ]
 
-LaTeX Warning: Reference `supp-fig1' on page 10 undefined on input line 259.
+LaTeX Warning: Reference `supp-fig1' on page 10 undefined on input line 260.
 
 
 <../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sp
-ort-AU-session-posterior.png, id=150, 1806.75pt x 903.375pt>
+ort-AU-session-posterior.png, id=149, 1806.75pt x 903.375pt>
 File: ../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFail
 s1-Sport-AU-session-posterior.png Graphic file (type png)
 
 <use ../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails
 1-Sport-AU-session-posterior.png>
 Package pdftex.def Info: ../results/aus/ascents-from-2016-08-01-to-2021-08-01-m
-inAscents30-minFails1-Sport-AU-session-posterior.png used on input line 264.
+inAscents30-minFails1-Sport-AU-session-posterior.png used on input line 265.
 (pdftex.def)             Requested size: 345.0pt x 172.49767pt.
 
 
-LaTeX Warning: Reference `supp-fig2' on page 10 undefined on input line 273.
+LaTeX Warning: Reference `supp-fig2' on page 10 undefined on input line 274.
 
 
 <../results/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Spo
-rt-AU-session-posterior.png, id=152, 1806.75pt x 903.375pt>
+rt-AU-session-posterior.png, id=151, 1806.75pt x 903.375pt>
 File: ../results/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails
 1-Sport-AU-session-posterior.png Graphic file (type png)
 
 <use ../results/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1
 -Sport-AU-session-posterior.png>
 Package pdftex.def Info: ../results/nz/ascents-from-2016-08-01-to-2021-08-01-mi
-nAscents30-minFails1-Sport-AU-session-posterior.png used on input line 278.
+nAscents30-minFails1-Sport-AU-session-posterior.png used on input line 279.
 (pdftex.def)             Requested size: 345.0pt x 172.49767pt.
  [10] [11 <../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-mi
 nFails1-Sport-AU-session-posterior.png> <../results/nz/ascents-from-2016-08-01-
 to-2021-08-01-minAscents30-minFails1-Sport-AU-session-posterior.png>] <figure1.
-png, id=171, 1505.625pt x 752.8125pt>
+png, id=169, 1505.625pt x 752.8125pt>
 File: figure1.png Graphic file (type png)
 
 <use figure1.png>
-Package pdftex.def Info: figure1.png used on input line 290.
+Package pdftex.def Info: figure1.png used on input line 291.
 (pdftex.def)             Requested size: 345.0pt x 172.49995pt.
 
-Overfull \hbox (0.95703pt too wide) in paragraph at lines 297--298
+Overfull \hbox (0.95703pt too wide) in paragraph at lines 298--299
 \OT1/cmr/m/n/9 We have en-deav-oured to bring to-gether var-i-ous pieces of com
 -mu-nity knowl-
  []
@@ -655,25 +655,25 @@ t/9 Math-e-ma-tis-che
  []
 
 [15])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 328.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 329.
  [16]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 328.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 329.
  (./ClimbingGrades.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 328.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 328.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 329.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 329.
 Package rerunfilecheck Info: File `ClimbingGrades.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 328.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 329.
  ) 
 Here is how much of TeX's memory you used:
- 12939 strings out of 492995
- 203093 string characters out of 6132704
+ 12941 strings out of 492995
+ 203118 string characters out of 6132704
  444101 words of memory out of 5000000
- 16223 multiletter control sequences out of 15000+600000
+ 16225 multiletter control sequences out of 15000+600000
  10980 words of font info for 40 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  45i,8n,72p,1948b,464s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -706,7 +706,7 @@ ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/
 17/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2017
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2017/t
 exmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on ClimbingGrades.pdf (16 pages, 752440 bytes).
+Output written on ClimbingGrades.pdf (16 pages, 752469 bytes).
 PDF statistics:
  268 PDF objects out of 1000 (max. 8388607)
  223 compressed objects within 3 object streams
