@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.3.23)  25 OCT 2021 13:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.3.23)  25 OCT 2021 14:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -573,7 +573,7 @@ Overfull \hbox (3.4022pt too wide) in paragraph at lines 108--109
 ng, climbers
  []
 
-[3] [4] [5] <../R/final-plot.png, id=99, 1606.0pt x 1606.0pt>
+[3] [4] [5] <../R/final-plot.png, id=101, 1606.0pt x 1606.0pt>
 File: ../R/final-plot.png Graphic file (type png)
 
 <use ../R/final-plot.png>
@@ -607,7 +607,7 @@ LaTeX Warning: Reference `supp-fig1' on page 10 undefined on input line 259.
 
 
 <../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sp
-ort-AU-session-posterior.png, id=147, 1806.75pt x 903.375pt>
+ort-AU-session-posterior.png, id=150, 1806.75pt x 903.375pt>
 File: ../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFail
 s1-Sport-AU-session-posterior.png Graphic file (type png)
 
@@ -622,7 +622,7 @@ LaTeX Warning: Reference `supp-fig2' on page 10 undefined on input line 273.
 
 
 <../results/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Spo
-rt-AU-session-posterior.png, id=149, 1806.75pt x 903.375pt>
+rt-AU-session-posterior.png, id=152, 1806.75pt x 903.375pt>
 File: ../results/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails
 1-Sport-AU-session-posterior.png Graphic file (type png)
 
@@ -634,7 +634,7 @@ nAscents30-minFails1-Sport-AU-session-posterior.png used on input line 278.
  [10] [11 <../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-mi
 nFails1-Sport-AU-session-posterior.png> <../results/nz/ascents-from-2016-08-01-
 to-2021-08-01-minAscents30-minFails1-Sport-AU-session-posterior.png>] <figure1.
-png, id=168, 1505.625pt x 752.8125pt>
+png, id=171, 1505.625pt x 752.8125pt>
 File: figure1.png Graphic file (type png)
 
 <use figure1.png>
@@ -676,7 +676,7 @@ Here is how much of TeX's memory you used:
  16223 multiletter control sequences out of 15000+600000
  10980 words of font info for 40 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 45i,8n,72p,1948b,462s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 45i,8n,72p,1948b,464s stack positions out of 5000i,500n,10000p,200000b,80000s
 pdfTeX warning (dest): name{glo:send} has been referenced but does not exist,
  replaced by a fixed one
 
@@ -706,10 +706,10 @@ ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/
 17/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2017
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2017/t
 exmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on ClimbingGrades.pdf (16 pages, 752252 bytes).
+Output written on ClimbingGrades.pdf (16 pages, 752440 bytes).
 PDF statistics:
- 267 PDF objects out of 1000 (max. 8388607)
- 222 compressed objects within 3 object streams
+ 268 PDF objects out of 1000 (max. 8388607)
+ 223 compressed objects within 3 object streams
  66 named destinations out of 1000 (max. 500000)
  21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
