@@ -120,17 +120,27 @@ kable(summary.table)
 
 ```{r}
 
-label <- paste(summary.table$country, summary.table$gear, summary.table$grade.type, summary.table$game)
+sum.grade.label <- as.character(summary.table$grade.type)
+sum.grade.label[grepl("BLDV", sum.grade.label)] <- "V-scale"
+sum.grade.label[grepl("AU", sum.grade.label)] <- "Ewbank"
+sum.grade.label[grepl("FR", sum.grade.label)] <- "French"
+label <- paste(summary.table$country, sum.grade.label, summary.table$gear, summary.table$game)
 summary.table$label <- label
 
-label <- paste(full.table$country, full.table$gear, full.table$grade.type, full.table$game)
+
+grade.label <- as.character(full.table$grade.type)
+grade.label[grepl("BLDV", grade.label)] <- "V-scale"
+grade.label[grepl("AU", grade.label)] <- "Ewbank"
+grade.label[grepl("FR", grade.label)] <- "French"
+
+label <- paste(full.table$country, grade.label, full.table$gear,  full.table$game)
 full.table$label <- label
 
 
 library(ggplot2)
 library(viridis)
 
-levels <- summary.table$label[order(as.character(summary.table$gear), as.character(summary.table$country), as.character(summary.table$grade.type), as.character(summary.table$game))]
+levels <- summary.table$label[order(as.character(summary.table$gear), as.character(sum.grade.label), as.character(summary.table$country), as.character(summary.table$game))]
 
 full.table$label <- factor(full.table$label,levels = levels,ordered = TRUE)
 
