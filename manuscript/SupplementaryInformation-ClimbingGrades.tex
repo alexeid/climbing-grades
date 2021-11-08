@@ -26,7 +26,7 @@
 \begin{document}
 
 \title{Supplementary Information for ``Bayesian inference of the climbing grade scale''}
-\author{Alexei J Drummond}
+\author{Alexei J Drummond and Alex Popinga}
 \date{\today}
 \maketitle
 
@@ -40,11 +40,11 @@ The data was obtained from \url{thecrag.com} using the API (\url{https://www.the
 
 A summary of the data processing is shown in Table \ref{table-data-processing-aus}.
 
-\input{../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents400-minFails1-session-processing-table.tex}
+\input{../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-session-processing-table.tex}
 
 A summary of the data processing for the New Zealand data analysis is shown in Table \ref{table-data-processing-nz}
 
-\input{../results/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents400-minFails1-session-processing-table.tex}
+\input{../results/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-session-processing-table.tex}
 
 \subsection{Model}
 
@@ -102,7 +102,7 @@ Fitting a linear regression to the grade versus the logarithm of the number of f
 
 \begin{figure}
 \centering
-\includegraphics[width=0.9\textwidth]{../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents400-minFails1-session-regression.png}
+\includegraphics[width=0.9\textwidth]{../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-session-regression.png}
 \caption{\small The relationship between grade and the empirical log-odds-ratio of failure for the Australian climbers over a year of climbing. The point is plotted at log (\#failures / \#successes) for that grade. A regression is fit for each climber. Because there are a large number of climbers only the mean slope is reported in the main text. But it is clear that the slopes are rather consistent across climbers, despite the intercept varying by about 10 grades.}
 \label{fig1}
 \end{figure}
@@ -110,29 +110,29 @@ Fitting a linear regression to the grade versus the logarithm of the number of f
 
 \begin{figure}
 \centering
-\includegraphics[width=0.9\textwidth]{../results/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents400-minFails1-session-regression.png}
+\includegraphics[width=0.9\textwidth]{../results/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-session-regression.png}
 \caption{\small The relationship between grade and the empirical log-odds-ratio of failure for the New Zealand climbers over a year of climbing. The number next to each point is the number of climbs of the grade successfully climbed over the course of the year. The point is plotted at log (\#failures / \#successes) for that grade. $m$ is the slope of the best fit, and $C_i$ is the estimated grade of the climber $i$ (i.e. the x value of the line corresponding to a log-odds-ratio of 0.}
 \label{fig2}
 \end{figure}
 
 \section{Estimates of flash grade and grade scale slope assuming whole-history data available}
 
-Figure \ref{aus_ascents_by_attempt} shows the estimated ``flash grade'' through time plot between August 2016 and July 2021 inclusive for 105 climbers that fulfilled our selection criteria and who climbed predominantly in Australia. The second panel reports the posterior distribution of the $e^m$, which was jointly estimated. The posterior estimate was 2.14 (95\% HPD:  $[2.11, 2.17]$).
+Figure \ref{aus_ascents_by_attempt} shows the estimated ``flash grade'' through time plot between August 2016 and July 2021 inclusive for 100 climbers that fulfilled our selection criteria and who climbed predominantly in Australia. The second panel reports the posterior distribution of the $e^m$, which was jointly estimated. The posterior estimate was 2.24 (95\% HPD:  $[2.21, 2.28]$).
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents400-minFails1-posterior.png}
-\caption{\small The posterior estimate of each Australian climber's grade ($n=105$) through time and the posterior distribution of the proportional increase in difficulty per grade increment $d = e^m$.}
+\includegraphics[width=\textwidth]{../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-posterior.png}
+\caption{\small The posterior estimate of each Australian climber's grade ($n=100$) through time and the posterior distribution of the proportional increase in difficulty per grade increment $d = e^m$.}
 \label{aus_ascents_by_attempt}
 \end{figure}
 
-Figure \ref{nz_ascents_by_attempt} shows the estimated ``flash grade'' through time plot between August 2016 and July 2021 inclusive for 5 climbers that fulfilled our selection criteria and who climbed predominantly in New Zealand. The second panel reports the posterior distribution of the $m$ parameter which was jointly estimated.
+Figure \ref{nz_ascents_by_attempt} shows the estimated ``flash grade'' through time plot between August 2016 and July 2021 inclusive for 89 climbers that fulfilled our selection criteria and who climbed predominantly in New Zealand. The second panel reports the posterior distribution of the $m$ parameter which was jointly estimated.
 
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{../results/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents400-minFails1-posterior.png}
-\caption{\small The posterior estimate of each New Zealand climber's grade through time and the posterior distribution of the proportional increase in difficulty per grade increment $d = e^m$. Because there were only 5 climbers in this analysis we were able to depict the 95\% credible interval around the grade estimate through time as well.}
+\includegraphics[width=\textwidth]{../results/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-posterior.png}
+\caption{\small The posterior estimate of each New Zealand climber's grade through time and the posterior distribution of the proportional increase in difficulty per grade increment $d = e^m$.}
 \label{nz_ascents_by_attempt}
 \end{figure}
 
@@ -156,75 +156,75 @@ where $N_A(x)$ is the number of attempts made by the community on boulder proble
 Therefore the slope of the log of total successful ascents against grade will only be the same as the $m$ parameter {\it if there has been an equal number of total attempts made by the community at each grade}. This is very unlikely to be the case at the very highest grades globally. In general we might expect that very hard problems are tried less often by the community as a whole, leading to an expectation that $r$ estimated this way would be an overestimate of $m$.
 
 
-\section{Composing the grade of a route/boulder from the grades of its parts}
-
-If the probability that a climber of grade $C$ will fail to climb a route of grade ($R$) is defined by:
-
-\begin{equation}
-p_{fail} = \frac{e^{mR}}{e^{mC} + e^{mR}}
-\end{equation} 
-
-we could consider a route containing two sections, each section with it's own grade ($r_1$ and $r_2$) and recast the probability of failure like so:
-
-\begin{equation}
-p_{fail} = \frac{e^{mr_1} + e^{mr_2}}{e^{mC} + e^{mr_1} + e^{mr_2}}
-\end{equation} 
-
-Continuing in this vein we could break the route down into its $K$ constituent moves so that:
-
-\begin{equation}
-p_{fail} = \frac{\sum_{i=1}^{K}e^{mr_i}}{e^{mC} + \sum_{i=1}^{K}e^{mr_i}}
-\label{compose}
-\end{equation} 
-
-where for consistency we would require
-
-\begin{equation}
-e^{mR} = \sum_{i=1}^{K}e^{mr_i}
-\end{equation} 
-
-This provides a mathematical basis for composing the grade of a climb from the scaled logarithm of the sum of the grades of its constituent parts:
-
-\begin{equation}
-R = \frac{1}{m} \ln \left(\sum_{i=1}^{K}e^{mr_i}\right)
-\end{equation} 
-
-As an example, take $m=1$. Then if a route involved climbing two back-to-back routes that were individually graded at Ewbank 25 then the grade of the combined route is expected to be:
-
-\begin{equation}
-R = \frac{1}{m} \ln \left(e^{mr_1} + e^{mr_2}\right) = \ln \left(2 * e^{25}\right) \approx 25.7
-\end{equation} 
-
-This should be considered a minimum estimate of the grade of the combined route, as it assumes that the climber doesn't get fatigued in the course of climbing the first section, or that (equivalently) a full rest (both mental and physical) is possible in between the two sections, without weighting the rope.
-
-The difference between this computed grade and the actual grade gives an estimate of the fatigue factor (e.g. increased ``pump'', decreased power, and increased mental fatigue) caused by the first part of the route. One would expect that this model would exhibit the smallest fatigue factors when applied to boulder problems. 
-
-\subsection*{Estimating the fatigue factor for link-up boulder problems}
-
-
-For example, Adam Ondra proposed a grade of V16/8C+ for the boulder problem known as Brutal Rider, which is a link up of two individual boulder problems climbed back to back: Brutus (8A+/8B or V12/V13) and Ghost Rider (8C/V15). The theoretical grade should be:
-
-\begin{equation}
-R = \ln \left(e^{12.5} + e^{15}\right) = 15.34
-\end{equation} 
-
-Yet the grade assigned is 16. The difference between the estimate 15.34 and the range that would be assigned 16 (15.5-16.49)  is 0.16-1.15 of a grade. We assumed that this difference comes from fatigue (the rest Ondra could take between the two boulder problems is no-hands but strenuous and only about 20 seconds long). The discrepancy could be partially caused by inaccuracies in the grading of the subproblems (maybe Ghost Rider is already 15.25 for example).
-
-\begin{table}
-\centering
-\begin{tabular}{| c | c | c | c | c | c |}
-  \hline			
-  {\bf Boulder } & {\bf V-grade} & {\bf part 1} & {\bf part 2} & {\bf Expected} & {\bf Fatigue factor } \\
-  \hline			
-  Brutal Rider & 16 & 12/13 & 15 & 15.34 & 0.66 [0.16-1.15]\\
-  Vampire Dagger & 11 & 9 & 9 & 10.16 & 0.84 [0.34-1.33]\\
-  L'homme Obu & 11 & 8 & 10 & 10.44 & 0.56 [0.06-1.05]\\
-  Bursting & 8 & 5 & 7 & 7.44 & 0.56 [0.06-1.05]\\
-  \hline  
-\end{tabular}
-\caption{The summary of calculated fatigue factors for a selection of well-known boulder problems. }
-\label{table2}
-\end{table}
+%\section{Composing the grade of a route/boulder from the grades of its parts}
+%
+%If the probability that a climber of grade $C$ will fail to climb a route of grade ($R$) is defined by:
+%
+%\begin{equation}
+%p_{fail} = \frac{e^{mR}}{e^{mC} + e^{mR}}
+%\end{equation} 
+%
+%we could consider a route containing two sections, each section with it's own grade ($r_1$ and $r_2$) and recast the probability of failure like so:
+%
+%\begin{equation}
+%p_{fail} = \frac{e^{mr_1} + e^{mr_2}}{e^{mC} + e^{mr_1} + e^{mr_2}}
+%\end{equation} 
+%
+%Continuing in this vein we could break the route down into its $K$ constituent moves so that:
+%
+%\begin{equation}
+%p_{fail} = \frac{\sum_{i=1}^{K}e^{mr_i}}{e^{mC} + \sum_{i=1}^{K}e^{mr_i}}
+%\label{compose}
+%\end{equation} 
+%
+%where for consistency we would require
+%
+%\begin{equation}
+%e^{mR} = \sum_{i=1}^{K}e^{mr_i}
+%\end{equation} 
+%
+%This provides a mathematical basis for composing the grade of a climb from the scaled logarithm of the sum of the grades of its constituent parts:
+%
+%\begin{equation}
+%R = \frac{1}{m} \ln \left(\sum_{i=1}^{K}e^{mr_i}\right)
+%\end{equation} 
+%
+%As an example, take $m=1$. Then if a route involved climbing two back-to-back routes that were individually graded at Ewbank 25 then the grade of the combined route is expected to be:
+%
+%\begin{equation}
+%R = \frac{1}{m} \ln \left(e^{mr_1} + e^{mr_2}\right) = \ln \left(2 * e^{25}\right) \approx 25.7
+%\end{equation} 
+%
+%This should be considered a minimum estimate of the grade of the combined route, as it assumes that the climber doesn't get fatigued in the course of climbing the first section, or that (equivalently) a full rest (both mental and physical) is possible in between the two sections, without weighting the rope.
+%
+%The difference between this computed grade and the actual grade gives an estimate of the fatigue factor (e.g. increased ``pump'', decreased power, and increased mental fatigue) caused by the first part of the route. One would expect that this model would exhibit the smallest fatigue factors when applied to boulder problems. 
+%
+%\subsection*{Estimating the fatigue factor for link-up boulder problems}
+%
+%
+%For example, Adam Ondra proposed a grade of V16/8C+ for the boulder problem known as Brutal Rider, which is a link up of two individual boulder problems climbed back to back: Brutus (8A+/8B or V12/V13) and Ghost Rider (8C/V15). The theoretical grade should be:
+%
+%\begin{equation}
+%R = \ln \left(e^{12.5} + e^{15}\right) = 15.34
+%\end{equation} 
+%
+%Yet the grade assigned is 16. The difference between the estimate 15.34 and the range that would be assigned 16 (15.5-16.49)  is 0.16-1.15 of a grade. We assumed that this difference comes from fatigue (the rest Ondra could take between the two boulder problems is no-hands but strenuous and only about 20 seconds long). The discrepancy could be partially caused by inaccuracies in the grading of the subproblems (maybe Ghost Rider is already 15.25 for example).
+%
+%\begin{table}
+%\centering
+%\begin{tabular}{| c | c | c | c | c | c |}
+%  \hline			
+%  {\bf Boulder } & {\bf V-grade} & {\bf part 1} & {\bf part 2} & {\bf Expected} & {\bf Fatigue factor } \\
+%  \hline			
+%  Brutal Rider & 16 & 12/13 & 15 & 15.34 & 0.66 [0.16-1.15]\\
+%  Vampire Dagger & 11 & 9 & 9 & 10.16 & 0.84 [0.34-1.33]\\
+%  L'homme Obu & 11 & 8 & 10 & 10.44 & 0.56 [0.06-1.05]\\
+%  Bursting & 8 & 5 & 7 & 7.44 & 0.56 [0.06-1.05]\\
+%  \hline  
+%\end{tabular}
+%\caption{The summary of calculated fatigue factors for a selection of well-known boulder problems. }
+%\label{table2}
+%\end{table}
 
 
 
