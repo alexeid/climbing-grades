@@ -1,0 +1,20 @@
+\glossarysection[\glossarytoctitle]{\glossarytitle}\glossarypreamble
+\begin{theglossary}\glossaryheader
+\glsgroupheading{F}\relax \glsresetentrylist %
+\glossentry{flash}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{8}}}\glsgroupskip
+\glsgroupheading{H}\relax \glsresetentrylist %
+\glossentry{hangdog}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{4}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{8}\delimN 
+		\setentrycounter[]{page}\glsnumberformat{10}}}\glsgroupskip
+\glsgroupheading{O}\relax \glsresetentrylist %
+\glossentry{onsight}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{8}}}\glsgroupskip
+\glsgroupheading{R}\relax \glsresetentrylist %
+\glossentry{redpoint}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{8}}}\glsgroupskip
+\glsgroupheading{S}\relax \glsresetentrylist %
+\glossentry{send}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{8}}}%
+\end{theglossary}\glossarypostamble
