@@ -223,7 +223,7 @@ We analysed 20 datasets across three countries (New Zealand, Australia, Germany)
     \clearpage% Flush earlier floats (otherwise order might not be correct)
     \thispagestyle{empty}% empty page style (?)
     \begin{landscape}% Landscape page
-       \input{../R/final-table.tex}
+       \input{final-table.tex}
     \end{landscape}
     \clearpage% Flush page
 }
@@ -234,7 +234,7 @@ We describe two analyses in more detail. The first highlighted analysis uses sel
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{../R/final-plot.png}
+\includegraphics[width=\textwidth]{final-plot.png}
 \caption{\small The posterior estimate of the slope parameter ($d=e^m$) for each of the 20 analyses.}
 \label{finalplot}
 \end{figure}
@@ -275,7 +275,7 @@ The mean estimate of the $m$ parameter from a simple log-linear regression of ea
 The median number of explicit fails per climber (i. e., \gls{hangdog}, attempt, working, retreat), was 126 (range: 18-642) or as a fraction 29.9\% (interquartile range 4.7\%- 72.0\%) of ascents.
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-session-posterior.png}
+\includegraphics[width=\textwidth]{figures/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-session-posterior.png}
 \caption{\small The posterior estimate of each Australian climber's grade ($n=100$) through time and the posterior distribution of the proportional increase in difficulty per grade increment $d = e^m$.}
 \label{aus_ascents}
 \end{figure}
@@ -289,7 +289,7 @@ The mean estimate of the $m$ parameter from a simple log-linear regression of ea
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{../results/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-session-posterior.png}
+\includegraphics[width=\textwidth]{figures/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-session-posterior.png}
 \caption{\small The posterior estimate of each New Zealand climber's grade through time and the posterior distribution of the proportional increase in difficulty per grade increment $d = e^m$.}
 \label{nz_ascents}
 \end{figure}

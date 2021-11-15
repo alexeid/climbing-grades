@@ -43,11 +43,11 @@ The data was obtained from \url{thecrag.com} using the API (\url{https://www.the
 
 A summary of the data processing is shown in Table \ref{table-data-processing-aus}.
 
-\input{../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-session-processing-table.tex}
+\input{input/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-session-processing-table.tex}
 
 A summary of the data processing for the New Zealand data analysis is shown in Table \ref{table-data-processing-nz}
 
-\input{../results/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-session-processing-table.tex}
+\input{input/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-session-processing-table.tex}
 
 \subsection{Model}
 
@@ -105,7 +105,7 @@ Fitting a linear regression to the grade versus the logarithm of the number of f
 
 \begin{figure}
 \centering
-\includegraphics[width=0.9\textwidth]{../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-session-regression.png}
+\includegraphics[width=0.9\textwidth]{figures/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-session-regression.png}
 \caption{\small The relationship between grade and the empirical log-odds-ratio of failure for the Australian climbers over a year of climbing. The point is plotted at log (\#failures / \#successes) for that grade. A regression is fit for each climber. Because there are a large number of climbers only the mean slope is reported in the main text. But it is clear that the slopes are rather consistent across climbers, despite the intercept varying by about 10 grades.}
 \label{fig1}
 \end{figure}
@@ -113,7 +113,7 @@ Fitting a linear regression to the grade versus the logarithm of the number of f
 
 \begin{figure}
 \centering
-\includegraphics[width=0.9\textwidth]{../results/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-session-regression.png}
+\includegraphics[width=0.9\textwidth]{figures/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-session-regression.png}
 \caption{\small The relationship between grade and the empirical log-odds-ratio of failure for the New Zealand climbers over a year of climbing. The number next to each point is the number of climbs of the grade successfully climbed over the course of the year. The point is plotted at log (\#failures / \#successes) for that grade. $m$ is the slope of the best fit, and $C_i$ is the estimated grade of the climber $i$ (i.e. the x value of the line corresponding to a log-odds-ratio of 0.}
 \label{fig2}
 \end{figure}
@@ -124,7 +124,7 @@ Figure \ref{aus_ascents_by_attempt} shows the estimated ``flash grade'' through 
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{../results/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-posterior.png}
+\includegraphics[width=\textwidth]{figures/aus/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-posterior.png}
 \caption{\small The posterior estimate of each Australian climber's grade ($n=100$) through time and the posterior distribution of the proportional increase in difficulty per grade increment $d = e^m$.}
 \label{aus_ascents_by_attempt}
 \end{figure}
@@ -134,7 +134,7 @@ Figure \ref{nz_ascents_by_attempt} shows the estimated ``flash grade'' through t
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{../results/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-posterior.png}
+\includegraphics[width=\textwidth]{figures/nz/ascents-from-2016-08-01-to-2021-08-01-minAscents30-minFails1-Sport-AU-posterior.png}
 \caption{\small The posterior estimate of each New Zealand climber's grade through time and the posterior distribution of the proportional increase in difficulty per grade increment $d = e^m$.}
 \label{nz_ascents_by_attempt}
 \end{figure}
