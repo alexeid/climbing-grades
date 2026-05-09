@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL ms-jqas.tex      Sun Mar  8 09:48:23 2026
-%DIF ADD ms-jqas-r1.tex   Sat May  9 20:08:38 2026
+%DIF ADD ms-jqas-r1.tex   Sat May  9 20:22:13 2026
 
 %% Packages
 \usepackage{amsthm,amsmath,amsfonts,amssymb}
@@ -155,7 +155,7 @@ Climbing grades play a central role in the sport of rock climbing \citep{deligni
 
 For lead climbing at the advanced end of the spectrum (i.e., from about Ewbank 23 onwards) there is an almost one-to-one correspondence between these three major grading systems \citep{draper2015comparative}, (see Table \ref{table1}).  However, this simple relationship is not universally accepted, and a fourth major grade system (UIAA) is usually assumed to have wider intervals in most conversion tables \citep{draper2015comparative}.
 
-For bouldering, the two common grading systems are the Vermin scale and the \DIFdelbegin \DIFdel{Fontainbleau }\DIFdelend \DIFaddbegin \DIFadd{Fontainebleau }\DIFaddend scale. The consensus view as that these two scales also have a correspondence in the higher grades, so that V11 $\equiv$ 8A, V12 $\equiv$ 8A+, $\dots$, V17 $\equiv$ 9A.
+For bouldering, the two common grading systems are the Vermin scale and the \DIFdelbegin \DIFdel{Fontainbleau }\DIFdelend \DIFaddbegin \DIFadd{Fontainebleau }\DIFaddend scale. The consensus view \DIFdelbegin \DIFdel{as }\DIFdelend \DIFaddbegin \DIFadd{is }\DIFaddend that these two scales also have a correspondence in the higher grades, so that V11 $\equiv$ 8A, V12 $\equiv$ 8A+, $\dots$, V17 $\equiv$ 9A.
 
 
 \begin{table}
@@ -288,7 +288,9 @@ We analysed 20 datasets across three countries (New Zealand, Australia, Germany)
 }
 
 
-We describe two analyses in more detail. The first highlighted analysis uses self-reported data on whole-history (meaning climber recorded every attempt) of ascents for 100 Australian climbers of differing abilities to estimate the fundamental slope parameter for the Ewbank climbing grade scale for sport climbing. We repeated this analysis using the same criteria for selection (see Supplementary Material) for climbers in New Zealand, resulting in an additional dataset of 89 climbers.
+We describe two analyses in more detail. The first \DIFdelbegin \DIFdel{highlighted analysis uses self-reported data on }\DIFdelend \DIFaddbegin \DIFadd{uses the }\DIFaddend whole-history \DIFdelbegin \DIFdel{(meaning climber recorded every attempt) of ascents for 100 }\DIFdelend \DIFaddbegin \DIFadd{rating framework of \mbox{%DIFAUXCMD
+\citet{coulom2008whole}}\hskip0pt%DIFAUXCMD
+: all logged ascents (successes and failures) of $100$ }\DIFaddend Australian climbers of differing abilities \DIFaddbegin \DIFadd{are used jointly }\DIFaddend to estimate the fundamental slope parameter for the Ewbank climbing grade scale \DIFdelbegin \DIFdel{for }\DIFdelend \DIFaddbegin \DIFadd{in }\DIFaddend sport climbing. We \DIFaddbegin \DIFadd{use ``whole-history'' to mean that the model uses every logged ascent in the analysis window, not that climbers necessarily logged every attempt they made --- in practice, most climbers do not (we examine the consequences of this in Section~\ref{sec:every-attempt}). We }\DIFaddend repeated this analysis using the same \DIFdelbegin \DIFdel{criteria for selection (see Supplementary Material}\DIFdelend \DIFaddbegin \DIFadd{selection criteria (Section~4.1 below}\DIFaddend ) for climbers in New Zealand, resulting in an additional \DIFdelbegin \DIFdel{dataset }\DIFdelend \DIFaddbegin \DIFadd{data set }\DIFaddend of 89 climbers.
 
 
 \begin{figure}
@@ -413,7 +415,7 @@ Figure \ref{fig.oneill} shows the whole-community counts of successful ascents b
 
 We have endeavoured to bring together various pieces of community knowledge about the mathematics of climbing grades and reframe them in the light of recent work on grade estimation using whole-history ascent data.
 
-Our main contribution is to focus on quantifying the magnitude of the increase in difficulty representing by an increment in climbing grade. We provide evidence that for the Ewbank, French sport and UIAA grading systems this increment is slightly more than a doubling in difficulty for each grade, as measured by average number of failed sessions required before achieving success. For the V-grade system we find that the increment in difficulty is slightly more than a tripling in difficulty for each grade.
+Our main contribution is to focus on quantifying the magnitude of the increase in difficulty \DIFdelbegin \DIFdel{representing }\DIFdelend \DIFaddbegin \DIFadd{represented }\DIFaddend by an increment in climbing grade. We provide evidence that for the Ewbank, French sport and UIAA grading systems this increment is slightly more than a doubling in difficulty for each grade, as measured by average number of failed sessions required before achieving success. For the V-grade system we find that the increment in difficulty is slightly more than a tripling in difficulty for each grade.
 
 This is quite a surprising quantitative law to arise from what many have assumed to be a subjective process of grading climbs. Whereas climbers do argue whether a climb is too hard or too ``soft'' for the grade, implying its true grade is off by one, it is much more rare for disagreements about the grade of a route to span more than two consecutive grades. Typically there is one grade representing the consensus, and a neighbouring grade the alternative. This makes sense if the grade scale is in fact a logarithmic scale of difficulty.
 
@@ -431,7 +433,7 @@ Selection bias is the propensity of climbers to chose routes that are at the eas
 
 Selective logging of failures is a more significant concern. It is clear that most climbers don't log all failures. It seems likely that failures on easy routes would be more embarrassing than failures on harder routes. So if this motivation is commonly in action, then harder routes will appear even harder than they actually are, since the failures are underreported for easier routes. This would lead to an overestimation of the slope of the grade scale. We see \DIFdelbegin \DIFdel{some evidence that this might be the case when comparing our results to data of very experienced climbers known }\DIFdelend \DIFaddbegin \DIFadd{direct empirical evidence for this in Section~\ref{sec:every-attempt}, where the slope estimated on the subset of climbers who appear }\DIFaddend to log every attempt \DIFdelbegin \DIFdel{(data not shown). For climbers known to log every attempt, the slope tends to be slight less than 2, rather than slightly greater than 2 (data not shown)}\DIFdelend \DIFaddbegin \DIFadd{is shifted downwards relative to the main estimate, consistent with under-reporting of failures inflating the apparent slope when less-complete logbooks are included}\DIFaddend .
 
-Suffice to say, there is still much work to do. Foremost in our mind is the need to adapt recently developed whole-history inference methods to account for biases in public repository data in a much more rigorous way than pursued here. This will require a better understanding of the differing ways that climbers approach self-reporting of climbing ascents. It seems likely that climber that logs their own ascent and attempts are likely to be susceptible to various biases and to follow differing conventions, depending on their purpose for making a public log book of their ascents. Data-driven approaches to learning about these differing conventions and biases in order to classifying climbers by their logging approach is an obvious next step.
+Suffice to say, there is still much work to do. Foremost in our mind is the need to adapt recently developed whole-history inference methods to account for biases in public repository data in a much more rigorous way than pursued here. This will require a better understanding of the differing ways that climbers approach self-reporting of climbing ascents. It seems likely that \DIFdelbegin \DIFdel{climber that logs their own ascent }\DIFdelend \DIFaddbegin \DIFadd{climbers who log their own ascents }\DIFaddend and attempts are \DIFdelbegin \DIFdel{likely to be }\DIFdelend susceptible to various biases and \DIFdelbegin \DIFdel{to }\DIFdelend follow differing conventions, depending on their purpose for making a public log book of their ascents. Data-driven approaches to learning about these differing conventions and biases in order to \DIFdelbegin \DIFdel{classifying }\DIFdelend \DIFaddbegin \DIFadd{classify }\DIFaddend climbers by their logging approach \DIFdelbegin \DIFdel{is }\DIFdelend \DIFaddbegin \DIFadd{are }\DIFaddend an obvious next step.
 
 % Acknowledgments removed for blind review.
 
