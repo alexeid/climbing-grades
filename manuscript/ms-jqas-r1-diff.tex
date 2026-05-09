@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL ms-jqas.tex      Sun Mar  8 09:48:23 2026
-%DIF ADD ms-jqas-r1.tex   Sat May  9 20:52:31 2026
+%DIF ADD ms-jqas-r1.tex   Sat May  9 21:05:24 2026
 
 %% Packages
 \usepackage{amsthm,amsmath,amsfonts,amssymb}
@@ -290,7 +290,7 @@ We analysed 20 datasets across three countries (New Zealand, Australia, Germany)
 
 We describe two analyses in more detail. The first \DIFdelbegin \DIFdel{highlighted analysis uses self-reported data on }\DIFdelend \DIFaddbegin \DIFadd{uses the }\DIFaddend whole-history \DIFdelbegin \DIFdel{(meaning climber recorded every attempt) of ascents for 100 }\DIFdelend \DIFaddbegin \DIFadd{rating framework of \mbox{%DIFAUXCMD
 \citet{coulom2008whole}}\hskip0pt%DIFAUXCMD
-: all logged ascents (successes and failures) of $100$ }\DIFaddend Australian climbers of differing abilities \DIFaddbegin \DIFadd{are used jointly }\DIFaddend to estimate the fundamental slope parameter for the Ewbank climbing grade scale \DIFdelbegin \DIFdel{for }\DIFdelend \DIFaddbegin \DIFadd{in }\DIFaddend sport climbing. We \DIFaddbegin \DIFadd{use ``whole-history'' to mean that the model uses every logged ascent in the analysis window, not that climbers necessarily logged every attempt they made --- in practice, most climbers do not (we examine the consequences of this in Section~\ref{sec:every-attempt}). We }\DIFaddend repeated this analysis using the same \DIFdelbegin \DIFdel{criteria for selection (see Supplementary Material}\DIFdelend \DIFaddbegin \DIFadd{selection criteria (Section~4.1 below}\DIFaddend ) for climbers in New Zealand, resulting in an additional \DIFdelbegin \DIFdel{dataset }\DIFdelend \DIFaddbegin \DIFadd{data set }\DIFaddend of 89 climbers.
+: all logged ascents (successes and failures) of $100$ }\DIFaddend Australian climbers of differing abilities \DIFaddbegin \DIFadd{are used jointly }\DIFaddend to estimate the fundamental slope parameter for the Ewbank climbing grade scale \DIFdelbegin \DIFdel{for }\DIFdelend \DIFaddbegin \DIFadd{in }\DIFaddend sport climbing. We \DIFaddbegin \DIFadd{use ``whole-history'' to mean that the model uses every logged ascent in the analysis window, not that climbers necessarily logged every attempt they made; in practice, most climbers do not (we examine the consequences of this in Section~\ref{sec:every-attempt}). We }\DIFaddend repeated this analysis using the same \DIFdelbegin \DIFdel{criteria for selection (see Supplementary Material}\DIFdelend \DIFaddbegin \DIFadd{selection criteria (Section~4.1 below}\DIFaddend ) for climbers in New Zealand, resulting in an additional \DIFdelbegin \DIFdel{dataset }\DIFdelend \DIFaddbegin \DIFadd{data set }\DIFaddend of 89 climbers.
 
 
 \begin{figure}
@@ -349,7 +349,7 @@ The median number of explicit fails per climber (i.e., \gls{hangdog}, attempt, w
 \label{aus_ascents}
 \end{figure}
 
-\DIFaddbegin \paragraph{\DIFadd{Threshold sensitivity.}} \DIFadd{To address the concern that the $\geq\!30$ attempts inclusion threshold is somewhat arbitrary, we re-ran the Australia-Sport per-session analysis at attempt thresholds of $\geq\!50$ and $\geq\!100$, with the $n=100$ cap held fixed (Table~\ref{tab:threshold-sensitivity}). In all three runs the $n=100$ cap binds at the same set of top-most-active climbers --- each of whom logs hundreds of attempts and therefore comfortably clears all three thresholds --- so the $N=48{,}679$ logged-ascent count and the posterior of $m$ are essentially identical (the small differences are MCMC sampling noise). This is informative but limited: it shows that the main result is not sensitive to whether a long-tailed group of marginally active climbers is included or excluded, but it does not directly probe what would happen if the cap itself were relaxed.
+\DIFaddbegin \paragraph{\DIFadd{Threshold sensitivity.}} \DIFadd{To address the concern that the $\geq\!30$ attempts inclusion threshold is somewhat arbitrary, we re-ran the Australia-Sport per-session analysis at attempt thresholds of $\geq\!50$ and $\geq\!100$, with the $n=100$ cap held fixed (Table~\ref{tab:threshold-sensitivity}). In all three runs the $n=100$ cap binds at the same set of top-most-active climbers (each of whom logs hundreds of attempts and therefore comfortably clears all three thresholds), so the $N=48{,}679$ logged-ascent count and the posterior of $m$ are essentially identical (the small differences are MCMC sampling noise). This is informative but limited: it shows that the main result is not sensitive to whether a long-tailed group of marginally active climbers is included or excluded, but it does not directly probe what would happen if the cap itself were relaxed.
 }
 
 \DIFadd{For the latter question we appeal to the New Zealand sport analysis, where only $89$ climbers passed the $\geq\!30$/$\geq\!1$ filter and the $n=100$ cap therefore did not bind. The slope estimate $m = 0.80\ [0.76, 0.84]$ from this uncapped run is comparable in magnitude to the AUS estimate $m = 0.85\ [0.83, 0.86]$, consistent with the $n=100$ cap acting as a computational ceiling rather than a substantive analytical choice.
