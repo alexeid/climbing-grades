@@ -1,4 +1,10 @@
-library(tidyjson)
+# tidyjson is only needed for read.json.ascents() which converts raw thecrag JSON
+# into the RDS files in data/processed/. The inference pipeline does not call
+# read.json.ascents and so does not need tidyjson; load it lazily so analyses
+# can run in environments where tidyjson is not installed.
+if (requireNamespace("tidyjson", quietly = TRUE)) {
+  suppressMessages(library(tidyjson))
+}
 library(tidyr)
 library(stringr)
 

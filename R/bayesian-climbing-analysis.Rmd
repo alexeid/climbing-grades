@@ -130,6 +130,22 @@ stan.result <- run.stan.climbing.model(data$d)
 
 fit1 <- stan.result$fit
 data$time <- stan.result$time
+data$diagnostics <- stan.result$diagnostics
+data$mcmc.settings <- stan.result$mcmc.settings
+```
+
+```{r convergence-diagnostics, echo=FALSE}
+print("MCMC settings:")
+print(data$mcmc.settings)
+print("Convergence diagnostics for m:")
+print(data$diagnostics$m)
+print(paste0("R-hat range across all parameters: [",
+             signif(data$diagnostics$rhat.range[1], 3), ", ",
+             signif(data$diagnostics$rhat.range[2], 3), "]"))
+print(paste0("Minimum n_eff: ", signif(data$diagnostics$neff.min, 3),
+             "; median n_eff: ", signif(data$diagnostics$neff.median, 3)))
+print(paste0("Divergent transitions: ", data$diagnostics$n.divergent,
+             "; iterations hitting max treedepth: ", data$diagnostics$n.maxtreedepth))
 ```
 
 
@@ -151,6 +167,14 @@ data$time <- stan.result$time
 fit.file.name <- paste0(data$file.stem, ".rds")
 
 saveRDS(as.data.frame(fit1), file=fit.file.name)
+
+# Save diagnostics in a separate small file so they survive even when the full
+# stanfit object is discarded.
+diag.file.name <- paste0(data$file.stem, "-diagnostics.rds")
+saveRDS(list(diagnostics=data$diagnostics, mcmc.settings=data$mcmc.settings,
+             elapsed=data$time["elapsed"]),
+        file=diag.file.name)
+
 rm(fit1)
 
 data.file.name <- paste0(data$file.stem, "-data.rds")

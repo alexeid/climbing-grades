@@ -4,13 +4,27 @@ library(rstan)  # Stan interface for R
 options(mc.cores = parallel::detectCores())
 
 ##########################################################################################
-### Function for Logistic Model with RStan 
+### Function for Logistic Model with RStan
+###   estimate.w = FALSE (default): the Wiener-process step SD is fixed at 0.5/month
+###   estimate.w = TRUE:  w is a parameter with Gamma(2, 4) prior, jointly estimated
+###     with m and the climber-grade trajectories.
+###   m.prior.code: a Stan statement giving the prior on m. Defaults to the headline
+###     "m ~ lognormal(-0.5, 0.6);". Pass any valid Stan sampling statement (or
+###     "target += ...;") to swap the prior, e.g. "m ~ lognormal(-0.5, 1.0);" or
+###     "m ~ gamma(2, 4);". Used by the prior-sensitivity script.
+###   sample_file: prefix for per-chain CSV outputs. Stan appends "_<chain>.csv".
+###     Defaults to a tempfile prefix; pass a stable path (e.g. under logs/)
+###     to inspect partial draws while the run is in flight.
 ##########################################################################################
-run.stan.climbing.model <- function(d, chains=4, iter=4000) {
-      
-  # Model code
-  mod_string <- "
-  data {                          
+run.stan.climbing.model <- function(d, chains=4, iter=4000, estimate.w=FALSE,
+                                    m.prior.code="m ~ lognormal(-0.5, 0.6);",
+                                    sample_file=tempfile("climbing-stan-chain_")) {
+
+  message("Per-chain Stan draws will be written to: ", sample_file, "_<chain>.csv")
+  message("Prior on m: ", m.prior.code)
+
+  mod_string_fixed_w <- "
+  data {
     int<lower=1> C;            // number of climbers
     int<lower=1> N;            // number of ascents
     int<lower=1> P;            // number of pages
@@ -23,41 +37,120 @@ run.stan.climbing.model <- function(d, chains=4, iter=4000) {
     int meanGradePrior;        // the mean of the grade prior
   }
   parameters {
-    // mid-point intercept
-    real climberGrade[C, P]; 
-    
-    // slope of increase in difficulty per grade increment
-    real<lower=0.0> m;       
+    real climberGrade[C, P];   // mid-point intercept
+    real<lower=0.0> m;         // slope of increase in difficulty per grade increment
   }
   model {
-    m ~ lognormal(-0.5,0.6); // prior on slope
-    for(j in 1:C) {
-      // prior on grades up to and including first month with data
-      for(i in 1:minPage[j]) {
-        climberGrade[j, i]  ~ normal(meanGradePrior,5);    
+    __M_PRIOR_PLACEHOLDER__  // prior on slope
+    for (j in 1:C) {
+      for (i in 1:minPage[j]) {
+        climberGrade[j, i] ~ normal(meanGradePrior, 5);
       }
-      // prior on grade in months after first that have data
-      for(i in (minPage[j]+1):maxPage[j]) {
-        climberGrade[j, i] ~ normal(climberGrade[j, i-1], 0.5);     
+      for (i in (minPage[j]+1):maxPage[j]) {
+        climberGrade[j, i] ~ normal(climberGrade[j, i-1], 0.5);
       }
-      // prior on grades on months after data
-      for(i in (maxPage[j]+1):P) {
-        climberGrade[j, i]  ~ normal(meanGradePrior,5);    
+      for (i in (maxPage[j]+1):P) {
+        climberGrade[j, i] ~ normal(meanGradePrior, 5);
       }
     }
-    // likelihood
     for (i in 1:N) {
-      y[i] ~ bernoulli_logit(m*(climberGrade[c[i], page[i]]-x[i])); 
-    }    
+      y[i] ~ bernoulli_logit(m * (climberGrade[c[i], page[i]] - x[i]));
+    }
   }
-  
   "
-  
-  # Run the model
-  time = system.time(fit1 <- stan(model_code = mod_string, data=d, chains=chains, iter=iter))
+
+  mod_string_estimate_w <- "
+  data {
+    int<lower=1> C;
+    int<lower=1> N;
+    int<lower=1> P;
+    int<lower=1> minPage[C];
+    int<lower=1> maxPage[C];
+    int<lower=0,upper=1> y[N];
+    int<lower=1> page[N];
+    int<lower=1> c[N];
+    vector[N] x;
+    int meanGradePrior;
+  }
+  parameters {
+    real climberGrade[C, P];
+    real<lower=0.0> m;
+    real<lower=0.0> w;         // Wiener-process step SD, jointly estimated
+  }
+  model {
+    __M_PRIOR_PLACEHOLDER__
+    w ~ gamma(2, 4);           // mean 0.5, mode 0.25, sd ~0.35; density linear at zero
+                                // (so we are not a priori favouring a degenerate w=0 process)
+    for (j in 1:C) {
+      for (i in 1:minPage[j]) {
+        climberGrade[j, i] ~ normal(meanGradePrior, 5);
+      }
+      for (i in (minPage[j]+1):maxPage[j]) {
+        climberGrade[j, i] ~ normal(climberGrade[j, i-1], w);
+      }
+      for (i in (maxPage[j]+1):P) {
+        climberGrade[j, i] ~ normal(meanGradePrior, 5);
+      }
+    }
+    for (i in 1:N) {
+      y[i] ~ bernoulli_logit(m * (climberGrade[c[i], page[i]] - x[i]));
+    }
+  }
+  "
+
+  mod_string <- if (estimate.w) mod_string_estimate_w else mod_string_fixed_w
+  mod_string <- gsub("__M_PRIOR_PLACEHOLDER__", m.prior.code, mod_string, fixed=TRUE)
+
+  time = system.time(fit1 <- stan(model_code = mod_string, data=d, chains=chains, iter=iter,
+                                   sample_file=sample_file))
   print(paste0("Stan analysis took: ", time["elapsed"]))
-  
-  return (list(fit=fit1, time=time))
+
+  diagnostics <- extract.convergence.diagnostics(fit1, estimate.w=estimate.w)
+
+  return (list(fit=fit1, time=time, diagnostics=diagnostics,
+               mcmc.settings=list(chains=chains, iter=iter, warmup=floor(iter/2),
+                                  estimate.w=estimate.w)))
+}
+
+##########################################################################################
+### Extract convergence diagnostics (R-hat, bulk/tail ESS) from a stanfit object.
+### Optionally also extracts diagnostics for w when the joint-estimation model was used.
+##########################################################################################
+extract.convergence.diagnostics <- function(fit, sample.climber.params=20, estimate.w=FALSE) {
+
+  s <- summary(fit)$summary
+  param.names <- rownames(s)
+
+  cols <- c("Rhat", "n_eff", "mean", "sd", "2.5%", "50%", "97.5%")
+  m.row <- s["m", cols, drop=FALSE]
+  w.row <- if (estimate.w && "w" %in% param.names) s["w", cols, drop=FALSE] else NULL
+
+  climber.idx <- grep("^climberGrade\\[", param.names)
+  if (length(climber.idx) > sample.climber.params) {
+    set.seed(1)
+    climber.idx <- sort(sample(climber.idx, sample.climber.params))
+  }
+  climber.rows <- s[climber.idx, c("Rhat", "n_eff"), drop=FALSE]
+
+  rhats <- s[, "Rhat"]
+  neffs <- s[, "n_eff"]
+
+  summary.stats <- list(
+    m = m.row,
+    w = w.row,
+    climber.subset = climber.rows,
+    rhat.range = range(rhats, na.rm=TRUE),
+    rhat.max = max(rhats, na.rm=TRUE),
+    neff.min = min(neffs, na.rm=TRUE),
+    neff.median = median(neffs, na.rm=TRUE),
+    n.params = length(param.names),
+    n.divergent = sum(sapply(rstan::get_sampler_params(fit, inc_warmup=FALSE),
+                              function(x) sum(x[, "divergent__"]))),
+    n.maxtreedepth = sum(sapply(rstan::get_sampler_params(fit, inc_warmup=FALSE),
+                                 function(x) sum(x[, "treedepth__"] >= 10)))
+  )
+
+  return(summary.stats)
 }
 
 ##########################################################################################

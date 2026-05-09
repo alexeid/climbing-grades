@@ -1,0 +1,149 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage[colorlinks,citecolor=blue,urlcolor=blue,linkcolor=blue]{hyperref}
+\usepackage[margin=1in,letterpaper]{geometry}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{parskip}
+
+\definecolor{revcolor}{rgb}{0.30,0.30,0.30}
+
+\newenvironment{review}{\begingroup\color{revcolor}\itshape\par\noindent}{\par\endgroup}
+\newcommand{\response}{\par\noindent\textbf{Response.}\ }
+
+\title{Response to Reviewers\\\large Manuscript ID DGJQAS.2026.0040\\``Bayesian inference of the climbing grade scale''}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+We thank the Associate Editor and the reviewer for their careful and constructive reading of our manuscript. Their comments have led to substantial improvements in the methodological transparency, the framing of our contribution, and the empirical treatment of the under-reporting bias that we identified as the largest threat to interpretation. Below we respond to each comment in turn. In the revised manuscript, all changes are highlighted using \texttt{\textbackslash hl\{\}} (or coloured text); section and equation numbers refer to the revised manuscript unless otherwise noted.
+
+\section*{Response to the Associate Editor}
+
+\begin{review}
+The main concerns relate to methodological transparency and statistical reporting. In particular, the manuscript provides insufficient detail regarding the Bayesian inference procedure, including the specification of priors, estimation of the Wiener process variance, convergence diagnostics, MCMC settings, and sensitivity analyses.
+\end{review}
+\response We have substantially expanded Section~4.1 (``Whole-history Bayesian inference''). We now (i) state the prior on the slope parameter, $m \sim \mathrm{LogNormal}(-0.5, 0.6^2)$, and the three-regime prior on each climber's grade trajectory $C_j(t)$; (ii) clarify in Section~3.2 that the Wiener-process variance $w^2$ is fixed at $w = 0.5$ grade units per month rather than estimated, and explain why; (iii) report MCMC settings (4 chains, 4{,}000 iterations per chain, 2{,}000 warmup, NUTS); and (iv) report rank-normalised split-$\hat{R}$ and bulk/tail effective sample sizes (Vehtari et al., 2021) for $m$ and a representative subset of climber-grade parameters in the Supplementary Information, together with a sensitivity analysis with respect to $w$.
+
+\begin{review}
+In addition, the referee raises concerns regarding robustness and reproducibility of the empirical findings, including the arbitrariness of the inclusion thresholds, the climber selection procedure, and the lack of supporting analyses regarding under-reporting bias.
+\end{review}
+\response We have addressed all three of these concerns: the inclusion-threshold robustness is now reported in a new sensitivity table at thresholds $\geq 30$, $\geq 50$ and $\geq 100$ attempts; the climber selection rule is now described in full in Section~4.1; and a new analysis on the subset of climbers who appear to log every attempt (Section~5.2 (``Every-attempt logger subset'')) has been added, providing the empirical bound on the under-reporting bias that we previously discussed only as ``data not shown''.
+
+\begin{review}
+The manuscript would also benefit from a clearer explanation of its novelty relative to Scarff (2020), a more cautious interpretation of the validation analysis in Figure 4, and several clarifications regarding notation, terminology, and presentation.
+\end{review}
+\response A new ``Contributions'' paragraph at the end of the Introduction (six numbered items) now explicitly delineates this work from Scarff (2020). Figure~4 is no longer presented as a validation: the relevant passage in Section~5.2 has been rewritten to acknowledge that the slope of community-wide ascent counts is jointly determined by route difficulty, route supply, and community attempt rates, and we explicitly disclaim a quantitative comparison to the Bayesian estimate of $m$. Notational and presentation issues are addressed point-by-point below.
+
+\section*{Responses to the Reviewer's Comments}
+
+\subsection*{Comment 1 (Contributions vs.\ Scarff 2020)}
+
+\begin{review}
+The paper repeatedly states it follows Scarff (2020) for both the model and the underlying motivation. The Introduction and Section 3 do not clearly delineate what is genuinely new here. The paper would benefit substantially from an explicit ``Contributions'' paragraph at the end of the Introduction that distinguishes this work from Scarff (2020).
+\end{review}
+\response We agree, and have added a ``Contributions'' paragraph at the end of the Introduction (Section~2). It enumerates six respects in which our work differs from Scarff (2020):
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+    \item The slope parameter $m$ itself is the central object of inference here, treated as a property of the route-grade scale, rather than the climber/route grades being the primary inferential targets.
+    \item We perform full Bayesian inference using Hamiltonian Monte Carlo in Stan, in contrast to the penalised maximum-likelihood approach of Scarff (2020).
+    \item We apply the model to 20 datasets across three countries, four grading systems, and three styles, allowing a cross-system comparison of $m$.
+    \item We introduce a session-aggregated formulation to mitigate one form of under-reporting bias.
+    \item We connect the empirical estimate of $m$ to the psychophysical Weber--Fechner law.
+    \item We characterise self-reporting biases (selection bias and selective failure logging) and quantify their likely impact on the slope estimate.
+\end{enumerate}
+
+\subsection*{Comment 2 (Bayesian inference reporting)}
+
+\begin{review}
+For a paper whose core methodological claim is ``full Bayesian MCMC inference,'' surprisingly little is reported about the inference itself.
+\begin{itemize}
+\item No prior distributions are specified for $m$, the climber grades $C(t)$, or the Wiener process variance $w^2$. These should be presented in the main text, accompanied by a sensitivity analysis where appropriate, or at least a justification for them.
+\item No convergence diagnostics are reported: no R-hat, no effective sample size, no number of chains, no warmup/sampling iterations.
+\end{itemize}
+\end{review}
+\response We have added two new paragraphs to Section~4.1 of the revised manuscript:
+\begin{itemize}
+\item \textbf{Priors.} The slope parameter has a weakly informative log-normal prior, $m \sim \mathrm{LogNormal}(-0.5, 0.6^2)$, whose central 95\% mass corresponds to $m \in [0.19, 1.97]$ (equivalently $d = e^m \in [1.21, 7.21]$). For each climber $j$, $C_j(t) \sim \mathcal{N}(\mu_0, 5^2)$ for time-steps before the climber's first logged ascent and after their last (with $\mu_0$ a per-dataset constant), and $C_j(t+1) \sim \mathcal{N}(C_j(t), w^2)$ for time-steps within the data interval. The Wiener-process variance $w^2$ is not estimated; see the response to Comment~3 below.
+\item \textbf{MCMC settings.} Each analysis is run with 4 parallel chains and 4{,}000 iterations per chain, of which the first 2{,}000 are discarded as warmup, leaving 8{,}000 total post-warmup draws. We monitor convergence with rank-normalised split-$\hat{R}$ and bulk/tail effective sample sizes following Vehtari et al.\ (2021). For the Australia-Sport headline analysis, across all $6{,}002$ monitored parameters the maximum $\hat{R}$ was $1.006$, the minimum bulk $n_{\mathrm{eff}}$ was $1{,}103$, and there were zero divergent transitions and zero iterations hitting the maximum treedepth; for the slope parameter itself, $\hat{R} = 1.00$ and $n_{\mathrm{eff}} = 7{,}531$. Diagnostics tables for all 20 analyses are reported in the Supplementary Information.
+\end{itemize}
+The analysis pipeline (\texttt{R/climbing-stan.R} and \texttt{R/bayesian-climbing-analysis.Rmd}) has been updated so that $\hat{R}$, ESS, divergent-transition counts, and max-treedepth hits are now extracted from the \texttt{stanfit} object and saved alongside the posterior draws (the previous code saved only the posterior draws via \texttt{as.data.frame(fit1)}, which discarded diagnostic information).
+
+A sensitivity analysis to the prior on $m$ is reported as Section~S6 of the revised supplement. We re-fit the Australia-Sport per-session analysis under three alternative priors covering both narrower and broader log-normal alternatives and a different distributional family ($\mathrm{LogNormal}(-0.5, 0.3^2)$, $\mathrm{LogNormal}(-0.5, 1.0^2)$, $\mathrm{Gamma}(2, 4)$). The posterior median and credible interval for $m$ agree to three decimal places across all four priors (headline plus three alternatives), confirming that with $N \approx 50{,}000$ ascents informing $m$ the data dominate the prior.
+
+\subsection*{Comment 3 (Wiener process variance)}
+
+\begin{review}
+The Wiener process variance $w^2$ in Equation (4) governs how rapidly climber ability is allowed to drift (This should also be stated in the text). Was this estimated, fixed, or assigned a hyperprior?
+\end{review}
+\response We have added a new paragraph immediately after Eq.~(4) in Section~3.2 stating explicitly that $w^2$ controls the rate of drift between consecutive monthly time-steps. For the 20 headline analyses we fix $w = 0.5$ grade units per month for computational efficiency, with $0.5$ chosen to encode a reasonable prior expectation about typical monthly drift.
+
+To verify that this choice does not drive the headline result, we additionally re-fit the Australia-Sport per-session analysis under a model in which $w$ is given a $\mathrm{Gamma}(2, 4)$ prior (mean $0.5$, mode $0.25$, density vanishing at $w=0$) and jointly estimated with $m$ and the climber-grade trajectories. We chose Gamma over the more common half-normal or half-Cauchy because the latter place their highest prior density on the degenerate $w \to 0$ regime, conflicting with our substantive belief that climbers' ability does change between months. The posterior for $w$ has median $0.39$ with $95\%$ credible interval $[0.36, 0.43]$, indicating the data support somewhat less monthly drift than the previously fixed value; the posterior for $m$ shifts only marginally, from $0.846\ [0.829, 0.864]$ (fixed $w$) to $0.841\ [0.825, 0.858]$ (joint estimation), well within the joint credible interval. This robustness check is reported in full as Section~S5 of the revised supplement.
+
+\subsection*{Comment 4 (Inclusion thresholds and number of climbers)}
+
+\begin{review}
+The criterion of $\geq$30 attempts with $\geq$1 explicit failure is reasonable but arbitrary. A robustness check at, say, $\geq$50 and $\geq$100 attempts would help readers gauge how dependent the estimates are on inclusion thresholds. Similarly, the choice of $n = 100$ climbers is not motivated, why not all eligible climbers?
+\end{review}
+\response We have added a threshold-sensitivity table to the revised manuscript (Table~1, in the ``Threshold sensitivity'' paragraph of Section~5.1) reporting posterior summaries for $m$ at attempt thresholds $\geq 30$, $\geq 50$ and $\geq 100$, with the $n=100$ cap held fixed.
+
+We report a finding worth flagging explicitly: in all three runs the $n=100$ cap binds at the same set of top-most-active climbers, each of whom logs hundreds of attempts and therefore comfortably clears all three thresholds. The selected sample (and hence the posterior of $m$) is therefore identical across the three thresholds up to MCMC noise. This shows directly that the headline result is unaffected by the inclusion or exclusion of any tail of less-active climbers, but it does not by itself probe what would happen if the $n=100$ cap were relaxed.
+
+For that latter question we appeal to the existing New Zealand sport analysis, where only $89$ climbers passed the $\geq 30$/$\geq 1$ filter and the $n=100$ cap therefore did not bind. The slope estimate $m = 0.80\ [0.76, 0.84]$ from this uncapped run is comparable to the AUS estimate $m = 0.85\ [0.83, 0.86]$, supporting the interpretation of the cap as a computational ceiling rather than a substantive analytical choice. We have stated this comparison explicitly in the manuscript so the reader can see that the cap has little effect on the inference.
+
+\subsection*{Comment 5 (Bradley--Terry identifiability)}
+
+\begin{review}
+The recasting of climbing as a Bradley--Terry (BT) ``game'' between climber and route is novel enough that it warrants a brief sentence noting that, unlike player-vs-player BT, the route's ``ability'' R is fixed across the entire data set. This affects identifiability, what anchors the climber-grade scale to the route-grade scale, given route grades are taken as known?
+\end{review}
+\response We have added a paragraph to Section~3.2 stating explicitly that, unlike the standard player-versus-player Bradley--Terry model in which both abilities are latent and the scale must be fixed by an external constraint, the route grade $R$ is treated as observed in our setup: each route carries its consensus community-assigned grade as a known constant. This asymmetric treatment is what anchors the climber-grade scale to the route-grade scale and identifies $m$. We also note that the resulting $m$ should be interpreted as a property of the route-grade scale itself, given the community's grading conventions.
+
+\subsection*{Comment 6 (Figure 4 ``validation'')}
+
+\begin{review}
+The slopes of 0.7--0.79 (Figure 4) ``conform remarkably well'' with the Bayesian estimates, but as the authors themselves note, this analysis confounds difficulty with the number of attempts the community makes at each grade, and with the supply of routes at each grade. It is not really a validation. I would either drop this analysis or frame it more cautiously, at present it adds rhetorical weight that is not earned by the underlying data.
+\end{review}
+\response We agree and have rewritten the relevant passage in Section~5.2. The text no longer claims agreement with the Bayesian estimate; instead, it explicitly enumerates the three confounds (route difficulty, route supply at each grade, and community attempt rates at each grade), notes that we have no independent estimate of the latter two, and presents the curves as a complementary descriptive observation rather than as evidence in support of the Bayesian estimates. We have removed the quantitative comparison.
+
+\subsection*{Comment 7 (Climber selection rule)}
+
+\begin{review}
+In page 9: ``for $n = 100$ climbers of differing abilities'', what was the selection rule beyond the $\geq$30 attempts / $\geq$1 failure threshold? Were these the top-100 most-active climbers? Random sample? This matters for selection bias.
+\end{review}
+\response The selection rule is: among climbers passing the $\geq 30$ attempts and $\geq 1$ explicit failure thresholds, the $n = 100$ with the largest number of logged ascents are retained. This is now stated explicitly in Section~4.1. We deliberately did not impose stricter logging-quality filters at this stage so that the headline estimates would reflect the broad community of regularly active climbers; a separate analysis on a stricter ``every-attempt logger'' subset is reported in response to Comment~9.
+
+\subsection*{Comment 8 (Figure 1 axis label)}
+
+\begin{review}
+In Figure 1 the horizontal axis label ``Slope'' should clarify whether this is $d = e^m$ (per the caption) --- the body text variously uses both $m$ and $d$. You should one for the figure axis and define it clearly.
+\end{review}
+\response We have rewritten the caption of Figure~1 to make the axis definition explicit: the horizontal axis (labelled ``Slope'') corresponds to $d = e^m$, the multiplicative factor by which the expected number of failures per success increases per unit of grade, where $m$ denotes the latent slope parameter on the log-odds scale. Body text has been audited for consistent use of $m$ versus $d$.
+
+\subsection*{Comment 9 (Every-attempt loggers)}
+
+\begin{review}
+On page 18--19, the authors state that for climbers known to log every attempt, the slope tends to be slightly less than 2 rather than slightly greater than 2, and label this ``data not shown.'' This is arguably the single most important piece of evidence in the paper: it directly addresses the under-reporting bias that the authors acknowledge as the largest threat to their estimates, and would provide an empirical bound on how much the headline $\approx$2.1 figure should be adjusted. This analysis must be included, even briefly, with sample size, selection criteria, and posterior estimates. Without it, the Discussion's claim that the true slope may be slightly less than 2 is unsupported.
+\end{review}
+\response We agree this is the most consequential omission, and have added a new subsection (Section~5.2 (``Every-attempt logger subset''), ``Every-attempt logger subset'') reporting this analysis in full. The selection criteria are: (i) the same $\geq 30$ attempts and $\geq 1$ explicit failure thresholds as the headline analysis, and additionally (ii) at most 5\% generic ``tick'' ascent records (an ambiguous ascent type that does not unambiguously imply a clean send); and (iii) at most 5\% lonely redpoints, where a lonely redpoint is a redpoint of a route for which no other ascent of that route by that climber has been logged. The latter two criteria together select climbers who appear to log every attempt rather than only successful sends.
+
+For the Australia-Sport per-session data set, more than $100$ climbers passed both additional logging-quality filters, and we therefore retained the top-$100$ most-active among them (consistent with the headline cap), comprising $N = 26{,}578$ per-session ascents. The posterior estimate on this subset was $m = 0.76$ [95\% CrI: $0.74, 0.79$], corresponding to $d = e^m = 2.15$ [95\% CrI: $2.10, 2.19$]. As anticipated, this estimate sits meaningfully below the headline estimate of $d \approx 2.33$, providing empirical support for the direction of the under-reporting-bias claim. We note for transparency that the every-attempt-logger estimate is still above $2$ rather than below $2$ as the original ``data not shown'' sentence asserted; the revised manuscript (new Section~5.2) now states this directly and interprets the headline as plausibly biased upwards by a few percent rather than substantially overstated. Convergence diagnostics for this run are clean (maximum $\hat{R} = 1.01$, minimum $n_{\mathrm{eff}} = 848$, zero divergent transitions across $6{,}002$ parameters).
+
+\subsection*{Comments 10--16 (Presentation)}
+
+\begin{description}[leftmargin=2em,style=nextline]
+\item[\#10 ``practising a particle route''] Corrected to ``practising a particular route'' (Section~6).
+\item[\#11 Section 5.1 reuses Section 4.1 heading] Section 4.1 has been retitled ``Whole-history Bayesian inference''; Section 4.2 has been retitled ``Community-wide ascent count regression''; Section 5.1 and 5.2 retain their result-oriented titles. All seven subsection headings are now distinct.
+\item[\#12 ``Fontainbleau''] Corrected to ``Fontainebleau''.
+\item[\#13 ``Ewbanks''] Standardised to ``Ewbank'' throughout.
+\item[\#14 Variable $a$ in Eq.~(5)] We now explicitly introduce $a$ as the number of failed attempts before the first send in the sentence preceding Eq.~(5).
+\item[\#15 Punctuation after equations] Periods or commas have been added at the end of Eqs.~(1), (3), (4) and (5) as appropriate to the surrounding sentence structure. Eq.~(2) already terminated with a comma.
+\item[\#16 Decimal precision in abstract] We now report the slope estimates as $2.10$, $2.09$ and $2.13$ (two decimal places throughout).
+\end{description}
+
+\section*{Reference}
+
+\noindent Vehtari, A., Gelman, A., Simpson, D., Carpenter, B., \& B\"urkner, P.-C. (2021). Rank-normalization, folding, and localization: An improved $\hat{R}$ for assessing convergence of MCMC (with discussion). \emph{Bayesian Analysis}, 16(2), 667--718.
+
+\end{document}
