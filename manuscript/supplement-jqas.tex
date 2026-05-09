@@ -78,7 +78,7 @@ All analyses were run with 4 parallel chains, 4{,}000 iterations per chain, of w
 \section{Cross-dataset summary}
 \label{si:cross-dataset}
 
-Table~\ref{si:datasets} reports, for each of the 20 analyses, the number of climbers retained ($n$), the number of logged ascents ($N$), the posterior median and 95\% equal-tail credible interval for $d = e^m$, and the inclusion threshold.
+Table~\ref{si:datasets} reports, for each of the 20 analyses, the number of climbers retained ($n$), the number of logged ascents ($N$), the posterior median and 95\% central credible interval for $d = e^m$, and the inclusion threshold.
 
 The selection pipeline retains climbers passing the per-attempt minimum thresholds (set to $30$ attempts and $1$ explicit failure for all 20 analyses). If more than $100$ climbers pass these thresholds, only the top-$100$ by total ascent count are kept; otherwise all eligible climbers are retained. In Table~\ref{si:datasets}, $n$ is shown in bold ($\mathbf{100}$) for the analyses where this top-$100$ cap was reached, and in normal weight where all eligible climbers were used.
 
@@ -119,7 +119,7 @@ The distinction matters for the threshold sensitivity reported in Section~5.1 of
       Germany     & Sport      & UIAA    & session & $\mathbf{100}$ & $18{,}435$ & $2.14$ & $2.08$ & $2.21$ & $\geq 30$ \\
       \bottomrule
     \end{tabular}
-    \caption{Summary of all 20 Bayesian analyses. $n$ is the number of climbers retained; $N$ is the number of logged ascents on which inference is performed (after per-session aggregation where applicable); $d = e^m$ is the posterior median multiplicative factor in difficulty per grade increment, with the 2.5\% and 97.5\% quantiles of the posterior shown as endpoints of a 95\% equal-tail credible interval. The minimum-attempts column lists the per-climber inclusion threshold (set to $30$ in all 20 analyses; the minimum-explicit-failures threshold is $1$ throughout). $n$ is shown in bold ($\mathbf{100}$) where the analysis was capped at the top-$100$ most-active climbers because more than $100$ climbers passed the inclusion thresholds; in the remaining analyses (where $n$ is shown in normal weight), all eligible climbers were used. The slope estimates are mutually consistent across this stratification, suggesting the cap acts as a computational ceiling rather than a substantive analytical choice.}
+    \caption{Summary of all 20 Bayesian analyses. $n$ is the number of climbers retained; $N$ is the number of logged ascents on which inference is performed (after per-session aggregation where applicable); $d = e^m$ is the posterior median multiplicative factor in difficulty per grade increment, with the 2.5\% and 97.5\% quantiles of the posterior shown as endpoints of a 95\% central credible interval. The minimum-attempts column lists the per-climber inclusion threshold (set to $30$ in all 20 analyses; the minimum-explicit-failures threshold is $1$ throughout). $n$ is shown in bold ($\mathbf{100}$) where the analysis was capped at the top-$100$ most-active climbers because more than $100$ climbers passed the inclusion thresholds; in the remaining analyses (where $n$ is shown in normal weight), all eligible climbers were used. The slope estimates are mutually consistent across this stratification, suggesting the cap acts as a computational ceiling rather than a substantive analytical choice.}
     \label{si:datasets}
     \end{table}
     \end{landscape}
