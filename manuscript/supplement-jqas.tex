@@ -149,10 +149,10 @@ Figure~\ref{si:regression-aus} shows the resulting per-climber regression lines 
 \end{figure}
 
 
-\section{Convergence diagnostics for the headline analysis}
+\section{Convergence diagnostics for the main analysis}
 \label{si:diagnostics}
 
-Table~\ref{si:diag-aus-sport} reports convergence diagnostics for the headline Australia-Sport per-session analysis (row 4 of Table~\ref{si:datasets}). Diagnostics are reported following \citet{vehtari2021rank}: rank-normalised split-$\hat{R}$, bulk effective sample size, and counts of divergent transitions and iterations hitting the maximum NUTS treedepth. The slope parameter $m$ converges with $\hat{R} = 1.00$ and $n_{\mathrm{eff}} = 7{,}531$. Across all $6{,}002$ monitored parameters, the maximum $\hat{R}$ is $1.006$ and the minimum bulk $n_{\mathrm{eff}}$ is $1{,}103$. There were zero divergent transitions and zero iterations hitting the maximum treedepth across all four chains. These diagnostics indicate clean convergence with no need for warmup-length adjustment, step-size retuning, or reparametrisation. The same MCMC settings were used for all 20 analyses.
+Table~\ref{si:diag-aus-sport} reports convergence diagnostics for the main Australia-Sport per-session analysis (row 4 of Table~\ref{si:datasets}). Diagnostics are reported following \citet{vehtari2021rank}: rank-normalised split-$\hat{R}$, bulk effective sample size, and counts of divergent transitions and iterations hitting the maximum NUTS treedepth. The slope parameter $m$ converges with $\hat{R} = 1.00$ and $n_{\mathrm{eff}} = 7{,}531$. Across all $6{,}002$ monitored parameters, the maximum $\hat{R}$ is $1.006$ and the minimum bulk $n_{\mathrm{eff}}$ is $1{,}103$. There were zero divergent transitions and zero iterations hitting the maximum treedepth across all four chains. These diagnostics indicate clean convergence with no need for warmup-length adjustment, step-size retuning, or reparametrisation. The same MCMC settings were used for all 20 analyses.
 
 \begin{table}[ht]
 \centering
@@ -185,9 +185,9 @@ Wall-clock time (4-core parallel) & $77.8$ minutes \\
 \section{Joint estimation of the Wiener-process step SD}
 \label{si:joint-w}
 
-In the 20 headline analyses the Wiener-process step SD $w$ is fixed at $0.5$ grade units per month, on the grounds that this value encodes a reasonable prior expectation about month-to-month changes in form. To check that the slope estimate $m$ is not sensitive to this choice, we re-fit the Australia-Sport per-session model with $w$ given a $\mathrm{Gamma}(2, 4)$ prior (mean $0.5$, mode $0.25$, standard deviation $\approx 0.35$, with density vanishing at $w=0$) and jointly estimated alongside $m$ and the climber-grade trajectories. The shape parameter $\alpha = 2$ ensures that the prior density goes to zero linearly as $w \to 0^+$, ruling out the degenerate ``no drift'' regime that a half-normal or half-Cauchy prior would put high prior mass on. The same MCMC settings as the headline analyses were used (4 chains, 4{,}000 iterations per chain, 2{,}000 warmup); diagnostics for this run are reported in Table~\ref{si:diag-joint-w}.
+In the 20 main analyses the Wiener-process step SD $w$ is fixed at $0.5$ grade units per month, on the grounds that this value encodes a reasonable prior expectation about month-to-month changes in form. To check that the slope estimate $m$ is not sensitive to this choice, we re-fit the Australia-Sport per-session model with $w$ given a $\mathrm{Gamma}(2, 4)$ prior (mean $0.5$, mode $0.25$, standard deviation $\approx 0.35$, with density vanishing at $w=0$) and jointly estimated alongside $m$ and the climber-grade trajectories. The shape parameter $\alpha = 2$ ensures that the prior density goes to zero linearly as $w \to 0^+$, ruling out the degenerate ``no drift'' regime that a half-normal or half-Cauchy prior would put high prior mass on. The same MCMC settings as the main analyses were used (4 chains, 4{,}000 iterations per chain, 2{,}000 warmup); diagnostics for this run are reported in Table~\ref{si:diag-joint-w}.
 
-The joint-estimation posteriors (Table~\ref{si:joint-w-summary}) are mutually compatible with the headline fixed-$w$ result: the posterior on $m$ shifts only marginally, from $0.846\ [0.829, 0.864]$ (fixed $w=0.5$) to $0.841\ [0.825, 0.858]$ (joint estimation), with credible intervals that overlap by more than $90\%$ of their width. The posterior on $w$ has median $0.39$ with $95\%$ credible interval $[0.36, 0.43]$, indicating that the data support a slightly smaller monthly drift than the previously fixed value of $0.5$. Because the slope estimate is essentially unaffected by this difference, we retain the fixed-$w$ formulation for the 20 headline analyses and present the joint-estimation result here purely as a robustness check.
+The joint-estimation posteriors (Table~\ref{si:joint-w-summary}) are mutually compatible with the main fixed-$w$ result: the posterior on $m$ shifts only marginally, from $0.846\ [0.829, 0.864]$ (fixed $w=0.5$) to $0.841\ [0.825, 0.858]$ (joint estimation), with credible intervals that overlap by more than $90\%$ of their width. The posterior on $w$ has median $0.39$ with $95\%$ credible interval $[0.36, 0.43]$, indicating that the data support a slightly smaller monthly drift than the previously fixed value of $0.5$. Because the slope estimate is essentially unaffected by this difference, we retain the fixed-$w$ formulation for the 20 main analyses and present the joint-estimation result here purely as a robustness check.
 
 \begin{table}[ht]
 \centering
@@ -223,7 +223,7 @@ Iterations hitting max treedepth (post-warmup) & $2{,}753$ \\
 Wall-clock time (4-core parallel) & $5.0$ hours \\
 \bottomrule
 \end{tabular}
-\caption{Convergence diagnostics for the joint-estimation fit. Compared with the fixed-$w$ headline run (Table~\ref{si:diag-aus-sport}), $\hat{R}$ is slightly elevated for $w$ ($1.02$ vs the $\leq 1.006$ ceiling in the fixed-$w$ run) and the sampler hit the maximum NUTS treedepth on $34\%$ of post-warmup iterations, reflecting more challenging posterior geometry when $w$ is a free parameter. The slope $m$ nonetheless converged to high quality and the joint posterior is consistent with the fixed-$w$ result.}
+\caption{Convergence diagnostics for the joint-estimation fit. Compared with the fixed-$w$ main run (Table~\ref{si:diag-aus-sport}), $\hat{R}$ is slightly elevated for $w$ ($1.02$ vs the $\leq 1.006$ ceiling in the fixed-$w$ run) and the sampler hit the maximum NUTS treedepth on $34\%$ of post-warmup iterations, reflecting more challenging posterior geometry when $w$ is a free parameter. The slope $m$ nonetheless converged to high quality and the joint posterior is consistent with the fixed-$w$ result.}
 \label{si:diag-joint-w}
 \end{table}
 
@@ -231,9 +231,9 @@ Wall-clock time (4-core parallel) & $5.0$ hours \\
 \section{Prior sensitivity for the slope parameter}
 \label{si:prior-sensitivity}
 
-The headline analyses use a weakly informative log-normal prior on the slope, $m \sim \mathrm{LogNormal}(-0.5, 0.6^2)$, with central 95\% mass on $m \in [0.19, 1.97]$. To check that the headline posterior is not driven by this prior choice, we re-fit the Australia-Sport per-session model (with $w = 0.5$ fixed, all other settings as in the headline run) under three alternative priors on $m$: a tighter log-normal with the same median, a substantially wider log-normal with the same median, and a Gamma distribution from a different family. Posterior summaries are reported in Table~\ref{si:prior-sensitivity-summary}.
+The main analyses use a weakly informative log-normal prior on the slope, $m \sim \mathrm{LogNormal}(-0.5, 0.6^2)$, with central 95\% mass on $m \in [0.19, 1.97]$. To check that the main posterior is not driven by this prior choice, we re-fit the Australia-Sport per-session model (with $w = 0.5$ fixed, all other settings as in the main run) under three alternative priors on $m$: a tighter log-normal with the same median, a substantially wider log-normal with the same median, and a Gamma distribution from a different family. Posterior summaries are reported in Table~\ref{si:prior-sensitivity-summary}.
 
-The four posteriors agree to three decimal places on the median of $m$ and on the median of $d = e^m$, and the 95\% credible intervals overlap by more than $99\%$ of their width. All four runs converged cleanly with $\hat{R} \leq 1.000$ for $m$, $n_{\mathrm{eff}}(m) \geq 7{,}531$, and zero divergent transitions. We conclude that, with $N \approx 50{,}000$ ascents informing $m$, the prior on $m$ has no detectable effect on the posterior, and the headline result is determined by the data.
+The four posteriors agree to three decimal places on the median of $m$ and on the median of $d = e^m$, and the 95\% credible intervals overlap by more than $99\%$ of their width. All four runs converged cleanly with $\hat{R} \leq 1.000$ for $m$, $n_{\mathrm{eff}}(m) \geq 7{,}531$, and zero divergent transitions. We conclude that, with $N \approx 50{,}000$ ascents informing $m$, the prior on $m$ has no detectable effect on the posterior, and the main result is determined by the data.
 
 \begin{table}[ht]
 \centering
@@ -241,13 +241,13 @@ The four posteriors agree to three decimal places on the median of $m$ and on th
 \toprule
 {\bf Label} & {\bf Prior on $m$} & {\bf 95\% prior on $m$} & {$m$ median} & {2.5\%} & {97.5\%} & {$d$ median} & {$\hat{R}$} \\
 \midrule
-headline & $\mathrm{LogNormal}(-0.5, 0.6^2)$ & $[0.19, 1.97]$ & $0.846$ & $0.829$ & $0.864$ & $2.330$ & $1.000$ \\
+main & $\mathrm{LogNormal}(-0.5, 0.6^2)$ & $[0.19, 1.97]$ & $0.846$ & $0.829$ & $0.864$ & $2.330$ & $1.000$ \\
 tight    & $\mathrm{LogNormal}(-0.5, 0.3^2)$ & $[0.34, 1.10]$ & $0.845$ & $0.828$ & $0.862$ & $2.328$ & $1.000$ \\
 wide     & $\mathrm{LogNormal}(-0.5, 1.0^2)$ & $[0.085, 4.36]$& $0.846$ & $0.828$ & $0.863$ & $2.329$ & $1.000$ \\
 gamma    & $\mathrm{Gamma}(2, 4)$            & $[0.06, 1.39]$ & $0.845$ & $0.829$ & $0.863$ & $2.329$ & $1.000$ \\
 \bottomrule
 \end{tabular}
-\caption{Prior sensitivity for the slope parameter $m$, fit on the Australia-Sport per-session data set ($n = 100$, $N = 48{,}679$). The first row reproduces the headline result. The remaining rows differ only in the prior on $m$. The posteriors are mutually indistinguishable beyond the third decimal place and the 95\% credible intervals overlap nearly completely; the data dominate the prior.}
+\caption{Prior sensitivity for the slope parameter $m$, fit on the Australia-Sport per-session data set ($n = 100$, $N = 48{,}679$). The first row reproduces the main result. The remaining rows differ only in the prior on $m$. The posteriors are mutually indistinguishable beyond the third decimal place and the 95\% credible intervals overlap nearly completely; the data dominate the prior.}
 \label{si:prior-sensitivity-summary}
 \end{table}
 

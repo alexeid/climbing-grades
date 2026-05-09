@@ -4,7 +4,7 @@
 #
 # Joint estimation of the slope parameter m and the Wiener-process step
 # standard deviation w on the Australia-Sport per-session dataset (config row
-# 18). The Stan model used here matches the headline analysis except that w is
+# 18). The Stan model used here matches the main analysis except that w is
 # treated as a parameter with a HalfNormal(0, 1) prior rather than fixed at
 # 0.5 grade units per month.
 #
@@ -64,7 +64,7 @@ cat("\n=== Running data preparation ===\n")
 data <- produce.analysis.data(params, res, routes)
 data$params <- params
 
-# Differentiate the file stem so we don't collide with the headline (fixed-w) outputs.
+# Differentiate the file stem so we don't collide with the main (fixed-w) outputs.
 data$file.stem <- paste0(data$file.stem, "-estimateW")
 cat("File stem:", data$file.stem, "\n")
 cat("Climbers:", data$d$C, "  Ascents:", data$d$N, "  Months:", data$d$P, "\n")

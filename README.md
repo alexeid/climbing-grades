@@ -32,12 +32,12 @@ the RDS files in `data/processed/` are in place.
 The Stan models are defined in `R/climbing-stan.R`. Two variants are provided:
 
 - **Fixed-`w` (default)** — the Wiener-process step SD is fixed at `w = 0.5`
-  grade units per month. This was used for all 20 headline analyses.
+  grade units per month. This was used for all 20 main analyses.
 - **Joint-`w`** — `w` is estimated jointly with `m` and the climber-grade
   trajectories under a HalfNormal(0, 1) prior. Selected with
   `run.stan.climbing.model(d, estimate.w=TRUE)`.
 
-The 20 headline analyses are driven by `R/create-all-notebooks.R`, which
+The 20 main analyses are driven by `R/create-all-notebooks.R`, which
 iterates over rows of `R/config.csv` and renders
 `R/bayesian-climbing-analysis.Rmd` for each configuration.
 

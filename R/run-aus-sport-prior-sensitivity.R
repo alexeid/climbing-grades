@@ -3,18 +3,18 @@
 # run-aus-sport-prior-sensitivity.R
 #
 # Prior-sensitivity analysis for the slope parameter m on the Australia-Sport
-# per-session dataset (config row 18). Re-fits the headline model (fixed
+# per-session dataset (config row 18). Re-fits the main model (fixed
 # w = 0.5) under three alternative priors on m, with all other settings
-# identical to the headline analysis. Addresses reviewer comment #2 (prior
+# identical to the main analysis. Addresses reviewer comment #2 (prior
 # justification / sensitivity analysis).
 #
 # Priors compared:
-#   headline   m ~ lognormal(-0.5, 0.6)   median 0.61, 95% [0.19, 1.97]
+#   main   m ~ lognormal(-0.5, 0.6)   median 0.61, 95% [0.19, 1.97]
 #   tight      m ~ lognormal(-0.5, 0.3)   median 0.61, 95% [0.34, 1.10]
 #   wide       m ~ lognormal(-0.5, 1.0)   median 0.61, 95% [0.085, 4.36]
 #   gamma      m ~ gamma(2, 4)            mean 0.5, mode 0.25, density vanishes at 0
 #
-# The headline result is already saved by run-aus-sport-diagnostics.R; this
+# The main result is already saved by run-aus-sport-diagnostics.R; this
 # script runs the three alternatives and saves their posteriors plus a small
 # comparison summary file.
 #

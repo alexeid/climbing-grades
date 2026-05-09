@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 # Threshold-sensitivity runs for the AUS Sport per-session analysis.
-# Runs the headline configuration at min.ascents=50 and min.ascents=100, with
-# the n=100 cap held fixed (matching the headline run at min.ascents=30).
+# Runs the main configuration at min.ascents=50 and min.ascents=100, with
+# the n=100 cap held fixed (matching the main run at min.ascents=30).
 # Addresses reviewer comment #4.
 
 suppressPackageStartupMessages({
