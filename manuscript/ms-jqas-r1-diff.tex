@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL ms-jqas.tex      Sun Mar  8 09:48:23 2026
-%DIF ADD ms-jqas-r1.tex   Sat May  9 20:22:13 2026
+%DIF ADD ms-jqas-r1.tex   Sat May  9 20:28:32 2026
 
 %% Packages
 \usepackage{amsthm,amsmath,amsfonts,amssymb}
@@ -248,7 +248,7 @@ Following previous authors  \citep{coulom2008whole,scarff2020estimation} we cons
 C(t+1) \sim \mathcal{N}(C(t), w^2)\DIFaddbegin \DIFadd{.
 }\DIFaddend \end{equation}
 
-\DIFaddbegin \DIFadd{The variance $w^2$ controls how rapidly a climber's grade is permitted to drift from one time-step to the next, and therefore how strongly recent ascent outcomes influence the inferred grade trajectory. Time-steps are taken to be calendar months. In the 20 analyses summarised in Table~\ref{datatable} we fix $w = 0.5$ grade units per month for computational efficiency; this value encodes a prior expectation that month-to-month changes in form are typically of order half a grade. To check that the slope estimate $m$ is not sensitive to this choice, we additionally re-fit the main Australia-Sport per-session analysis under a model in which $w$ is given a $\mathrm{Gamma}(2, 4)$ prior (mean $0.5$, density vanishing at $w=0$) and jointly estimated with $m$. The posterior on $w$ in that fit had median $0.39$ with $95\%$ credible interval $[0.36, 0.43]$, suggesting that the data support somewhat less monthly drift than the previously fixed value; the corresponding posterior on $m$ shifted from $0.846\ [0.829, 0.864]$ (fixed $w$) to $0.841\ [0.825, 0.858]$ (joint estimation), a difference well within the joint credible interval. We therefore retain the fixed-$w$ runs as our main analyses and report the joint-estimation fit in Section~S5 of the Supplementary Information as a robustness check.
+\DIFaddbegin \DIFadd{The variance $w^2$ controls how rapidly a climber's grade is permitted to drift from one time-step to the next, and therefore how strongly recent ascent outcomes influence the inferred grade trajectory. Time-steps are taken to be calendar months. In the 20 analyses summarised in Table~\ref{datatable} we fix $w = 0.5$ grade units per month for computational efficiency; this value encodes a prior expectation that month-to-month changes in form are typically of order half a grade. To check that the slope estimate $m$ is not sensitive to this choice, we additionally re-fit the main Australia-Sport per-session analysis under a model in which $w$ is given a $\mathrm{Gamma}(2, 4)$ prior (mean $0.5$, density vanishing at $w=0$) and jointly estimated with $m$. The posterior on $w$ in that fit had median $0.39$ with $95\%$ credible interval $[0.36, 0.43]$, suggesting that the data support somewhat less monthly drift than the previously fixed value; the corresponding posterior on $m$ shifted from $0.846\ [0.829, 0.863]$ (fixed $w$) to $0.841\ [0.825, 0.858]$ (joint estimation), a difference well within the joint credible interval. We therefore retain the fixed-$w$ runs as our main analyses and report the joint-estimation fit in Section~S5 of the Supplementary Information as a robustness check.
 }
 
 \DIFaddend If we know the grade of a climber, we can predict their expected performance on a route of some other grade, including grades and routes they haven't tried.

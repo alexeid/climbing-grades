@@ -78,7 +78,7 @@ All analyses were run with 4 parallel chains, 4{,}000 iterations per chain, of w
 \section{Cross-dataset summary}
 \label{si:cross-dataset}
 
-Table~\ref{si:datasets} reports, for each of the 20 analyses, the number of climbers retained ($n$), the number of logged ascents ($N$), the posterior median and 95\% highest-posterior-density interval for $d = e^m$, and the inclusion threshold.
+Table~\ref{si:datasets} reports, for each of the 20 analyses, the number of climbers retained ($n$), the number of logged ascents ($N$), the posterior median and 95\% equal-tail credible interval for $d = e^m$, and the inclusion threshold.
 
 The selection pipeline retains climbers passing the per-attempt minimum thresholds (set to $30$ attempts and $1$ explicit failure for all 20 analyses). If more than $100$ climbers pass these thresholds, only the top-$100$ by total ascent count are kept; otherwise all eligible climbers are retained. In Table~\ref{si:datasets}, $n$ is shown in bold ($\mathbf{100}$) for the analyses where this top-$100$ cap was reached, and in normal weight where all eligible climbers were used.
 
@@ -119,7 +119,7 @@ The distinction matters for the threshold sensitivity reported in Section~5.1 of
       Germany     & Sport      & UIAA    & session & $\mathbf{100}$ & $18{,}435$ & $2.14$ & $2.08$ & $2.21$ & $\geq 30$ \\
       \bottomrule
     \end{tabular}
-    \caption{Summary of all 20 Bayesian analyses. $n$ is the number of climbers retained; $N$ is the number of logged ascents on which inference is performed (after per-session aggregation where applicable); $d = e^m$ is the posterior median multiplicative factor in difficulty per grade increment, with 2.5\%/97.5\% endpoints of the 95\% highest-posterior-density interval. The minimum-attempts column lists the per-climber inclusion threshold (set to $30$ in all 20 analyses; the minimum-explicit-failures threshold is $1$ throughout). $n$ is shown in bold ($\mathbf{100}$) where the analysis was capped at the top-$100$ most-active climbers because more than $100$ climbers passed the inclusion thresholds; in the remaining analyses (where $n$ is shown in normal weight), all eligible climbers were used. The slope estimates are mutually consistent across this stratification, suggesting the cap acts as a computational ceiling rather than a substantive analytical choice.}
+    \caption{Summary of all 20 Bayesian analyses. $n$ is the number of climbers retained; $N$ is the number of logged ascents on which inference is performed (after per-session aggregation where applicable); $d = e^m$ is the posterior median multiplicative factor in difficulty per grade increment, with the 2.5\% and 97.5\% quantiles of the posterior shown as endpoints of a 95\% equal-tail credible interval. The minimum-attempts column lists the per-climber inclusion threshold (set to $30$ in all 20 analyses; the minimum-explicit-failures threshold is $1$ throughout). $n$ is shown in bold ($\mathbf{100}$) where the analysis was capped at the top-$100$ most-active climbers because more than $100$ climbers passed the inclusion thresholds; in the remaining analyses (where $n$ is shown in normal weight), all eligible climbers were used. The slope estimates are mutually consistent across this stratification, suggesting the cap acts as a computational ceiling rather than a substantive analytical choice.}
     \label{si:datasets}
     \end{table}
     \end{landscape}
@@ -187,7 +187,7 @@ Wall-clock time (4-core parallel) & $77.8$ minutes \\
 
 In the 20 main analyses the Wiener-process step SD $w$ is fixed at $0.5$ grade units per month, on the grounds that this value encodes a reasonable prior expectation about month-to-month changes in form. To check that the slope estimate $m$ is not sensitive to this choice, we re-fit the Australia-Sport per-session model with $w$ given a $\mathrm{Gamma}(2, 4)$ prior (mean $0.5$, mode $0.25$, standard deviation $\approx 0.35$, with density vanishing at $w=0$) and jointly estimated alongside $m$ and the climber-grade trajectories. The shape parameter $\alpha = 2$ ensures that the prior density goes to zero linearly as $w \to 0^+$, ruling out the degenerate ``no drift'' regime that a half-normal or half-Cauchy prior would put high prior mass on. The same MCMC settings as the main analyses were used (4 chains, 4{,}000 iterations per chain, 2{,}000 warmup); diagnostics for this run are reported in Table~\ref{si:diag-joint-w}.
 
-The joint-estimation posteriors (Table~\ref{si:joint-w-summary}) are mutually compatible with the main fixed-$w$ result: the posterior on $m$ shifts only marginally, from $0.846\ [0.829, 0.864]$ (fixed $w=0.5$) to $0.841\ [0.825, 0.858]$ (joint estimation), with credible intervals that overlap by more than $90\%$ of their width. The posterior on $w$ has median $0.39$ with $95\%$ credible interval $[0.36, 0.43]$, indicating that the data support a slightly smaller monthly drift than the previously fixed value of $0.5$. Because the slope estimate is essentially unaffected by this difference, we retain the fixed-$w$ formulation for the 20 main analyses and present the joint-estimation result here purely as a robustness check.
+The joint-estimation posteriors (Table~\ref{si:joint-w-summary}) are mutually compatible with the main fixed-$w$ result: the posterior on $m$ shifts only marginally, from $0.846\ [0.829, 0.863]$ (fixed $w=0.5$) to $0.841\ [0.825, 0.858]$ (joint estimation), with credible intervals that overlap by more than $90\%$ of their width. The posterior on $w$ has median $0.39$ with $95\%$ credible interval $[0.36, 0.43]$, indicating that the data support a slightly smaller monthly drift than the previously fixed value of $0.5$. Because the slope estimate is essentially unaffected by this difference, we retain the fixed-$w$ formulation for the 20 main analyses and present the joint-estimation result here purely as a robustness check.
 
 \begin{table}[ht]
 \centering
@@ -241,7 +241,7 @@ The four posteriors agree to three decimal places on the median of $m$ and on th
 \toprule
 {\bf Label} & {\bf Prior on $m$} & {\bf 95\% prior on $m$} & {$m$ median} & {2.5\%} & {97.5\%} & {$d$ median} & {$\hat{R}$} \\
 \midrule
-main & $\mathrm{LogNormal}(-0.5, 0.6^2)$ & $[0.19, 1.97]$ & $0.846$ & $0.829$ & $0.864$ & $2.330$ & $1.000$ \\
+main & $\mathrm{LogNormal}(-0.5, 0.6^2)$ & $[0.19, 1.97]$ & $0.846$ & $0.829$ & $0.863$ & $2.330$ & $1.000$ \\
 tight    & $\mathrm{LogNormal}(-0.5, 0.3^2)$ & $[0.34, 1.10]$ & $0.845$ & $0.828$ & $0.862$ & $2.328$ & $1.000$ \\
 wide     & $\mathrm{LogNormal}(-0.5, 1.0^2)$ & $[0.085, 4.36]$& $0.846$ & $0.828$ & $0.863$ & $2.329$ & $1.000$ \\
 gamma    & $\mathrm{Gamma}(2, 4)$            & $[0.06, 1.39]$ & $0.845$ & $0.829$ & $0.863$ & $2.329$ & $1.000$ \\
