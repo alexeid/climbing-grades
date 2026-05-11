@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL ms-jqas.tex      Sun Mar  8 09:48:23 2026
-%DIF ADD ms-jqas-r1.tex   Mon May 11 19:31:15 2026
+%DIF ADD ms-jqas-r1.tex   Mon May 11 19:39:37 2026
 
 %% Packages
 \usepackage{amsthm,amsmath,amsfonts,amssymb}
@@ -324,7 +324,7 @@ We used this model to co-estimate the fundamental slope parameter $m$ and the gr
 
 \DIFaddbegin \paragraph{\DIFadd{MCMC settings.}} \DIFadd{Each analysis was run with 4 parallel chains, $4{,}000$ iterations per chain, of which the first half ($2{,}000$ iterations) was discarded as warmup, leaving $2{,}000$ post-warmup draws per chain and $8{,}000$ total post-warmup draws. We monitored convergence using the rank-normalised split-$\hat{R}$ diagnostic and bulk/tail effective sample sizes (ESS) of \mbox{%DIFAUXCMD
 \citet{vehtari2021rank}}\hskip0pt%DIFAUXCMD
-, computed for $m$ and for a representative subset of the climber-grade parameters $C_j(t)$. For the main Australia-Sport (per-session) analysis, the maximum $\hat{R}$ across all $6{,}002$ monitored parameters was $\hat{R}_{\max} = 1.006$, the minimum bulk $n_{\mathrm{eff}}$ was $1{,}103$ and the median was $6{,}077$, the slope parameter $m$ achieved $\hat{R} = 1.00$ and $n_{\mathrm{eff}} = 7{,}531$, and there were zero divergent transitions and zero iterations hitting the maximum treedepth. Detailed convergence diagnostics for this main analysis are reported in the Supplementary Information; the original submission's saved fits did not preserve diagnostics for the other 19 analyses, and the analysis pipeline has now been updated so that they are captured for any future re-runs.
+, computed for $m$ and for a representative subset of the climber-grade parameters $C_j(t)$. For the main Australia-Sport (per-session) analysis, the maximum $\hat{R}$ across all $6{,}002$ monitored parameters was $\hat{R}_{\max} = 1.006$, the minimum bulk $n_{\mathrm{eff}}$ was $1{,}103$ and the median was $6{,}077$, the slope parameter $m$ achieved $\hat{R} = 1.00$ and $n_{\mathrm{eff}} = 7{,}531$, and there were zero divergent transitions and zero iterations hitting the maximum treedepth. Detailed convergence diagnostics for this main analysis are reported in the Supplementary Information.
 }
 
 \subsection{\DIFadd{Community-wide ascent count regression}}
