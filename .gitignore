@@ -15,3 +15,23 @@
 *.synctex.gz
 *.toc
 texput.log
+
+# --- added during laptop migration 2026 (regenerable / build output) ---
+# MCMC model fits (~2.7 GB, regenerate by re-running the models)
+results/**/*.rds
+logs/
+.DS_Store
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.Rhistory
+.Rapp.history
+_site/
+.pytest_cache/
+*.nav
+*.snm
+*.vrb
+Template for Ethical and Legal Declarations.docx
+manuscript/cover-letter-jqas-r1.txt
